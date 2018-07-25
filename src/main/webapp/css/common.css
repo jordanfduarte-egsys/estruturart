@@ -1,0 +1,54 @@
+.hide {
+    display: none !important;
+}
+.show {
+    display: block !important;
+}
+
+.d-flex > .message {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.align-rigth {
+    text-align: right;
+}
+
+.js-image-show img{
+    width: 30px;
+    height: 30px;
+}
+
+.pull-right {
+    float: right !important;
+}
+
+.pull-left {
+    float: left !important;
+}
+.table-error.is-invalid {
+    border: 1px solid #dc3545 !important;
+}
+.table-error.is-invalid .invalid-feedback{
+    display: block !important;
+}
+.upload-field.is-invalid {
+    padding: 5px;
+}
+input[readonly] {
+    background: #f9f5f5;
+}
+img[data-image] {
+    cursor: pointer;
+}
+.message .alert {
+    line-height: 21px;
+}
+.message .alert button {
+    margin-top: 7px;
+    margin-left: 8px;
+}
+.message .alert i {
+    padding-right: 9px;
+}

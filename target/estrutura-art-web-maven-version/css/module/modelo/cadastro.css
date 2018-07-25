@@ -1,0 +1,51 @@
+fieldset .upload {
+    text-align: center;
+    padding: 5px;
+}
+fieldset .upload img {
+    width: 100px;
+    margin: 5px;
+}
+
+div.resumo {
+    padding-top: 18px;
+}
+
+div.resumo ul {
+    list-style: none;
+}
+div.table-materiais {
+    max-height: 178px;
+    overflow-y: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.js-image-changed {
+    font-size: 45px
+}
+
+.js-image-changed span {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
+
+.sobre-medida {
+    position: absolute;
+    left: 79px;
+    margin-top: -8px;
+}
+.js-resumo ul li span:first-child {
+    float: left;
+}
+.js-resumo ul li span:last-child {
+    float: right;
+}
+.js-resumo ul li {
+    border-bottom: 1px solid #CCC;
+}
+.js-resumo ul {
+    padding-left: 5px;
+}
+.js-resumo {
+    padding-left: 5px;
+    margin-top: -7px;
+}
