@@ -16,11 +16,10 @@ public class LogError
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
 
-        conn.close();
         if (ps.getGeneratedKeys().next()) {
             return ps.getGeneratedKeys().getInt(1);
         }
-
+        conn.close();
         return 0;
     }
 }

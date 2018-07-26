@@ -6,10 +6,12 @@ var crud = {
     binds: function() {
         var $desconto = $('#desconto');
         var $maoObra = $('#mao_obra');
+        var $btnCriarOrcamento = $('.js-save-orcamento');
 
         $desconto.on('keyup mouseup blur', crud.event.calculoDesconto);
         $desconto.on('keydown', crud.event.inputNumber);
         $maoObra.on('keyup blur', crud.event.calculoMaoObra);
+        $btnCriarOrcamento.on('click', crud.event.criarOrcamento);
         crud.event.initTooltipe();
     },
 
@@ -19,7 +21,7 @@ var crud = {
             var $desconto = $('#desconto');
             var $maoObra = $('#mao_obra');
 
-            if ($prevEntrega.val() == "") {c
+            if ($prevEntrega.val() == "") {
                 $prevEntrega.closest('.input-group').find('[data-toggle="tooltip"]').tooltip('show');
             } else if ($desconto.val() == "") {
                 $desconto.closest('.input-group').find('[data-toggle="tooltip"]').tooltip('show');
@@ -36,7 +38,7 @@ var crud = {
         },
 
         inputNumber: function(e) {
-            if (e.which == 188 || e.which == 194) {
+            if (e.which == 110 || e.which == 194) {
                 return false;
             }
         },
@@ -73,6 +75,13 @@ var crud = {
             } else {
                 $append.parent().removeClass('text-danger');
             }
+        },
+
+        criarOrcamento: function(e) {
+            e.preventDefault();
+
+            $('form').append('<input name="is_orcamento" value="1" type="hidden" />');
+            $(this).off().trigger('click');
         }
     }
 }

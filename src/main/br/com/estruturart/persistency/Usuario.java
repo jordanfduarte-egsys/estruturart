@@ -182,7 +182,13 @@ public class Usuario extends AbstractPersistency
 
     public int insert(TbUsuario usuario) throws SQLException
     {
-        Connection conn = ConnectionManager.getConnection();
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
         String sql = String.format(
             "INSERT INTO USUARIO (tipo_pessoa, nome, cpf_cnpj, rg_inscricao_estadual, email, telefone, senha, perfil_id, status_usuario_id)"
             + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', MD5('%s'), %d, %d)",
@@ -206,7 +212,10 @@ public class Usuario extends AbstractPersistency
             ps.executeUpdate();
         }
 
-        conn.close();
+        if (!isConnection()) {
+            conn.close();
+        }
+
         return usuario.getId();
     }
 

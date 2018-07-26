@@ -93,7 +93,7 @@ public class TbEndereco extends AbstractModel
         this.estadoId = estadoId;
     }
 
-    public Integer getUsuarioid()
+    public Integer getUsuarioId()
     {
         return this.usuarioId;
     }
@@ -108,7 +108,7 @@ public class TbEndereco extends AbstractModel
         return this.pedidoId;
     }
 
-    public void setPedidoid(Integer pedidoId)
+    public void setPedidoId(Integer pedidoId)
     {
         this.pedidoId = pedidoId;
     }

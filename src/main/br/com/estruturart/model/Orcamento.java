@@ -4,6 +4,7 @@ import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbModelo;
 import java.sql.SQLException;
 import br.com.estruturart.model.TbEndereco;
+import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.utility.RouteParam;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Orcamento extends AbstractModel
 {
     private TbUsuario usuario;
     private TbEndereco endereco;
+    private TbPedido pedido;
     private List<TbModelo> modelos;
     private float desconto = 0;
     private Date prevEntrega;
@@ -38,12 +40,12 @@ public class Orcamento extends AbstractModel
         modelos = new ArrayList<TbModelo>();
     }
 
-    public boolean getIsvalidetapa2()
+    public boolean getIsValidEtapa2()
     {
         return this.isValidEtapa2;
     }
 
-    public void setIsvalidetapa2(boolean isValidEtapa2)
+    public void setIsValidEtapa2(boolean isValidEtapa2)
     {
         this.isValidEtapa2 = isValidEtapa2;
     }
@@ -53,12 +55,12 @@ public class Orcamento extends AbstractModel
         return this.isValidEtapa2;
     }
 
-    public boolean getIsValidetapa1()
+    public boolean getIsValidEtapa1()
     {
         return this.isValidEtapa1;
     }
 
-    public void setIsValidetapa1(boolean isValidEtapa1)
+    public void setIsValidEtapa1(boolean isValidEtapa1)
     {
         this.isValidEtapa1 = isValidEtapa1;
     }
@@ -88,6 +90,16 @@ public class Orcamento extends AbstractModel
         this.endereco = endereco;
     }
 
+    public TbPedido getPedido()
+    {
+        return this.pedido;
+    }
+
+    public void setPedido(TbPedido pedido)
+    {
+        this.pedido = pedido;
+    }
+
     public boolean isValid() {return true;}
 
     public boolean isValid(int etapa) throws SQLException
@@ -101,6 +113,7 @@ public class Orcamento extends AbstractModel
                 boolean isValidUsuario = getUsuario().isValid();
                 boolean isValidEndereco = getEndereco().isValid();
                 isEtapaValid = isValidUsuario && isValidEndereco;
+                setIsValidEtapa1(isEtapaValid);
             break;
             case ETAPA2:
                 this.getValidation().clear();
@@ -111,6 +124,8 @@ public class Orcamento extends AbstractModel
                 } else {
                     calcPrevEntrega();
                 }
+
+                setIsValidEtapa2(isEtapaValid);
             break;
             case ETAPA3:
                 this.getValidation().clear();
@@ -121,7 +136,6 @@ public class Orcamento extends AbstractModel
                     this.getValidation().add(new RouteParam("prev_entrega", "Informe a data de previsão de entrega válido!"));
                     isValidPrevEntrega = false;
                 }
-
 
                 if (getValorMaoObra() <= 0) {
                     this.getValidation().add(new RouteParam("mao_obra", "Informe o valor de mão de obra válido!"));
@@ -191,6 +205,18 @@ public class Orcamento extends AbstractModel
         total = total - ((total * desconto) / 100);
 
         return formatMoney(total + getValorMaoObra());
+    }
+
+    public float getPrecoSubTotal()
+    {
+        float total = 0;
+        for (TbModelo modelo : getModelos()) {
+            total += modelo.getPrecoItemTotal();
+        }
+
+        total = total - ((total * desconto) / 100);
+
+        return total + getValorMaoObra();
     }
 
     public float getDesconto()

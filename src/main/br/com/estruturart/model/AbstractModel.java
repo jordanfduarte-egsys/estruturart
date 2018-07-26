@@ -4,8 +4,6 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.sql.Connection;
-
 import br.com.estruturart.utility.ParamRequestManager;
 
 public abstract class AbstractModel
@@ -42,16 +40,7 @@ public abstract class AbstractModel
         if (numberFormat == null) {
             numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
         }
+
         return numberFormat.format(money).replace("R$", "").trim();
-    }
-
-    public void setConnection(Connection conn)
-    {
-        connection = conn;
-    }
-
-    public Connection getConnection()
-    {
-        return connection;
     }
 }

@@ -20,6 +20,7 @@ import br.com.estruturart.model.TbEndereco;
 import br.com.estruturart.model.TbPerfil;
 import br.com.estruturart.persistency.Fornecedor;
 import br.com.estruturart.persistency.Material;
+import br.com.estruturart.persistency.ConnectionManager;
 import br.com.estruturart.persistency.Modelo;
 import br.com.estruturart.persistency.StatusMaterial;
 import br.com.estruturart.persistency.UnidadeMedida;
@@ -45,7 +46,8 @@ import java.sql.Connection;
 public class OrcamentoController extends AbstractServlet {
     private static final long serialVersionUID = -4214231188151587849L;
 
-    public void indexAction() throws Exception {
+    public void indexAction() throws Exception
+    {
         String rota = "orcamento/etapa1";
         if (getSession().getAttribute("orcamento") instanceof Orcamento) {
             Orcamento orcamento = (Orcamento) getSession().getAttribute("orcamento");
@@ -63,7 +65,8 @@ public class OrcamentoController extends AbstractServlet {
         redirect(rota);
     }
 
-    public void etapa1Action() throws Exception {
+    public void etapa1Action() throws Exception
+    {
         Estado modelEstado = new Estado();
         Cidade modelCidade = new Cidade();
         Perfil perfilModel = new Perfil();
@@ -100,13 +103,19 @@ public class OrcamentoController extends AbstractServlet {
 
             orcamento.setUsuario(usuario);
             orcamento.setEndereco(endereco);
+
+            System.out.println("______________________");
+            System.out.println("Cidade ID: " + this.getParameterOrValue("estado_id", "0"));
+            System.out.println("______________________");
+            System.out.println("______________________");
+
             if (orcamento.isValid(Orcamento.ETAPA1)) {
                 redirect("orcamento/etapa2");
             }
+        }
 
-            if (endereco.getEstadoId() > 0) {
-                cidades = modelCidade.findCidadeByEstado(String.valueOf(endereco.getEstadoId()));
-            }
+        if (orcamento.getEndereco().getEstadoId() > 0) {
+            cidades = modelCidade.findCidadeByEstado(String.valueOf(orcamento.getEndereco().getEstadoId()));
         }
 
         this.getRequest().setAttribute("estados", estados);
@@ -179,6 +188,10 @@ public class OrcamentoController extends AbstractServlet {
             if (orcamento.isValid(Orcamento.ETAPA2)) {
                 redirect("orcamento/etapa3");
             }
+        } else {
+            if (!orcamento.isValidEtapa1()) {
+                redirect("orcamento/etapa1");
+            }
         }
 
         this.getRequest().setAttribute("orcamento", orcamento);
@@ -241,16 +254,27 @@ public class OrcamentoController extends AbstractServlet {
                         getFlashMessenger().setType(FlashMessenger.SUCCESS)
                             .add("Pedido criado com sucesso!");
                     }
-                    redirect("orcamento/pedido/id/" + finalizarService.getId());
-                } catch (Exception1001 e) {
-                    getFlashMessenger().setType(FlashMessenger.ERROR).add(e.getMessage());
-                    conn.rowback();
-                } catch (Exception e) {
+
+                    redirect("pedido/editar/id/" + finalizarService.getId());
+                } catch (java.sql.SQLException e) {
+                    conn.rollback();
+                    conn.close();
                     getLogErrorService().createLog(e);
                     getFlashMessenger().setType(FlashMessenger.ERROR)
                         .add("Ocorreu um erro ao criar o orçamento. Verifique!");
-                    conn.rowback();
+                } catch (Exception e) {
+                    conn.rollback();
+                    conn.close();
+                    getLogErrorService().createLog(e);
+                    getFlashMessenger().setType(FlashMessenger.ERROR)
+                        .add("Ocorreu um erro ao criar o orçamento. Verifique!");
                 }
+            }
+        } else {
+            if (!orcamento.isValidEtapa1()) {
+                redirect("orcamento/etapa1");
+            } else if (!orcamento.isValidEtapa2()) {
+                redirect("orcamento/etapa2");
             }
         }
 

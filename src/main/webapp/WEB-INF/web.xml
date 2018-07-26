@@ -99,6 +99,12 @@
       <servlet-name>Modelo</servlet-name>
       <servlet-class>br.com.estruturart.controller.ModeloController</servlet-class>
   </servlet>
+  <servlet>
+      <description>Listagem de Pedidos</description>
+      <display-name>Pedido</display-name>
+      <servlet-name>Pedido</servlet-name>
+      <servlet-class>br.com.estruturart.controller.PedidoController</servlet-class>
+  </servlet>
   <servlet-mapping>
       <servlet-name>Auth</servlet-name>
       <url-pattern>/auth</url-pattern>
@@ -118,6 +124,15 @@
     <url-pattern>/usuario/index/page/*</url-pattern>
     <url-pattern>/usuario/editar/id/*</url-pattern>
     <url-pattern>/usuario/find-cpf-cnpj</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Pedido</servlet-name>
+    <url-pattern>/pedido</url-pattern>
+    <url-pattern>/pedido/</url-pattern>
+    <url-pattern>/pedido/cadastro</url-pattern>
+    <url-pattern>/pedido/cadastro/</url-pattern>
+    <url-pattern>/pedido/index/page/*</url-pattern>
+    <url-pattern>/pedido/editar/id/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Fornecedor</servlet-name>

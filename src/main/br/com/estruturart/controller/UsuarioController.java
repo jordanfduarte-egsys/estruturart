@@ -14,9 +14,9 @@ import br.com.estruturart.utility.JsonModel;
 /**
  * Servlet implementation class Auth
  */
-@WebServlet(name = "usuario", urlPatterns = { "/usuario", "/usuario/cadastro", "/usuario/index/page/*",
-        "usuario/editar/id/*", "/usuario/find-cpf-cnpj" })
-public class UsuarioController extends AbstractServlet {
+@WebServlet(name = "usuario", urlPatterns = { "/usuario", "/usuario/cadastro", "/usuario/index/page/*", "usuario/editar/id/*", "/usuario/find-cpf-cnpj" })
+public class UsuarioController extends AbstractServlet
+{
     private static final long serialVersionUID = -4214231788151597849L;
 
     public void indexAction() throws Exception {
@@ -50,7 +50,7 @@ public class UsuarioController extends AbstractServlet {
             if (fkUsuario != 0) {
                 usuario = usuarioModel.getUsuarioById(fkUsuario);
                 if (usuario.getId() == 0) {
-                    throw new Exception1001("Usuario informado inv?lido!");
+                    throw new Exception1001("Usuario informado inválido!");
                 }
             }
 
@@ -74,7 +74,7 @@ public class UsuarioController extends AbstractServlet {
                         usuarioModel.insert(usuario);
                     }
 
-                    getFlashMessenger().setType(FlashMessenger.SUCCESS).add("Usu?rio salvo com sucesso!");
+                    getFlashMessenger().setType(FlashMessenger.SUCCESS).add("Usuário salvo com sucesso!");
                     redirect("usuario");
                 }
             }

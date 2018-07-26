@@ -121,8 +121,8 @@
                 </div>
                 <div class="card-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary ja-back-orcamento" data-href="/orcamento/etapa2">Voltar</button>
-                    <button type="submit" class="btn btn-default ja-save-orcamento" data-status="1"><i class="fas fa-shopping-cart text-primary"></i> Criar pedido</button>
-                    <button type="button" class="btn btn-primary ja-save-orcamento" data-status="2"><i class="fas fa-shopping-cart"></i> Criar orçamento</button>
+                    <button type="submit" class="btn btn-default js-save-orcamento" data-status="1"><i class="fas fa-shopping-cart text-primary"></i> Criar pedido</button>
+                    <button type="button" class="btn btn-primary js-save-orcamento" data-status="2"><i class="fas fa-shopping-cart"></i> Criar orçamento</button>
                     <a data-toggle="tooltip" data-html="true" class="p-2" title="" data-original-title="Click em 'Criar orçamento' para finalizar e criar o pedido. O status ficará pendente de aprovação. Click em 'Criar pedido' para finalizar e iniciar a produção dessa ordem de serviço.">
                         <i class="fas fa-info"></i>
                     </a>

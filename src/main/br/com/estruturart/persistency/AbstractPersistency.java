@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Connection;
 
-public class AbstractPersistency {
+public class AbstractPersistency
+{
+    Connection connection = null;
 
     public int findTotalRows(String sql) throws SQLException
     {
@@ -22,5 +25,20 @@ public class AbstractPersistency {
 
         conn.close();
         return total;
+    }
+
+    public void setConnection(Connection conn)
+    {
+        connection = conn;
+    }
+
+    public Connection getConnection()
+    {
+        return connection;
+    }
+
+    public boolean isConnection()
+    {
+        return connection != null;
     }
 }
