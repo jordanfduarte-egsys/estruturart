@@ -202,4 +202,15 @@ public class Util
 
         return true;
     }
+
+    public static String dataBrToEn(String dataBr)
+    {
+        String[] aDataBr = dataBr.split("/");
+
+        if (aDataBr.length == 3) {
+            return String.format("%s-%s-%s", aDataBr[2], aDataBr[1], aDataBr[0]);
+        }
+
+        return "";
+    }
 }

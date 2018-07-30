@@ -7,7 +7,7 @@
     <h2>Orçamento - etapa 1</h2>
     <div class="card mb-4">
         <div class="card-body">
-            <form action="${source}orcamento/etapa1" method="POST">
+            <form action="${source}orcamento/etapa1" method="POST" autocomplete="off" id="etapa1">
                 <input name="usuario_id" value="${orcamento.getUsuario().getId()}" id="usuario_id" type="hidden"/>
                 <div class="form-row">
                     <fieldset class="col-md-8 mb-3 border">
@@ -27,8 +27,15 @@
                                 </button>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="nome_completo">Nome completo *</label>
-                                <input type="text" class="form-control <c:if test="${orcamento.getUsuario().getValidation().hasParam('nome')}">is-invalid</c:if>" <c:if test="${orcamento.getUsuario().getId() > 0}">readonly</c:if> id="nome_completo" name="nome_completo" placeholder="Nome completo" value="${orcamento.getUsuario().getNome()}">
+                                <label for="nome_completo">
+                                    <c:if test="${orcamento.getUsuario().getTipoPessoa().equals('1')}">
+                                        Nome completo *
+                                    </c:if>
+                                    <c:if test="${orcamento.getUsuario().getTipoPessoa().equals('2')}">
+                                        Razão social *
+                                    </c:if>
+                                </label>
+                                <input type="text" class="form-control <c:if test="${orcamento.getUsuario().getValidation().hasParam('nome')}">is-invalid</c:if>" <c:if test="${orcamento.getUsuario().getId() > 0}">readonly</c:if> id="nome_completo" name="nome_completo" placeholder="<c:if test="${orcamento.getUsuario().getTipoPessoa().equals('1')}">Nome completo</c:if><c:if test="${orcamento.getUsuario().getTipoPessoa().equals('2')}">Empresa LTDA</c:if>" value="${orcamento.getUsuario().getNome()}">
                                 <div class="invalid-feedback">
                                     ${orcamento.getUsuario().getValidation().getParamOr('nome', '')}
                                 </div>
@@ -75,7 +82,7 @@
                         <div class="form-row">
                             <div class="col-md-4 mb-3">
                                 <label for="cep">Cep *</label>
-                                <input type="text" autocomplete="off" class="form-control <c:if test="${orcamento.getEndereco().getValidation().hasParam('cep')}">is-invalid</c:if>" id="cep" name="cep" placeholder="CEP" value="${orcamento.getEndereco().getCep()}">
+                                <input data-format="cep" type="text" autocomplete="off" class="form-control <c:if test="${orcamento.getEndereco().getValidation().hasParam('cep')}">is-invalid</c:if>" id="cep" name="cep" placeholder="CEP" value="${orcamento.getEndereco().getCep()}">
                                 <div class="invalid-feedback">
                                     ${orcamento.getEndereco().getValidation().getParamOr('cep', '')}
                                 </div>

@@ -1,6 +1,8 @@
 package br.com.estruturart.model;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import br.com.estruturart.utility.StringUtilsPad;
 
 public class TbPedido extends AbstractModel
 {
@@ -15,6 +17,13 @@ public class TbPedido extends AbstractModel
     private String observacao;
     private int usuarioId;
     private int statusPedidoId;
+    private TbEndereco endereco;
+    private TbUsuario usuario;
+
+    private String url;
+    private String title;
+    private String start;
+    private String color;
 
     public static final int PEDIDO_PENDENTE = 1;
     public static final int ORCAMENTO_PENDENTE = 2;
@@ -132,6 +141,42 @@ public class TbPedido extends AbstractModel
     public void setDescontoGeral(float descontoGeral)
     {
         this.descontoGeral = descontoGeral;
+    }
+
+    public TbEndereco getEndereco()
+    {
+        return this.endereco;
+    }
+
+    public void setEndereco(TbEndereco endereco)
+    {
+        this.endereco = endereco;
+    }
+
+    public void processarInfoListagem()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+        SimpleDateFormat df1 = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss");
+
+        this.url = String.format("{0}/visualizar/id/%s", getId());
+        this.title = String.format("#%s - #%s", StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0"), getUsuario().getNome());
+        this.start = df1.format(getDataPrevisaoInstalacao().getTime());
+        this.color = "#007bff";
+        if (getDataPrevisaoInstalacao().before(new Date())) {
+            this.color = "#dc3545";
+        } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
+            this.color = "#ffc107";
+        }
+    }
+
+    public TbUsuario getUsuario()
+    {
+        return this.usuario;
+    }
+
+    public void setUsuario(TbUsuario usuario)
+    {
+        this.usuario = usuario;
     }
 
     public boolean isValid() { return true; }

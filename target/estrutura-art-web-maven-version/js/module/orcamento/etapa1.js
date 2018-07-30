@@ -1,4 +1,6 @@
 var crud = {
+    idEstado: null,
+    
     init: function() {
         this.binds();
     },
@@ -101,27 +103,32 @@ var crud = {
                             $estadoId.val(0);
                             $bairro.val('');
                         }
-                        var showLoading = new ShowLoading();
-                        showLoading.show();
-                        crud.event.findCidades(
-                            response.object.cidade.estado.id,
-                            function (res) {
-                                if (res.status) {
-                                    if (res.list) {
-                                        $cidadeId.html('');
-                                        rendererList(
-                                            res.list, // alterações no html modelo
-                                            "#row-cidade", // Template modelo que vai ser clonado
-                                            $cidadeId // Para onde vai ser jogado o modelo alterado
-                                        );
+                        
+                        if (crud.idEstado != response.object.cidade.estado.id) {                            
+                            var showLoading = new ShowLoading();
+                            showLoading.show();
+                            crud.event.findCidades(
+                                response.object.cidade.estado.id,
+                                function (res) {
+                                    if (res.status) {
+                                        if (res.list) {
+                                            $cidadeId.html('');
+                                            rendererList(
+                                                res.list, // alterações no html modelo
+                                                "#row-cidade", // Template modelo que vai ser clonado
+                                                $cidadeId // Para onde vai ser jogado o modelo alterado
+                                            );
 
-                                        $cidadeId.val(response.object.cidade.id);
+                                            $cidadeId.val(response.object.cidade.id);
+                                        }
                                     }
-                                }
 
-                                showLoading.hide();
-                            }
-                        );
+                                    showLoading.hide();
+                                }
+                            );
+                        } else {
+                            $cidadeId.val(response.object.cidade.id);
+                        }
                     }
                 });
 
@@ -132,6 +139,7 @@ var crud = {
         },
 
         findCidades: function(estadoId, callback) {
+            crud.idEstado = estadoId;
             var request = $.ajax({
                 url: BASE_URL + 'cidade/find-cidade',
                 type: 'POST',

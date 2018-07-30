@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import br.com.estruturart.utility.IJsonModel;
 
 import com.google.gson.Gson;
 
@@ -323,7 +324,7 @@ public class AbstractServlet extends HttpServlet {
         return sb.toString();
     }
 
-    public String toJson(JsonModel jsonModel) {
+    public String toJson(IJsonModel jsonModel) {
         Gson gson = new Gson();
         String json = gson.toJson(jsonModel);
         return json;
@@ -334,7 +335,7 @@ public class AbstractServlet extends HttpServlet {
         return getResponse().getContentType().equals("application/json");
     }
 
-    public void setRequestXhtmlHttpRequest(JsonModel jsonModel) throws IOException {
+    public void setRequestXhtmlHttpRequest(IJsonModel jsonModel) throws IOException {
         setNoRender(true);
         getResponse().setContentType("application/json");
         getResponse().setHeader("Content-Disposition", "inline");

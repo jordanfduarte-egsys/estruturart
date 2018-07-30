@@ -1,11 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <div class="content p-4">
-   <h2>Listagem de modelos 1</h2>
+   <h2>Listagem de modelos</h2>
 
     <div class="card-body p-0">
       <form class="form-inline justify-content-end p-3" method="POST" action="${source}modelo">
-          <label class="sr-only" for="inlineFormInputName2">Busca por descriзгo</label>
+          <label class="sr-only" for="inlineFormInputName2">Busca por descrição</label>
           <input type="text" class="form-control mr-sm-2" id="inlineFormInputName2" name="nome" placeholder="Busca por nome" value="${filter.getParam('nome')}">
 
           <button type="button" class="btn btn-primary btn-icon btn-pill js-new-register" data-href="${source}modelo/cadastro">

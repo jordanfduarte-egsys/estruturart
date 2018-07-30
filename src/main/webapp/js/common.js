@@ -5,6 +5,26 @@ window.FlashMessenger.SUCCESS = "success";
 window.FlashMessenger.ERROR = "danger";
 window.FlashMessenger.INFO = "primary";
 
+// USO: "a{0}bcd{1}ef".format("foo", "bar");
+String.prototype.format = String.prototype.format ||
+  function () {
+    "use strict";
+    var str = this.toString();
+    if (arguments.length) {
+        var t = typeof arguments[0];
+        var key;
+        var args = ("string" === t || "number" === t) ?
+            Array.prototype.slice.call(arguments)
+            : arguments[0];
+
+        for (key in args) {
+            str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
+        }
+    }
+
+    return str;
+};
+
 var flashMessenger = {
     messages: [],
     type: window.FlashMessenger.SUCCESS,
@@ -61,8 +81,10 @@ function bindMask() {
     $('[data-format="rg"]').off().mask('000000000-0');
     $('[data-format="inscricao_estadual"]').off().mask('000-00000-00');
     $('[data-format="number"]').off().mask('000000000', {clearOnEmpty: true});
+    $('[data-format="cep"]').off().mask('00000-000', {clearOnEmpty: true});
     $('[data-format="float"]').off().mask('0000000,00', {reverse: true,  clearOnEmpty: true});
     $('[data-format="float2"]').off().mask('0000000,000', {reverse: true,  clearOnEmpty: true});
+    $('[data-format="telefone"]').off().mask('(000) 00000-0000');
     $('[data-toggle="datepicker"]').datepicker({
         format: 'dd/mm/yyyy',
         days: ['Segunda', 'Ter?a', 'Quarta', 'Quinta', 'Sexta', 'S?bado', 'Domingo'],
@@ -96,17 +118,25 @@ function bindMask() {
         } catch (e) {}
 
         var tamanho = $(this).val().length;
-
-        if(tamanho < 11){
+        if (tamanho < 11) {
             $(this).mask("999.999.999-99");
-        } else if(tamanho >= 11){
+
+            $('#etapa1 [for=nome_completo]')
+                .html('Nome completo *')
+                .next()
+                .attr('placeholder', 'Nome completo');
+        } else if(tamanho >= 11) {
             $(this).mask("99.999.999/9999-99");
+
+            $('#etapa1 [for=nome_completo]')
+                .html('RazÃ£o social *')
+                .next()
+                .attr('placeholder', 'Empresa LTDA');
         }
 
         // ajustando foco
         var elem = this;
         setTimeout(function(){
-            // mudo a posição do seletor
             elem.selectionStart = elem.selectionEnd = 10000;
         }, 0);
         // reaplico o valor para mudar o foco
@@ -146,52 +176,6 @@ function configureAjax() {
     });
 }
 
-$(document).ready(function() {
-    $('.js-clear-form').on('click', function(e) {
-        e.preventDefault();
-        window.location.href = window.location.href;
-    });
-
-    $('.js-back').on('click', function(e) {
-        e.preventDefault();
-        history.go(-1);
-    })
-
-    $('.js-new-register').on('click', function(e) {
-        window.location.href = $(this).data('href');
-    });
-
-    $(".d-flex > .message").fadeIn(1000);
-    window.setTimeout(function(){
-        $(".d-flex > .message").addClass("hide");
-    }, 6000);
-
-    $('[data-format="telefone"]').off().mask('(000) 00000-0000');
-    bindMask();
-    clearFlash();
-    configureAjax();
-});
-
-// "a{0}bcd{1}ef".format("foo", "bar");
-String.prototype.format = String.prototype.format ||
-function () {
-    "use strict";
-    var str = this.toString();
-    if (arguments.length) {
-        var t = typeof arguments[0];
-        var key;
-        var args = ("string" === t || "number" === t) ?
-            Array.prototype.slice.call(arguments)
-            : arguments[0];
-
-        for (key in args) {
-            str = str.replace(new RegExp("\\{" + key + "\\}", "gi"), args[key]);
-        }
-    }
-
-    return str;
-};
-
 function toFloat(valueStr) {
     if (valueStr == '') return 0;
 
@@ -205,3 +189,37 @@ function toFloat(valueStr) {
 function toFloatBr(valueFloat) {
     return String(valueFloat).replace('.', ',');
 }
+
+function serializeToSimplesParam(json) {
+  var jsonReturn = {};
+  $.each(json, function(i, v) {
+    jsonReturn[v.name] = v.value;
+  });
+
+  return jsonReturn;
+}
+
+$(document).ready(function() {
+  $('.js-clear-form').on('click', function(e) {
+      e.preventDefault();
+      window.location.href = window.location.href;
+  });
+
+  $('.js-back').on('click', function(e) {
+      e.preventDefault();
+      history.go(-1);
+  })
+
+  $('.js-new-register').on('click', function(e) {
+      window.location.href = $(this).data('href');
+  });
+
+  $(".d-flex > .message").fadeIn(1000);
+  window.setTimeout(function(){
+      $(".d-flex > .message").addClass("hide");
+  }, 6000);
+
+  bindMask();
+  clearFlash();
+  configureAjax();
+});

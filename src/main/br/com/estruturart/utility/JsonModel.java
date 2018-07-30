@@ -2,7 +2,7 @@ package br.com.estruturart.utility;
 
 import java.util.List;
 
-public class JsonModel
+public class JsonModel implements IJsonModel
 {
     private boolean status = true;
     private String message;

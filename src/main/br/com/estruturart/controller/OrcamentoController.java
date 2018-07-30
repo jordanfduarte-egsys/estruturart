@@ -94,7 +94,7 @@ public class OrcamentoController extends AbstractServlet {
             usuario.setTipoPessoa(tipoPessoa);
             usuario.setPerfil(perfilModel.findRow(TbPerfil.CLIENTE));
 
-            endereco.setCep(this.getParameterOrValue("cep", ""));
+            endereco.setCep(this.getParameterOrValue("cep", "").replace("-", ""));
             endereco.setLogradouro(this.getParameterOrValue("logradouro", ""));
             endereco.setBairro(this.getParameterOrValue("bairro", ""));
             endereco.setNumero(this.getParameterOrValue("numero", ""));

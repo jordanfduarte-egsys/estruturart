@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="${source}css/common.css">
         <link rel="stylesheet" href="${source}js/viewerjs-master/dist/viewer.css">
         <link rel="stylesheet" href="${source}js/datepicker-master/dist/datepicker.css">
+        <link rel="stylesheet" href="${source}js/fullcalendar-3.9.0/fullcalendar.min.css">
 
         <title>Estrutura Art ${title}</title>
     </head>
@@ -126,6 +127,9 @@
 
         <script src="${source}js/jquery.min.js"></script>
         <script src="${source}js/datepicker-master/dist/datepicker.js"></script>
+        <script src="${source}js/fullcalendar-3.9.0/lib/moment.min.js"></script>
+        <script src="${source}js/fullcalendar-3.9.0/fullcalendar.min.js"></script>
+        <script src="${source}js/fullcalendar-3.9.0/locale/pt-br.js"></script>
         <script src="${source}js/viewerjs-master/dist/viewer.js"></script>
         <script src="${source}js/show-loading.js"></script>
         <script src="${source}js/jquery.easy-autocomplete.js"></script>

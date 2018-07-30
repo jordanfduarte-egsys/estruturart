@@ -1,6 +1,7 @@
 br\com\estruturart\model\TbPedidoItem.class
 br\com\estruturart\utility\Exception1001.class
 br\com\estruturart\utility\Route.class
+br\com\estruturart\utility\StringUtilsPad.class
 br\com\estruturart\controller\WebserviceController.class
 br\com\estruturart\persistency\AbstractPersistency.class
 br\com\estruturart\model\Orcamento.class
@@ -35,10 +36,12 @@ br\com\estruturart\persistency\PedidoItem.class
 br\com\estruturart\persistency\Pedido.class
 br\com\estruturart\model\TbStatusModelo.class
 br\com\estruturart\utility\RouteParam.class
+br\com\estruturart\utility\PedidoJsonModel.class
 br\com\estruturart\persistency\Lancamento.class
 br\com\estruturart\model\CepModel.class
 br\com\estruturart\utility\ParamRequestManager.class
 br\com\estruturart\controller\ImageController.class
+br\com\estruturart\utility\IJsonModel.class
 br\com\estruturart\model\TbCidade.class
 br\com\estruturart\utility\JsonModel.class
 br\com\estruturart\model\TbStatusUsuario.class

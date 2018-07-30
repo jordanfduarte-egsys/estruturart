@@ -19,7 +19,8 @@ public class UsuarioController extends AbstractServlet
 {
     private static final long serialVersionUID = -4214231788151597849L;
 
-    public void indexAction() throws Exception {
+    public void indexAction() throws Exception
+    {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
         System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
@@ -89,12 +90,14 @@ public class UsuarioController extends AbstractServlet
         this.getRequest().setAttribute("usuario", usuario);
     }
 
-    public void editarAction() throws Exception {
+    public void editarAction() throws Exception
+    {
         this.getRoute().setAction("cadastroAction");
         this.cadastroAction();
     }
 
-    public void findCpfCnpjAction() throws Exception {
+    public void findCpfCnpjAction() throws Exception
+    {
         Usuario usuario = new Usuario();
         JsonModel jsonModel = new JsonModel();
         jsonModel.setObject(usuario.findUsuarioByCpjCNpj(this.getRequest().getParameter("cpf_cnpj")));
