@@ -62,20 +62,19 @@ public class PedidoController extends AbstractServlet
         String data = "";
         boolean isFiltro = false;
 
-        if (params.hasParam("data_ini") && params.hasParam("data_fim") && !params.getParam("data_ini").equals("") && !params.getParam("data_fim").equals("")) {
-            String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
-            String dataFim = Util.dataBrToEn(params.getParam("data_fim"));
-
-            if (!dataIni.equals("") && !dataFim.equals("")) {
-                data = dataIni;
+        if (params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
+            String dataValidate = Util.dataBrToEn(params.getParam("data_filtro"));
+            if (!dataValidate.equals("")) {
+                data = dataValidate;
                 isFiltro = true;
             }
         }
 
-        if (!isFiltro && params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
-            String dataValidate = Util.dataBrToEn(params.getParam("data_filtro"));
-            if (!data.equals("")) {
-                data = dataValidate;
+        if (!isFiltro && params.hasParam("data_ini") && !params.getParam("data_ini").equals("")) {
+            String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
+
+            if (!dataIni.equals("")) {
+                data = dataIni;
                 isFiltro = true;
             }
         }
