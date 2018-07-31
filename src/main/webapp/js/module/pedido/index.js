@@ -10,6 +10,8 @@ var crud = {
     $formAvancado.on("click", crud.event.toggleBuscaAvancada);
     $formAvancado.on("submit", function(e) {e.preventDefault(); crud.event.fullCalendar();});
     $formSimples.on("submit", function(e) {e.preventDefault(); crud.event.fullCalendar();});
+    $('body').find('button[aria-label="next"]').on('click', crud.event.next);
+    $('body').find('button[aria-label="prev"]').on('click', crud.event.prev);
     crud.event.fullCalendar();
   },
 
@@ -30,6 +32,10 @@ var crud = {
       post = serializeToSimplesParam(post);
       post.data_filtro = data;
 
+      if (post.data_filtro) {
+        data.data_ini = "";
+      }
+
       $calendar.fullCalendar(confCalender);
       var request = $.ajax({
         url: BASE_URL + 'pedido/buscar',
@@ -47,6 +53,7 @@ var crud = {
             url: value.url.format(window.location.href),
             title: value.title,
             color: value.color,
+            textEscape: false
           });
         });
         console.log(confCalender);
@@ -73,12 +80,18 @@ var crud = {
 
     prev: function() {
       // pegar dia atual e menos um
-      crud.event.fullCalendar();
+      var $calendar = $('.js-calendar');
+      var date = $calendar.fullCalendar('getDate');
+      var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
+      crud.event.fullCalendar(novaData);
     },
 
     next: function() {
       // pegar dia atual e mais um
-      crud.event.fullCalendar();
+      var $calendar = $('.js-calendar');
+      var date = $calendar.fullCalendar('getDate');
+      var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
+      crud.event.fullCalendar(novaData);
     }
   }
 }
@@ -98,17 +111,7 @@ var confCalender = {
       return false;
     }
   },
-  customButtons: {
-    customPrevButton: {
-      text: 'custom prev !',
-      click: crud.event.prev
-    },
-    customNextButton: {
-      text: 'custom ext!',
-      click: crud.event.next
-    },
-  },
-//  defaultDate: '2018-03-12',
+  //  defaultDate: '2018-03-12',
   navLinks: true, // can click day/week names to navigate views
   editable: false,
   eventLimit: true, // allow "more" link when too many events
