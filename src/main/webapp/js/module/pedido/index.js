@@ -46,6 +46,7 @@ var crud = {
 
       request.done(function(response) {
         confCalender.defaultDate = response.date;
+        confCalender.events = [];
         response.list.forEach(function(value, index) {
           console.log(index, value);
           confCalender.events.push({
