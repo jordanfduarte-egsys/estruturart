@@ -122,7 +122,9 @@ public class Pedido extends AbstractPersistency
             + " WHERE 1 %s",
             args
         );
-
+        System.out.println("-----------------");
+        System.out.println(sql);
+        System.out.println("-----------------");
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<TbPedido> pedidos = new ArrayList<TbPedido>();
