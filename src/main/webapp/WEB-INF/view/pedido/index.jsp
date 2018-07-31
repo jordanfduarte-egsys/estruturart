@@ -42,9 +42,7 @@
                 <input type="text" class="form-control mr-sm-2" id="inlineFormInputName5" name="data_ini" placeholder="dd/MM/yyyy" value="${filter.getParam('data_ini')}">
             </div>
 
-            <div class="col-md-3 mb-3">
-                <label for="inlineFormInputName6">Data de término</label>
-                <input type="text" class="form-control mr-sm-2" id="inlineFormInputName6" name="data_fim" placeholder="dd/MM/yyyy" value="${filter.getParam('data_fim')}">
+            <div class="col-md-3 mb-3">                
             </div>
             <div class="col-md-3 mb-3 buttons-filtro">
                 <button type="button" class="btn btn-outline-secondary js-clear-form">Limpar</button>
