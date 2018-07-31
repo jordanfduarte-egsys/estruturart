@@ -38,7 +38,7 @@
         </div>
         <div class="form-row">
             <div class="col-md-3 mb-3">
-                <label for="inlineFormInputName5">Data de início</label>
+                <label for="inlineFormInputName5">Apartir de</label>
                 <input type="text" class="form-control mr-sm-2" id="inlineFormInputName5" name="data_ini" placeholder="dd/MM/yyyy" value="${filter.getParam('data_ini')}">
             </div>
 
