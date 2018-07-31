@@ -159,14 +159,24 @@ public class TbPedido extends AbstractModel
         SimpleDateFormat df1 = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss");
 
         this.url = String.format("{0}/visualizar/id/%s", getId());
-        this.title = String.format("#%s - #%s", StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0"), getUsuario().getNome());
+        
         this.start = df1.format(getDataPrevisaoInstalacao().getTime());
         this.color = "#007bff";
+        String status = "Pedido Pendente";
         if (getDataPrevisaoInstalacao().before(new Date())) {
             this.color = "#dc3545";
+            status = "Pedido Atrasado";
         } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
             this.color = "#ffc107";
+            status = "Pedido Pendente";
         }
+        
+        this.title = String.format(
+            "<span data-toggle="/"tooltip/"" title="/"%s/"" class="/"fc-title/"">#%s - #%s</span>",
+            status,
+            StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0"),
+            getUsuario().getNome()
+        );
     }
 
     public TbUsuario getUsuario()
