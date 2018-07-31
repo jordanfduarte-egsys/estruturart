@@ -255,7 +255,7 @@ public class OrcamentoController extends AbstractServlet {
                             .add("Pedido criado com sucesso!");
                     }
 
-                    redirect("pedido/editar/id/" + finalizarService.getId());
+                    redirect("pedido/visualizar/id/" + finalizarService.getId());
                 } catch (java.sql.SQLException e) {
                     conn.rollback();
                     conn.close();
