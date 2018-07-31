@@ -55,6 +55,7 @@ public class Pedido extends AbstractPersistency
         Connection conn = ConnectionManager.getConnection();
 
         boolean isFiltro = false;
+        boolean filtroData = false;
         String args = "";
         if (params.hasParam("id") && !params.getParam("id").equals("")) {
             args += " AND p.id = '" + params.getParam("id") + "' ";
@@ -76,26 +77,32 @@ public class Pedido extends AbstractPersistency
             isFiltro = true;
         }
 
-        boolean filtroData = false;
-        if (params.hasParam("data_ini") && params.hasParam("data_fim") && !params.getParam("data_ini").equals("") && !params.getParam("data_fim").equals("")) {
-            String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
-            String dataFim = Util.dataBrToEn(params.getParam("data_fim"));
+        if (params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
+            String dataStr = Util.dataBrToEn(params.getParam("data_filtro"));
+            if (!data.equals("")) {
+                SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+                Date date = df.parse(dataStr);
 
-            if (!dataIni.equals("") && !dataFim.equals("")) {
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
+                Date d1 = c.getTime();
+                c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+                Date d2 = c.getTime();
+                args += " AND (p.data_inclusao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
+                isFiltro = filtroData = true;
+            }
+        }
+
+        if (!filtroData && params.hasParam("data_ini") && !params.getParam("data_ini").equals("")) {
+            String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
+
+            if (!dataIni.equals("")) {
                 args += " AND (p.data_inclusao BETWEEN '" + dataIni + " 00:00'  AND '" + dataFim + " 23:59') ";
                 isFiltro = filtroData = true;
             }
         }
 
-        if (!filtroData && params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
-            String data = Util.dataBrToEn(params.getParam("data_filtro"));
-            if (!data.equals("")) {
-                args += " AND (p.data_inclusao BETWEEN '" + data + " 00:00'  AND '" + data + " 23:59') ";
-                isFiltro = true;
-            }
-        }
-
-        if (!isFiltro) {
+        if (!filtroData) {
             Date d1 = new Date();
             Date d2 = new Date();
             SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
