@@ -22,9 +22,18 @@ var crud = {
       eventsAdded = [];
       crud.event.fullCalendar();
     });
+
+    $('body').on('click', 'button.fc-today-button', function(e) {
+      e.preventDefault();
+      confCalender.events = [];
+      eventsAdded = [];
+      crud.event.today()
+    });
+
     $('body').on('click', 'button[aria-label="next"]', crud.event.next);
     $('body').on('click', 'button[aria-label="prev"]', crud.event.prev);
     $clearForm.on('click', crud.event.clearForm);
+
     crud.event.fullCalendar();
   },
 
@@ -87,7 +96,6 @@ var crud = {
     },
 
     prev: function() {
-      // pegar dia atual e menos um
       var $calendar = $('.js-calendar');
       var date = $calendar.fullCalendar('getDate');
       var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
@@ -95,11 +103,21 @@ var crud = {
     },
 
     next: function() {
-      // pegar dia atual e mais um
       var $calendar = $('.js-calendar');
       var date = $calendar.fullCalendar('getDate');
       var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
       crud.event.fullCalendar(novaData);
+    },
+
+    today: function() {
+      var self = this;
+
+      window.setTimeout(function() {
+        var $calendar = $('.js-calendar');
+        var date = $calendar.fullCalendar('getDate');
+        var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
+        self.event.fullCalendar(novaData);
+      }, 300);
     },
 
     clearForm: function(e) {
@@ -116,6 +134,7 @@ var confCalender = {
   // defaultView: 'listWeek',
   locale: 'pt-br',
   displayEventTime: false,
+  timezone:'local',
   header: {
     left: 'prev,next today',
     center: 'title',
