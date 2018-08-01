@@ -87,7 +87,7 @@ function bindMask() {
     $('[data-format="telefone"]').off().mask('(000) 00000-0000');
     $('[data-toggle="datepicker"]').datepicker({
         format: 'dd/mm/yyyy',
-        days: ['Segunda', 'Ter?a', 'Quarta', 'Quinta', 'Sexta', 'S?bado', 'Domingo'],
+        days: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
         daysShort: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
         daysMin: ['Se', 'Te', 'Qu', 'Qi', 'Sx', 'Sa', 'Do'],
         months: ['Janeiro', 'Fevereiro', 'Mar?o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],

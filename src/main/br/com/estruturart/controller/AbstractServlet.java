@@ -141,6 +141,8 @@ public class AbstractServlet extends HttpServlet {
                 if (!this.noRender && !getResponse().isCommitted()) {
                     this.view();
                 }
+
+                this.noRender = false;
             }
         } catch (IllegalArgumentException e) {
             error(e);

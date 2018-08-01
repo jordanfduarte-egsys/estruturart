@@ -3,10 +3,12 @@ package br.com.estruturart.controller;
 import javax.servlet.annotation.WebServlet;
 import javax.ws.rs.HttpMethod;
 import br.com.estruturart.model.TbPedido;
+import br.com.estruturart.model.TbStatusPedido;
 import br.com.estruturart.utility.ParamRequestManager;
 import br.com.estruturart.utility.PedidoJsonModel;
 import br.com.estruturart.utility.Util;
 import br.com.estruturart.persistency.Pedido;
+import br.com.estruturart.persistency.StatusPedido;
 import java.util.Date;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,9 @@ public class PedidoController extends AbstractServlet
 
     public void indexAction() throws Exception
     {
+        StatusPedido statusPedidoModel = new StatusPedido();
+        List<TbStatusPedido> statusPedido = statusPedidoModel.findAll();
+
         boolean isFiltroAvancado = false;
         ParamRequestManager postFilter = new ParamRequestManager();
         if (getSession().getAttribute("session_pedido") instanceof ParamRequestManager) {
@@ -39,6 +44,7 @@ public class PedidoController extends AbstractServlet
         }
 
         this.getRequest().setAttribute("filter", postFilter);
+        this.getRequest().setAttribute("status", statusPedido);
         this.getRequest().setAttribute("isFiltroAvancado", isFiltroAvancado);
     }
 
@@ -56,17 +62,36 @@ public class PedidoController extends AbstractServlet
     public void buscarAction() throws Exception
     {
         ParamRequestManager params = this.postFilter();
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         Pedido modelPedido = new Pedido();
         getSession().setAttribute("session_pedido", params);
         List<TbPedido> pedidos = modelPedido.findByRequestManager(params);
         String data = "";
         boolean isFiltro = false;
 
+        if (pedidos.size() > 0) {
+            if (
+                (params.hasParam("id") && !params.getParam("id").equals("")) ||
+                (params.hasParam("nome") && !params.getParam("nome").equals("")) ||
+                (params.hasParam("status_id") && !params.getParam("status_id").equals("0")) ||
+                (params.hasParam("cep_or_destinatario") && !params.getParam("cep_or_destinatario").equals(""))
+            ) {
+                data = df.format(pedidos.get(0).getDataPrevisaoInstalacao());
+                isFiltro = true;
+            }
+        }
+
         if (params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
             String dataValidate = Util.dataBrToEn(params.getParam("data_filtro"));
             if (!dataValidate.equals("")) {
                 data = dataValidate;
                 isFiltro = true;
+
+                Date date = df.parse(dataValidate);
+                Date compare = new Date();
+                if (date.getMonth() == compare.getMonth() && date.getYear() == compare.getYear()) {
+                    data = df.format(compare.getTime());
+                }
             }
         }
 
@@ -80,13 +105,7 @@ public class PedidoController extends AbstractServlet
         }
 
         if (!isFiltro) {
-            Date d1 = new Date();
-            SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
-            Calendar c = Calendar.getInstance();
-
-            c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-            d1 = c.getTime();
-            data = df.format(d1);
+            data = df.format(new Date());
         }
 
         PedidoJsonModel jsonPedido = new PedidoJsonModel();

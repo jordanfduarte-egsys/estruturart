@@ -50,10 +50,10 @@ public class Pedido extends AbstractPersistency
         return pedido.getId();
     }
 
-    public List<TbPedido> findByRequestManager(ParamRequestManager params) throws SQLException
+    public List<TbPedido> findByRequestManager(ParamRequestManager params) throws SQLException, java.text.ParseException
     {
         Connection conn = ConnectionManager.getConnection();
-
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         boolean isFiltro = false;
         boolean filtroData = false;
         String args = "";
@@ -63,7 +63,7 @@ public class Pedido extends AbstractPersistency
         }
 
         if (params.hasParam("nome") && !params.getParam("nome").equals("")) {
-            args += " AND (p.nome LIKE '" + params.getParam("id") + "%' OR p.observacao LIKE '%" + params.getParam("id") + "%') ";
+            args += " AND (u.nome LIKE '" + params.getParam("nome") + "%' OR u.email LIKE '%" + params.getParam("nome") + "%') ";
             isFiltro = true;
         }
 
@@ -79,25 +79,32 @@ public class Pedido extends AbstractPersistency
 
         if (params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
             String dataStr = Util.dataBrToEn(params.getParam("data_filtro"));
-            if (!data.equals("")) {
-                SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+            if (!dataStr.equals("")) {
+                System.out.println("DATA1: " + dataStr);
                 Date date = df.parse(dataStr);
-
                 Calendar c = Calendar.getInstance();
+                c.setTime(date);
                 c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
                 Date d1 = c.getTime();
                 c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
                 Date d2 = c.getTime();
-                args += " AND (p.data_inclusao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
+                args += " AND (p.data_previsao_instalacao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
                 isFiltro = filtroData = true;
             }
         }
 
+        System.out.println("DATA INI: " + params.hasParam("data_ini"));
         if (!filtroData && params.hasParam("data_ini") && !params.getParam("data_ini").equals("")) {
             String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
-
+            System.out.println("DATA INI: " + dataIni);
             if (!dataIni.equals("")) {
-                args += " AND (p.data_inclusao BETWEEN '" + dataIni + " 00:00'  AND '" + dataFim + " 23:59') ";
+                Date date = df.parse(dataIni);
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                Date d1 = c.getTime();
+                c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+                Date d2 = c.getTime();
+                args += " AND (p.data_previsao_instalacao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
                 isFiltro = filtroData = true;
             }
         }
@@ -105,14 +112,13 @@ public class Pedido extends AbstractPersistency
         if (!filtroData) {
             Date d1 = new Date();
             Date d2 = new Date();
-            SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
             Calendar c = Calendar.getInstance();
 
             c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
             d1 = c.getTime();
             c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
             d2 = c.getTime();
-            args += " AND (p.data_inclusao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
+            args += " AND (p.data_previsao_instalacao BETWEEN '" + df.format(d1) + " 00:00'  AND '" + df.format(d2) + " 23:59') ";
         }
 
         String sql = String.format(

@@ -9,6 +9,7 @@ import java.time.format.ResolverStyle;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.text.SimpleDateFormat;
+import br.com.estruturart.utility.StringUtilsPad;
 
 public class Util
 {
@@ -208,7 +209,9 @@ public class Util
         String[] aDataBr = dataBr.split("/");
 
         if (aDataBr.length == 3) {
-            return String.format("%s-%s-%s", aDataBr[2], aDataBr[1], aDataBr[0]);
+            return String.format(
+                "%s-%s-%s", aDataBr[2], StringUtilsPad.padLeft(aDataBr[1], 2, "0"), aDataBr[0]
+            );
         }
 
         return "";

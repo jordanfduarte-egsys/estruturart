@@ -159,7 +159,7 @@ public class TbPedido extends AbstractModel
         SimpleDateFormat df1 = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss");
 
         this.url = String.format("{0}/visualizar/id/%s", getId());
-        
+
         this.start = df1.format(getDataPrevisaoInstalacao().getTime());
         this.color = "#007bff";
         String status = "Pedido Pendente";
@@ -170,9 +170,9 @@ public class TbPedido extends AbstractModel
             this.color = "#ffc107";
             status = "Pedido Pendente";
         }
-        
+
         this.title = String.format(
-            "<span data-toggle="/"tooltip/"" title="/"%s/"" class="/"fc-title/"">#%s - #%s</span>",
+            "<span data-toggle=\"tooltip\" title=\"%s\" class=\"fc-title\">#%s - #%s</span>",
             status,
             StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0"),
             getUsuario().getNome()
