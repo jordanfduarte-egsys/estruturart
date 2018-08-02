@@ -48,15 +48,24 @@ public class PedidoController extends AbstractServlet
         this.getRequest().setAttribute("isFiltroAvancado", isFiltroAvancado);
     }
 
-    public void cadastroAction() throws Exception
+    public void visualizarAction() throws Exception
     {
+        int id = Integer.parseInt(this.getParamOr("id", "0"));
 
+        Pedido pedidoModel = new Pedido();
+        StatusPedido statusPedidoModel = new StatusPedido();
+
+        List<TbStatusPedido> statusPedido = statusPedidoModel.findAll();
+        TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
+
+        getRequest().setAttribute("pedido", pedido);
+        getRequest().setAttribute("statusPedido", statusPedido);
     }
 
     public void editarAction() throws Exception
     {
-        this.getRoute().setAction("cadastroAction");
-        this.cadastroAction();
+        //this.getRoute().setAction("cadastroAction");
+        //this.cadastroAction();
     }
 
     public void buscarAction() throws Exception

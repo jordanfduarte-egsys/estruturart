@@ -22,7 +22,7 @@
                 <input type="text" class="form-control mr-sm-2" id="inlineFormInputName3" name="nome" placeholder="Nome ou email do cliente" value="${filter.getParam('nome')}">
             </div>
             <div class="col-md-3 mb-3">
-                <label for="status_id">Status *</label>
+                <label for="status_id">Status</label>
                 <select name="status_id" id="status_id" class="form-control">
                     <option value="0">Selecione!</option>
                     <c:forEach items="${status}" var="iterator">
@@ -48,7 +48,7 @@
             </div>
             <div class="col-md-3 mb-3">
             </div>
-            <div class="col-md-3 mb-3 buttons-filtro">
+            <div class="col-md-3 buttons-filtro">
                 <button type="button" class="btn btn-outline-secondary js-clear-form-pedido">Limpar</button>
                 &nbsp;
                 <button type="submit" class="btn btn-primary">Buscar</button>

@@ -4,6 +4,7 @@ br\com\estruturart\utility\Route.class
 br\com\estruturart\utility\StringUtilsPad.class
 br\com\estruturart\controller\WebserviceController.class
 br\com\estruturart\persistency\AbstractPersistency.class
+br\com\estruturart\service\SendEmailService.class
 br\com\estruturart\model\Orcamento.class
 br\com\estruturart\persistency\StatusMaterial.class
 br\com\estruturart\controller\UsuarioController.class
@@ -61,6 +62,7 @@ br\com\estruturart\model\AbstractModel.class
 br\com\estruturart\model\TbLancamento.class
 br\com\estruturart\persistency\Modelo.class
 br\com\estruturart\persistency\Estado.class
+br\com\estruturart\model\TbStatusItem.class
 br\com\estruturart\model\TbTipoPessoa.class
 br\com\estruturart\controller\AbstractServlet.class
 br\com\estruturart\controller\FornecedorController.class

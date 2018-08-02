@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
-import br.com.estruturart.utility.LogService;
+import br.com.estruturart.service.LogErrorService;
 
 public class SendEmailService
 {
@@ -18,59 +18,59 @@ public class SendEmailService
     private String to;
     private String from;
     private String host;
-    private LogService logService;
+    private LogErrorService logService;
 
-    public SendMailService(HttpServletRequest request, HttpServletResponse response)
+    public void SendMailService(HttpServletRequest request, HttpServletResponse response)
     {
         this.request = request;
         this.response = response;
-        this.logService = new LogService();
+        this.logService = new LogErrorService(request, response);
     }
-    
-    public void send() throws ServletException, IOException
+
+    public void send() throws ServletException, IOException, java.sql.SQLException
     {
         // Recipient's email ID needs to be mentioned.
         String to = this.to;
-    
+
         // Sender's email ID needs to be mentioned
         String from = this.from;
-    
+
         // Assuming you are sending email from localhost
         String host = this.host;
-    
+
         // Get system properties
         Properties properties = System.getProperties();
-    
+
         // Setup mail server
         properties.setProperty("mail.smtp.host", host);
-    
+
         // Get the default Session object.
         Session session = Session.getDefaultInstance(properties);
 
         try {
             // Create a default MimeMessage object.
             MimeMessage message = new MimeMessage(session);
-            
+
             // Set From: header field of the header.
             message.setFrom(new InternetAddress(from));
-            
+
             // Set To: header field of the header.
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
             // Set Subject: header field
             message.setSubject(this.subject);
 
             // Send the actual HTML message, as big as you like
-            message.setContent(this.html);
-            
+            message.setContent(this.html, "text/plain");
+
             // Send message
             Transport.send(message);
         } catch (MessagingException mex) {
-           this.logService.create(mex);
+           this.logService.createLog(mex);
         } catch (Exception e) {
-            this.logService.create(e);
+            this.logService.createLog(e);
         }
     }
-    
+
     public String getSubject()
     {
         return this.subject;
@@ -120,4 +120,4 @@ public class SendEmailService
     {
         this.host = host;
     }
-} 
+}

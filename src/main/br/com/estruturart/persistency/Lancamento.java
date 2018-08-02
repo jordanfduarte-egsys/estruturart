@@ -41,4 +41,30 @@ public class Lancamento extends AbstractPersistency
 
         return lancamento.getId();
     }
+
+    public List<TbLancamento> findLancamentosByItem(int itemId) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format("SELECT * FROM lancamento WHERE pedido_itens_id = %d", itemId);
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        List<TbLancamento> lans = new ArrayList<TbLancamento>();
+        while (rs.next()) {
+            TbLancamento lan = new TbLancamento();
+
+            lan.setId(rs.getInt("id"));
+            lan.setPreco(rs.getFloat("preco"));
+            lan.setPrecoPintura(rs.getFloat("preco_pintura"));
+            lan.setDataInclusao(rs.getDate("data_inclusao"));
+            lan.setDescricao(rs.getString("descricao"));
+            lan.setDesconto(rs.getFloat("desconto"));
+            lan.setUsuarioId(rs.getInt("usuario_id"));
+            lan.setPedidoItensId(rs.getInt("pedido_itens_id"));
+            lans.add(lan);
+        }
+
+        return lans;
+    }
 }

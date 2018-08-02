@@ -22,9 +22,11 @@ var crud = {
       eventsAdded = [];
       crud.event.fullCalendar();
     });
+
     $('body').on('click', 'button[aria-label="next"]', crud.event.next);
     $('body').on('click', 'button[aria-label="prev"]', crud.event.prev);
     $clearForm.on('click', crud.event.clearForm);
+
     crud.event.fullCalendar();
   },
 
@@ -54,6 +56,13 @@ var crud = {
       }
 
       $calendar.fullCalendar(confCalender);
+      $('button.fc-today-button').on('click', function(e) {
+        e.preventDefault();
+        confCalender.events = [];
+        eventsAdded = [];
+        crud.event.today()
+      });
+
       var request = $.ajax({
         url: BASE_URL + 'pedido/buscar',
         type: 'post',
@@ -77,17 +86,14 @@ var crud = {
         console.log(confCalender);
         $calendar.fullCalendar('destroy');
         $calendar.fullCalendar(confCalender);
-      });
 
-      /**
-       * {
-    //   title: 'Click for Google',
-    //   url: 'http://google.com/',
-    //   start: '2018-03-28',
-    //   end:  '2018-03-28',
-    //   color: '#CCC' atrasado
-    // }
-       */
+        $('button.fc-today-button').on('click', function(e) {
+          e.preventDefault();
+          confCalender.events = [];
+          eventsAdded = [];
+          crud.event.today()
+        });
+      });
 
       request.fail(function(response) {
         flashMessenger.setType(FlashMessenger.ERROR)
@@ -97,7 +103,6 @@ var crud = {
     },
 
     prev: function() {
-      // pegar dia atual e menos um
       var $calendar = $('.js-calendar');
       var date = $calendar.fullCalendar('getDate');
       var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
@@ -105,11 +110,19 @@ var crud = {
     },
 
     next: function() {
-      // pegar dia atual e mais um
       var $calendar = $('.js-calendar');
       var date = $calendar.fullCalendar('getDate');
       var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
       crud.event.fullCalendar(novaData);
+    },
+
+    today: function() {
+      window.setTimeout(function() {
+        var $calendar = $('.js-calendar');
+        var date = $calendar.fullCalendar('getDate');
+        var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
+        crud.event.fullCalendar(novaData);
+      }, 300);
     },
 
     clearForm: function(e) {
@@ -126,6 +139,7 @@ var confCalender = {
   // defaultView: 'listWeek',
   locale: 'pt-br',
   displayEventTime: false,
+  timezone:'local',
   header: {
     left: 'prev,next today',
     center: 'title',
@@ -142,9 +156,9 @@ var confCalender = {
     element.find('.fc-list-item-title').html(event.title);
   },
   //  defaultDate: '2018-03-12',
-  navLinks: true, // can click day/week names to navigate views
+  navLinks: true,
   editable: false,
-  eventLimit: true, // allow "more" link when too many events
+  eventLimit: true,
   events: []
 };
 

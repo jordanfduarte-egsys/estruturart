@@ -3,6 +3,10 @@ package br.com.estruturart.model;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import br.com.estruturart.utility.StringUtilsPad;
+import br.com.estruturart.model.TbPedidoItem;
+import br.com.estruturart.model.TbStatusPedido;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TbPedido extends AbstractModel
 {
@@ -19,6 +23,8 @@ public class TbPedido extends AbstractModel
     private int statusPedidoId;
     private TbEndereco endereco;
     private TbUsuario usuario;
+    private List<TbPedidoItem> itens;
+    private TbStatusPedido statusPedido;
 
     private String url;
     private String title;
@@ -32,6 +38,12 @@ public class TbPedido extends AbstractModel
     public static final int INSTALACAO = 5;
     public static final int FINALIZADO = 6;
     public static final int CANCELADO = 7;
+
+    public TbPedido()
+    {
+        itens = new ArrayList<TbPedidoItem>();
+        statusPedido = new TbStatusPedido();
+    }
 
     public int getId()
     {
@@ -138,6 +150,11 @@ public class TbPedido extends AbstractModel
         return this.descontoGeral;
     }
 
+    public String getDescontoGeralString()
+    {
+        return formatMoney(this.descontoGeral);
+    }
+
     public void setDescontoGeral(float descontoGeral)
     {
         this.descontoGeral = descontoGeral;
@@ -179,6 +196,11 @@ public class TbPedido extends AbstractModel
         );
     }
 
+    public String getIdString()
+    {
+        return StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0");
+    }
+
     public TbUsuario getUsuario()
     {
         return this.usuario;
@@ -187,6 +209,68 @@ public class TbPedido extends AbstractModel
     public void setUsuario(TbUsuario usuario)
     {
         this.usuario = usuario;
+    }
+
+    public List<TbPedidoItem> getItens()
+    {
+        return this.itens;
+    }
+
+    public void setItens(List<TbPedidoItem> itens)
+    {
+        this.itens = itens;
+    }
+
+    public String getNotaFiscalLabel()
+    {
+        if (getCaminhoArquivoNotaFiscal().length() == 0) {
+            return "Não enviada";
+        }
+
+        return "<a href=\"javascript:void(0);\">Visualizar nota</a>";
+    }
+
+    public String getPrecoGeralString()
+    {
+        return formatMoney(getValorTotal());
+    }
+
+    public String getPrecoGeralMaisMaoObraString()
+    {
+        return formatMoney(getValorTotal() + getValorMaoObra());
+    }
+
+    public String getValorMaoObraString()
+    {
+        return formatMoney(getValorMaoObra());
+    }
+
+    public String getDataPrevisaoInstalacaoString()
+    {
+        return this.getSimpleDateFormat("dd/MM/yyyy").format(getDataPrevisaoInstalacao());
+    }
+
+    public TbStatusPedido getStatusPedido()
+    {
+        return this.statusPedido;
+    }
+
+    public void setStatusPedido(TbStatusPedido statusPedido)
+    {
+        this.statusPedido = statusPedido;
+    }
+
+    public String getCorPrevisaoInstalacao()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+        String color = "#007bff";
+        if (getDataPrevisaoInstalacao().before(new Date())) {
+            color = "#dc3545";
+        } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
+            color = "#ffc107";
+        }
+
+        return color;
     }
 
     public boolean isValid() { return true; }

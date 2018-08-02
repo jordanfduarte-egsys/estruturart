@@ -23,13 +23,6 @@ var crud = {
       crud.event.fullCalendar();
     });
 
-    $('body').on('click', 'button.fc-today-button', function(e) {
-      e.preventDefault();
-      confCalender.events = [];
-      eventsAdded = [];
-      crud.event.today()
-    });
-
     $('body').on('click', 'button[aria-label="next"]', crud.event.next);
     $('body').on('click', 'button[aria-label="prev"]', crud.event.prev);
     $clearForm.on('click', crud.event.clearForm);
@@ -63,6 +56,13 @@ var crud = {
       }
 
       $calendar.fullCalendar(confCalender);
+      $('button.fc-today-button').on('click', function(e) {
+        e.preventDefault();
+        confCalender.events = [];
+        eventsAdded = [];
+        crud.event.today()
+      });
+
       var request = $.ajax({
         url: BASE_URL + 'pedido/buscar',
         type: 'post',
@@ -86,6 +86,13 @@ var crud = {
         console.log(confCalender);
         $calendar.fullCalendar('destroy');
         $calendar.fullCalendar(confCalender);
+
+        $('button.fc-today-button').on('click', function(e) {
+          e.preventDefault();
+          confCalender.events = [];
+          eventsAdded = [];
+          crud.event.today()
+        });
       });
 
       request.fail(function(response) {
@@ -110,13 +117,11 @@ var crud = {
     },
 
     today: function() {
-      var self = this;
-
       window.setTimeout(function() {
         var $calendar = $('.js-calendar');
         var date = $calendar.fullCalendar('getDate');
         var novaData = "{0}/{1}/{2}".format('01', date.month() + 1, date.year());
-        self.event.fullCalendar(novaData);
+        crud.event.fullCalendar(novaData);
       }, 300);
     },
 

@@ -216,4 +216,21 @@ public class Util
 
         return "";
     }
+
+    public static String mask(String mask, String str)
+    {
+        String strFinal = "";
+        int count = 0;
+        for (int i = 0; i < mask.length(); i++) {
+            if (mask.charAt(i) == '#') {
+                strFinal += String.valueOf(str.charAt(i - count));
+            } else {
+                strFinal +=  String.valueOf((mask.charAt(i)));
+                //strFinal += String.valueOf(str.charAt(i));
+                count++;
+            }
+        }
+
+        return strFinal;
+    }
 }

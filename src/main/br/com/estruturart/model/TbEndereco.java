@@ -38,6 +38,11 @@ public class TbEndereco extends AbstractModel
         return this.cep;
     }
 
+    public String getCepString()
+    {
+        return Util.mask("#####-###", getCep());
+    }
+
     public void setCep(String cep)
     {
         this.cep = cep;

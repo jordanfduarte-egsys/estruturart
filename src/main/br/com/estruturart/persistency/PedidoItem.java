@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import com.mysql.jdbc.Statement;
 import br.com.estruturart.model.TbPedidoItem;
+import br.com.estruturart.model.TbModelo;
+import br.com.estruturart.model.TbStatusItem;
+import br.com.estruturart.persistency.Lancamento;
 
 public class PedidoItem extends AbstractPersistency
 {
@@ -39,5 +42,56 @@ public class PedidoItem extends AbstractPersistency
         }
 
         return item.getId();
+    }
+
+    public List<TbPedidoItem> findItensByPedido(int pedidoId) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT pi.*, m.nome, m.descricao, m.largura_padrao, m.altura_padrao, m.imagem, "
+            + " m.preco_pintura, m.porcentagem_acrescimo, m.qtd_dias_producao, s.nome as nome_status_item FROM pedido_itens pi"
+            + " INNER JOIN modelo m ON pi.modelo_id = m.id INNER JOIN status_item s "
+            + " ON pi.status_item_id = s.id WHERE pedido_id = %d", pedidoId
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        List<TbPedidoItem> itens = new ArrayList<TbPedidoItem>();
+        Lancamento modelLancamento = new Lancamento();
+        while (rs.next()) {
+            TbPedidoItem item = new TbPedidoItem();
+            TbModelo modelo = new TbModelo();
+            TbStatusItem statusItem = new TbStatusItem();
+
+            item.setId(rs.getInt("id"));
+            item.setLargura(rs.getFloat("largura"));
+            item.setAltura(rs.getFloat("altura"));
+            item.setDataInclusao(rs.getDate("data_inclusao"));
+            item.setQuantidade(rs.getInt("quantidade"));
+            item.setStatusItemId(rs.getInt("status_item_id"));
+            item.setPedidoId(rs.getInt("pedido_id"));
+            item.setModeloId(rs.getInt("modelo_id"));
+
+            modelo.setId(rs.getInt("modelo_id"));
+            modelo.setNome(rs.getString("nome"));
+            modelo.setDescricao(rs.getString("descricao"));
+            modelo.setLarguraPadrao(rs.getFloat("largura_padrao"));
+            modelo.setAlturaPadrao(rs.getFloat("altura_padrao"));
+            modelo.setImagem(rs.getString("imagem"));
+            modelo.setPrecoPintura(rs.getFloat("preco_pintura"));
+            modelo.setPorcentagemAcrescimo(rs.getFloat("porcentagem_acrescimo"));
+            modelo.setQtdDiasProducao(rs.getInt("qtd_dias_producao"));
+
+            statusItem.setId(rs.getInt("status_item_id"));
+            statusItem.setNome(rs.getString("nome_status_item"));
+
+            item.setModelo(modelo);
+            item.setStatusItem(statusItem);
+            item.setLancamentos(modelLancamento.findLancamentosByItem(rs.getInt("id")));
+            itens.add(item);
+        }
+
+        return itens;
     }
 }

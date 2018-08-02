@@ -204,7 +204,7 @@ public class Orcamento extends AbstractModel
 
         total = total - ((total * desconto) / 100);
 
-        return formatMoney(total + getValorMaoObra());
+        return formatMoney(total + getValorMaoObra() + getTotalPintura());
     }
 
     public float getPrecoSubTotal()
