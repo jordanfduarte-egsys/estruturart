@@ -161,10 +161,35 @@ public class TbPedidoItem extends AbstractModel
     public String getPrecoItemMaisPintura()
     {
         float total = 0;
-        for (TbLancamento lancamento: getLancamentos()) {
-            total += (lancamento.getPreco() * this.getQuantidade()) + lancamento.getPrecoPintura();
+        if (getStatusItemId() == 1) {
+            boolean isCalcQtd = false;
+            for (TbLancamento lancamento: getLancamentos()) {
+                if (!isCalcQtd) {
+                    total += (lancamento.getPreco() * this.getQuantidade()) + lancamento.getPrecoPintura();
+                    isCalcQtd = true;
+                } else {
+                    total += (lancamento.getPreco()) + lancamento.getPrecoPintura();
+                }
+            }
         }
         return formatMoney(total);
+    }
+
+    public float getPrecoItemMaisPinturaFloat()
+    {
+        float total = 0;
+        if (getStatusItemId() == 1) {
+            boolean isCalcQtd = false;
+            for (TbLancamento lancamento: getLancamentos()) {
+                if (!isCalcQtd) {
+                    total += (lancamento.getPreco() * this.getQuantidade()) + lancamento.getPrecoPintura();
+                    isCalcQtd = true;
+                } else {
+                    total += (lancamento.getPreco()) + lancamento.getPrecoPintura();
+                }
+            }
+        }
+        return total;
     }
 
     public String getPrecoItem()

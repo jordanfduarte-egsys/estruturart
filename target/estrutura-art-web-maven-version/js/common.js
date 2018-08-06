@@ -214,7 +214,9 @@ $(document).ready(function() {
       window.location.href = $(this).data('href');
   });
 
-  $(".d-flex > .message").fadeIn(1000);
+  $(".d-flex > .message").fadeIn(1000, function() {
+      $(".d-flex > .message").removeClass('hide');
+  });
   window.setTimeout(function(){
       $(".d-flex > .message").addClass("hide");
   }, 6000);

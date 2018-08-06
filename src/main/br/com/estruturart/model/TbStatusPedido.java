@@ -5,6 +5,14 @@ public class TbStatusPedido
     private int id;
     private String nome;
 
+    public static final int PEDIDO_PENDENTE = 1;
+    public static final int ORCAMENTO_PENDENTE = 2;
+    public static final int PRODUCAO = 3;
+    public static final int PEDIDO_PAGO = 4;
+    public static final int INSTALACAO = 5;
+    public static final int FINALIZADO = 6;
+    public static final int CANCELADO = 7;
+
     /**
      * @return the id
      */

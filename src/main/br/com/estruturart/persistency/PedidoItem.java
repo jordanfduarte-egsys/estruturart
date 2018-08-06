@@ -44,6 +44,30 @@ public class PedidoItem extends AbstractPersistency
         return item.getId();
     }
 
+    public void update(TbPedidoItem item) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        String sql = String.format(
+            "UPDATE PEDIDO_ITENS SET status_item_id = %d"
+            + " WHERE id = %d",
+            item.getStatusItemId(), item.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+        System.out.println(sql);
+
+        if (!isConnection()) {
+            conn.close();
+        }
+    }
+
     public List<TbPedidoItem> findItensByPedido(int pedidoId) throws java.sql.SQLException
     {
         Connection conn = ConnectionManager.getConnection();
@@ -52,7 +76,7 @@ public class PedidoItem extends AbstractPersistency
             "SELECT pi.*, m.nome, m.descricao, m.largura_padrao, m.altura_padrao, m.imagem, "
             + " m.preco_pintura, m.porcentagem_acrescimo, m.qtd_dias_producao, s.nome as nome_status_item FROM pedido_itens pi"
             + " INNER JOIN modelo m ON pi.modelo_id = m.id INNER JOIN status_item s "
-            + " ON pi.status_item_id = s.id WHERE pedido_id = %d", pedidoId
+            + " ON pi.status_item_id = s.id WHERE pedido_id = %d ORDER BY pi.id ASC", pedidoId
         );
 
         PreparedStatement ps = conn.prepareStatement(sql);

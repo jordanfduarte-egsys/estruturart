@@ -54,6 +54,32 @@ public class Pedido extends AbstractPersistency
         return pedido.getId();
     }
 
+    public void update(TbPedido pedido) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
+        String sql = String.format(
+            "UPDATE PEDIDO SET data_previsao_instalacao = '%s', valor_total = '%s', observacao = '%s', desconto_geral = '%s', status_pedido_id = %d"
+            + " WHERE id = %d",
+            df.format(pedido.getDataPrevisaoInstalacao().getTime()), pedido.getValorTotal(), pedido.getObservacao(),
+            pedido.getDescontoGeral(), pedido.getStatusPedidoId(), pedido.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+        System.out.println(sql);
+
+        if (!isConnection()) {
+            conn.close();
+        }
+    }
+
     public List<TbPedido> findByRequestManager(ParamRequestManager params) throws SQLException, java.text.ParseException
     {
         Connection conn = ConnectionManager.getConnection();
@@ -230,7 +256,9 @@ public class Pedido extends AbstractPersistency
             endereco.setBairro(rs.getString("bairro"));
             endereco.setComplemento(rs.getString("complemento"));
             endereco.setCidadeId(rs.getInt("cidade_id"));
+            endereco.setNumero(rs.getString("numero"));
             endereco.setUsuarioId(rs.getInt("usuario_id"));
+            endereco.setEstadoId(rs.getInt("estado_id"));
 
             cidade.setNome(rs.getString("nome_cidade"));
             cidade.setUf(rs.getString("uf"));
@@ -251,6 +279,40 @@ public class Pedido extends AbstractPersistency
             pedido.setEndereco(endereco);
             pedido.setUsuario(usuario);
             pedido.setItens(itemModel.findItensByPedido(rs.getInt("id")));
+        }
+
+        return pedido;
+    }
+
+    public TbPedido findById(int fkPedido) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT p.* FROM pedido p WHERE p.id = %d",
+            fkPedido
+        );
+
+        System.out.println("-----------------");
+        System.out.println(sql);
+        System.out.println("-----------------");
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        TbPedido pedido = new TbPedido();
+        if (rs.next()) {
+            pedido.setId(rs.getInt("id"));
+            pedido.setCaminhoArquivoNotaFiscal(rs.getString("caminho_arquivo_nota_fiscal"));
+            pedido.setDataInclusao(rs.getDate("data_inclusao"));
+            pedido.setDataPrevisaoInstalacao(rs.getDate("data_previsao_instalacao"));
+            pedido.setValorTotal(rs.getFloat("valor_total"));
+            pedido.setValorMaoObra(rs.getFloat("valor_mao_obra"));
+            pedido.setPedidoPago(rs.getInt("pedido_pago"));
+            pedido.setObservacao(rs.getString("observacao"));
+            pedido.setUsuarioId(rs.getInt("usuario_id"));
+            pedido.setStatusPedidoId(rs.getInt("status_pedido_id"));
+            pedido.setDescontoGeral(rs.getFloat("desconto_geral"));
         }
 
         return pedido;

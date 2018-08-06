@@ -123,14 +123,17 @@
     border-left: none !important;
     border-right: 1px solid #CCC;
 }
-.ul-resumo .li-one {
+.ul-resumo .li-one, .ul-resumo-historico .li-one{
     float: left;
 }
 
-.ul-resumo .li-two {
+.ul-resumo .li-two, .ul-resumo-historico .li-two {
     float: right;
 }
-
+.ul-resumo-historico {
+    list-style: none;
+    padding: 0;
+}
 .ul-resumo {
     list-style: none;
     padding: 0;
@@ -138,7 +141,7 @@
     margin-top: -35px;
 }
 
-.ul-resumo li {
+.ul-resumo li, .ul-resumo-historico li{
     border-bottom: 1px solid #CCC;
     height: 22px;
 }

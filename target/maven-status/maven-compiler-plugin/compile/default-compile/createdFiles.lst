@@ -54,6 +54,7 @@ br\com\estruturart\service\FinalizarOrcamento.class
 br\com\estruturart\persistency\UnidadeMedida.class
 br\com\estruturart\controller\OrcamentoController.class
 br\com\estruturart\persistency\ConnectionManager.class
+br\com\estruturart\model\TbLogPedido.class
 br\com\estruturart\persistency\StatusModelo.class
 br\com\estruturart\persistency\Perfil.class
 br\com\estruturart\persistency\Usuario.class

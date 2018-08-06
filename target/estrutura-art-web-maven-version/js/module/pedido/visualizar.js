@@ -33,15 +33,70 @@ var crud = {
     },
 
     changeStatus: function() {
-      if (confirm("Deseja alterar o status do pedido para X ?")) {
-        alert("OK");
-      } else {
-        $(this).val($(this).data('original-status'));
-      }
+      var $modal = $("#alteracaoStatus");
+      var $self = $(this);
+
+      $modal.modal('show');
+      $modal.find('button.btn-primary').off().on('click', function() {
+        var req = $.ajax({
+          url: BASE_URL + "pedido/status",
+          type: 'post',
+          dataType: 'json',
+          data: {id: $self.data('id'), status: $self.val()}
+        });
+
+        req.done(function(res) {
+          if (res.status) {
+            flashMessenger.setType(FlashMessenger.SUCCESS).add(res.message).getMessages();
+            window.setTimeout(function() {
+              window.location.reload();
+            }, 500);
+          } else {
+            flashMessenger.setType(FlashMessenger.ERROR).add(res.message).getMessages();
+          }
+        });
+
+        req.fail(function() {
+          flashMessenger.setType(FlashMessenger.ERROR).add("Ocorreu um erro ao alterar o status do pedido")
+            .getMessages();
+        });
+      });
+
+      $modal.find('[data-dismiss="modal"]').off().on('click', function() {
+        $self.val($self.data('status'));
+        $modal.modal('hide');
+      });
     },
 
     cancelOrder: function() {
-      alert("CANCEL ORDER");
+      var $modal = $("#cancelarPedido");
+      var $self = $(this);
+
+      $modal.modal('show');
+      $modal.find('button.btn-primary').off().on('click', function() {
+        var req = $.ajax({
+          url: BASE_URL + "pedido/cancelar",
+          type: 'post',
+          dataType: 'json',
+          data: {id: $self.data('id')}
+        });
+
+        req.done(function(res) {
+          if (res.status) {
+            flashMessenger.setType(FlashMessenger.SUCCESS).add(res.message).getMessages();
+            window.setTimeout(function() {
+              window.location.reload();
+            }, 500);
+          } else {
+            flashMessenger.setType(FlashMessenger.ERROR).add(res.message).getMessages();
+          }
+        });
+
+        req.fail(function() {
+          flashMessenger.setType(FlashMessenger.ERROR).add("Ocorreu um erro ao cancelar o pedido")
+            .getMessages();
+        });
+      });
     },
 
     lancamento: function() {

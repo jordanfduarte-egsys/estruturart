@@ -11,17 +11,25 @@
                     <h3>Status: ${pedido.getStatusPedido().getNome()}</h3>
                 </div>
                 <div class="col-md-2 mb-3">
-                    <label for="status_pedido_id">Status</label>
-                    <select name="status_pedido_id" data-original-status="${pedido.getStatusPedidoId()}" id="status_pedido_id" data-id="${pedido.getId()}" class="form-control <c:if test="${pedido.getValidation().hasParam('status_pedido_id')}">is-invalid</c:if>">
-                        <option value="0">Selecione!</option>
-                        <c:forEach items="${statusPedido}" var="iterator">
-                            <option value="${iterator.getId()}" <c:if test="${pedido.getStatusPedidoId() == iterator.getId()}">selected</c:if>>${iterator.getNome()}</option>
-                        </c:forEach>
-                    </select>
+                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                        <label for="status_pedido_id">Status</label>
+                        <select data-id="${pedido.getId()}" data-status="${pedido.getStatusPedidoId()}" name="status_pedido_id" data-original-status="${pedido.getStatusPedidoId()}" id="status_pedido_id" data-id="${pedido.getId()}" class="form-control <c:if test="${pedido.getValidation().hasParam('status_pedido_id')}">is-invalid</c:if>">
+                            <option value="0">Selecione!</option>
+                            <c:forEach items="${statusPedido}" var="iterator">
+                                <option value="${iterator.getId()}" <c:if test="${pedido.getStatusPedidoId() == iterator.getId()}">selected</c:if>>${iterator.getNome()}</option>
+                            </c:forEach>
+                        </select>
+                    </c:if>
+                    <c:if test="${pedido.getStatusPedidoId() == 7}">
+                        <label>&nbsp;</label><br>
+                        Status: Cancelado
+                    </c:if>
                 </div>
                 <div class="col-md-2 mb-3 text-right">
                     <label for="id">&nbsp;</label><br/>
-                    <button type="button" class="btn btn-outline-secondary js-cancelar-pedido" data-id="${pedido.getId()}">Cancelar Pedido</button>
+                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                        <button type="button" class="btn btn-outline-secondary js-cancelar-pedido" data-id="${pedido.getId()}">Cancelar Pedido</button>
+                    </c:if>
                 </div>
             </div>
             <div class="form-row">
@@ -56,6 +64,10 @@
                             <span class="li-one">Nota fiscal</span>
                             <span class="li-two">${pedido.getNotaFiscalLabel()}</span>
                         </li>
+                        <li>
+                            <span class="li-one">Pedido pago</span>
+                            <span class="li-two">${pedido.getPedidoPagoString()}</span>
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-3">
@@ -85,7 +97,7 @@
                     <table class="table table-striped js-row-material">
                         <tbody>
                             <c:forEach items="${pedido.getItens()}" var="iterator">
-                                <tr>
+                                <tr class="<c:if test="${iterator.getStatusItemId() == 2}">opaco</c:if>">
                                     <td><b data-toggle="tooltip" title="Status do item: ${iterator.getStatusItem().getNome()}">#${iterator.getIdString()} - </b>${iterator.getModelo().getNome()} - ${iterator.getModelo().getDimensao()}</td>
                                     <td>Preço: R$ ${iterator.getPrecoItem()}</td>
                                     <td>
@@ -103,14 +115,14 @@
                                         &nbsp;
                                     </td>
                                 </tr>
-                                <tr>
+                                <tr class="<c:if test="${iterator.getStatusItemId() == 2}">opaco</c:if>">
                                     <td colspan="5">
                                         <div class="pull-left pg-0 text-left">
                                             ${iterator.getModelo().getDescricao()}
                                         </div>
                                         <div class="pull-right text-right" data-id="${iterator.getId()}">
-                                            <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar lançamentos do item" class="js-lancamento fa-2x"><i class="far fa-money-bill-alt text-success"></i></a>
-                                            <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar fotos do item" class="js-fotos fa-2x"><i class="fas fa-camera-retro text-secondary"></i></a>
+                                            <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar lançamentos do item" class="js-lancamento fa-lg"><i class="far fa-money-bill-alt text-success"></i></a>
+                                            <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar fotos do item" class="js-fotos fa-lg"><i class="fas fa-camera-retro text-secondary"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -120,11 +132,68 @@
                     </table>
                 </div>
             </fieldset>
+            <fieldset class="col-md-8 mb-3 border">
+                <legend style="width: 93px;">Histórico</legend>
+                <div class="table-modelos-add etapa3 table-error form-control">
+                    <ul class="ul-resumo-historico">
+                        <c:forEach items="${logs}" var="iterator">
+                            <li>
+                                <span class="li-one">${iterator.getStatusPedido().getNome()}</span>
+                                <span class="li-two">${iterator.getDataInclusaoString()} - ${iterator.getUsuario().getNome().toLowerCase()}</a></span>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </fieldset>
             <div class="card-footer bg-white">
                 <button type="button" class="btn btn-outline-secondary js-back-order" data-href="/pedido">Voltar</button>
-                <button type="button" class="btn btn-secondary js-imprimir-op" data-href="/pedido/imprimir-op/id/${pedido.getId()}"><i class="fas fa-industry text-primary"></i> Imprimir OP</button>
-                <button type="button" class="btn btn-primary js-editar" data-href="/pedido/editar/id/${pedido.getId()}"><i class="fas fa-pencil-alt"></i> Editar</button>
+                <c:if test="${pedido.getStatusPedidoId() > 2 && pedido.getStatusPedidoId() != 7}">
+                    <button type="button" class="btn btn-secondary js-imprimir-op" data-href="/pedido/imprimir-op/id/${pedido.getId()}"><i class="fas fa-industry text-primary"></i> Imprimir OP</button>
+                </c:if>
+                <c:if test="${pedido.getStatusPedidoId() != 7}">
+                    <button type="button" class="btn btn-primary js-editar" data-href="/pedido/editar/id/${pedido.getId()}"><i class="fas fa-pencil-alt"></i> Editar</button>
+                </c:if>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="alteracaoStatus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Alteração de status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja alterar o status do pedido para <b></b> ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancelarPedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Cancelar pedido #${pedido.getIdString()}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Deseja cancelar o pedido <b></b> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -120,7 +120,9 @@ public class FinalizarOrcamento
 
     public void salvarLogPedido() throws java.sql.SQLException
     {
-        logPedido.insert(orcamento.getPedido().getStatusPedidoId(), orcamento.getUsuario().getId());
+        logPedido.insert(
+            orcamento.getPedido().getStatusPedidoId(), orcamento.getUsuario().getId(), orcamento.getPedido().getId()
+        );
     }
 
     public void salvarLancamentos(TbLancamento lancamentoEntity) throws java.sql.SQLException

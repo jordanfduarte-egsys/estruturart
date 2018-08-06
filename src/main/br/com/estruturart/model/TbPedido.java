@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import br.com.estruturart.utility.StringUtilsPad;
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbStatusPedido;
+import br.com.estruturart.utility.RouteParam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -179,13 +180,21 @@ public class TbPedido extends AbstractModel
 
         this.start = df1.format(getDataPrevisaoInstalacao().getTime());
         this.color = "#007bff";
+
         String status = "Pedido Pendente";
-        if (getDataPrevisaoInstalacao().before(new Date())) {
-            this.color = "#dc3545";
-            status = "Pedido Atrasado";
-        } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
-            this.color = "#ffc107";
-            status = "Pedido Pendente";
+        if (getStatusPedidoId() != 7 && getStatusPedidoId() != 6) {
+            if (getDataPrevisaoInstalacao().before(new Date())) {
+                this.color = "#dc3545";
+                status = "Pedido Atrasado";
+            } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
+                this.color = "#ffc107";
+                status = "Pedido Pendente";
+            }
+        }
+
+        if (getStatusPedidoId() == 7) {
+            this.color = "#CCC";
+            status = "Cancelado";
         }
 
         this.title = String.format(
@@ -247,7 +256,11 @@ public class TbPedido extends AbstractModel
 
     public String getDataPrevisaoInstalacaoString()
     {
-        return this.getSimpleDateFormat("dd/MM/yyyy").format(getDataPrevisaoInstalacao());
+        if (getDataPrevisaoInstalacao() instanceof Date) {
+            return this.getSimpleDateFormat("dd/MM/yyyy").format(getDataPrevisaoInstalacao());
+        }
+
+        return "";
     }
 
     public TbStatusPedido getStatusPedido()
@@ -273,5 +286,32 @@ public class TbPedido extends AbstractModel
         return color;
     }
 
-    public boolean isValid() { return true; }
+    public boolean isValid()
+    {
+        boolean isValid = true;
+        if (getDataPrevisaoInstalacao() == null) {
+            this.getValidation().add(new RouteParam("prev_entrega", "Informe a data de previsÃ£o de entrega vÃ¡lida!"));
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    public int getItensNaoCancelado()
+    {
+        int total = 0;
+        for (TbPedidoItem item : getItens()) {
+            total += item.getStatusItemId() == 1 ? 1 : 0;
+        }
+        return total;
+    }
+
+    public String getPedidoPagoString()
+    {
+        if (getPedidoPago() == 1) {
+            return "Sim";
+        }
+
+        return "Não";
+    }
 }

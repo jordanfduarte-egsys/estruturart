@@ -52,3 +52,10 @@ img[data-image] {
 .message .alert i {
     padding-right: 9px;
 }
+.opaco {
+    opacity: 0.3;
+}
+
+.opaco:not(.tr-none) {
+    border-left: 5px solid red !important;
+}

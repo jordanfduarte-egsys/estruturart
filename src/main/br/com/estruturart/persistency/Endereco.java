@@ -40,4 +40,29 @@ public class Endereco extends AbstractPersistency
 
         return endereco.getId();
     }
+
+    public void update(TbEndereco endereco) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        String sql = String.format(
+            "UPDATE ENDERECO SET cep = '%s', logradouro = '%s', bairro = '%s', numero = '%s', complemento = '%s', cidade_id = %d"
+            + " WHERE pedido_id = %d",
+            endereco.getCep(), endereco.getLogradouro(), endereco.getBairro(), endereco.getNumero(),
+            endereco.getComplemento(), endereco.getCidadeId(), endereco.getPedidoId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+        System.out.println(sql);
+
+        if (!isConnection()) {
+            conn.close();
+        }
+    }
 }
