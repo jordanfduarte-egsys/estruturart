@@ -9,6 +9,8 @@ import br.com.estruturart.model.TbEndereco;
 import br.com.estruturart.model.TbStatusItem;
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbLogPedido;
+import br.com.estruturart.persistency.Parametro;
+import br.com.estruturart.model.TbParametro;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbStatusPedido;
 import br.com.estruturart.utility.ParamRequestManager;
@@ -16,6 +18,7 @@ import br.com.estruturart.utility.PedidoJsonModel;
 import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.utility.Util;
 import br.com.estruturart.utility.FlashMessenger;
+import br.com.estruturart.service.SendEmailService;
 import br.com.estruturart.persistency.Pedido;
 import br.com.estruturart.persistency.PedidoItem;
 import br.com.estruturart.persistency.Estado;
@@ -24,6 +27,8 @@ import br.com.estruturart.persistency.Endereco;
 import br.com.estruturart.persistency.LogPedido;
 import br.com.estruturart.persistency.StatusPedido;
 import br.com.estruturart.utility.Util;
+import org.apache.commons.io.IOUtils;
+import java.io.FileReader;
 import java.util.Enumeration;
 import java.util.Date;
 import java.util.Calendar;
@@ -245,36 +250,72 @@ public class PedidoController extends AbstractServlet
         int status = Integer.parseInt(this.getParamOr("status", "0"));
 
         Pedido modelPedido = new Pedido();
+        Parametro modelParametros = new Parametro();
+        StatusPedido statusPedidoModel = new StatusPedido();
         LogPedido logPedido = new LogPedido();
         JsonModel jsonModel = new JsonModel();
+        SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
+
         if (status > 0 && id > 0) {
-            TbPedido pedido = modelPedido.findById(id);
+            TbPedido pedido = modelPedido.findPedidoVisualizacao(id);
+            TbParametro parametro = modelParametros.findAll();
             int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
+
+            emailService.setSubject(parametro.getSubject());
+            emailService.setTo(pedido.getUsuario().getEmail());
+            emailService.setFrom(parametro.getTo());
+            emailService.setHost(parametro.getHost());
+
+            /**
+            * http://commons.apache.org/proper/commons-io/
+            * https://github.com/leemunroe/responsive-html-email-template
+             */
+            String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
+            str.replaceAll("{{nome_usuario}}", pedido.getUsuario().getNome());
+            str.replaceAll("{{id_pedido}}", pedido.getId());
+            str.replaceAll("{{endereco}}", parametro.getLogradouro());
+            str.replaceAll("{{numero}}", parametro.getNumero());
+            str.replaceAll("{{cidade}}", parametro.getCidade());
+            str.replaceAll("{{uf}}", parametro.getUf());
+            
             switch (status) {
                 case TbStatusPedido.PEDIDO_PENDENTE:
                 case TbStatusPedido.ORCAMENTO_PENDENTE:
                 case TbStatusPedido.PRODUCAO:
-                    // @TODO enviar email
+                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+
+                    emailService.setHtml(str);
+                    emailService.send();
                     pedido.setStatusPedidoId(status);
                     modelPedido.update(pedido);
                     logPedido.insert(status, usuarioId, pedido.getId());
                 break;
-                case TbStatusPedido.PEDIDO_PAGO:
+                case TbStatusPedido.PEDIDO_PAGO:                    
                     pedido.setStatusPedidoId(status);
                     // @TODO gerar nota fiscal
                     modelPedido.update(pedido);
                     logPedido.insert(status, usuarioId, pedido.getId());
 
                     if (pedido.getStatusPedidoId() != TbStatusPedido.PRODUCAO) {
-                        // @TODO enviar email
+                        status = TbStatusPedido.PRODUCAO;
                         pedido.setStatusPedidoId(TbStatusPedido.PRODUCAO);
                         modelPedido.update(pedido);
                         logPedido.insert(TbStatusPedido.PRODUCAO, usuarioId, pedido.getId());
                     }
+
+                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+                    emailService.setHtml(str);
+                    emailService.send();
                 break;
                 case TbStatusPedido.INSTALACAO:
+                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+
                     pedido.setStatusPedidoId(status);
-                    // @TODO enviar email
+                    emailService.setHtml(str);
+                    emailService.send();
                     modelPedido.update(pedido);
                     logPedido.insert(status, usuarioId, pedido.getId());
                 break;
@@ -300,13 +341,34 @@ public class PedidoController extends AbstractServlet
         int id = Integer.parseInt(this.getParamOr("id", "0"));
 
         Pedido modelPedido = new Pedido();
+        Parametro modelParametros = new Parametro();
         LogPedido logPedido = new LogPedido();
         JsonModel jsonModel = new JsonModel();
         if (id > 0) {
-            TbPedido pedido = modelPedido.findById(id);
+            TbPedido pedido = modelPedido.findPedidoVisualizacao(id);
             int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
+
             pedido.setStatusPedidoId(TbStatusPedido.CANCELADO);
             logPedido.insert(pedido.getStatusPedidoId(), pedido.getUsuario().getId(), pedido.getId());
+
+            SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
+            TbParametro parametro = modelParametros.findAll();
+
+            String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
+            str.replaceAll("{{nome_usuario}}", pedido.getUsuario().getNome());
+            str.replaceAll("{{id_pedido}}", pedido.getId());
+            str.replaceAll("{{endereco}}", parametro.getLogradouro());
+            str.replaceAll("{{numero}}", parametro.getNumero());
+            str.replaceAll("{{cidade}}", parametro.getCidade());
+            str.replaceAll("{{uf}}", parametro.getUf());
+            str.replaceAll("{{status_pedido}}", "Cancelado");            
+
+            emailService.setSubject(parametro.getSubject());
+            emailService.setTo(pedido.getUsuario().getEmail());
+            emailService.setFrom(parametro.getTo());
+            emailService.setHost(parametro.getHost());
+            emailService.setHtml(str);
+            emailService.send();
 
             jsonModel.setStatus(true);
             jsonModel.setMessage("Pedido cancelado com sucesso!");
