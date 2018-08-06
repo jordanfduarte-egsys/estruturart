@@ -19,6 +19,8 @@ public class TbParametro extends AbstractModel
     private String subject;
     private String from;
     private String hostMail;
+    private String usuario;
+    private String senha;
 
     public Integer getId()
     {
@@ -120,15 +122,36 @@ public class TbParametro extends AbstractModel
         this.from = from;
     }
 
-    public String getHostmail()
+    public String getHostMail()
     {
         return this.hostMail;
     }
 
-    public void setHostmail(String hostMail)
+    public void setHostMail(String hostMail)
     {
         this.hostMail = hostMail;
     }
+
+	public String getUsuario()
+	{
+		return this.usuario;
+	}
+
+	public void setUsuario(String usuario)
+	{
+		this.usuario = usuario;
+	}
+
+	public String getSenha()
+	{
+		return this.senha;
+	}
+
+	public void setSenha(String senha)
+	{
+		this.senha = senha;
+	}
+
 
     public boolean isValid() {return true; }
 }
