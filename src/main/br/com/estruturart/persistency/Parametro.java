@@ -20,8 +20,8 @@ public class Parametro extends AbstractPersistency
     {
         Connection conn = ConnectionManager.getConnection();
 
-        String sql = String.format("SELECT * FROM PARAMETRO");
-        
+        String sql = String.format("SELECT * FROM CONFIGURACAO");
+
         System.out.println("-----------------");
         System.out.println(sql);
         System.out.println("-----------------");
@@ -29,34 +29,32 @@ public class Parametro extends AbstractPersistency
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         TbParametro parametro = new TbParametro();
-        whilw (rs.next()) {
-            String name = rs.getColumnName(1);
-
-            switch (name) {
+        while (rs.next()) {
+            switch (rs.getString("field")) {
                 case "id":
                     parametro.setId(rs.getInt("id")); break;
                 case "logradouro":
-                    parametro.setLogradouro(rs.getString("logradouro")); break;
+                    parametro.setLogradouro(rs.getString("value")); break;
                 case "numero":
-                    parametro.setNUmero(rs.getString("numero")); break;
+                    parametro.setNumero(rs.getString("value")); break;
                 case "bairro":
-                    parametro.setBairro(rs.getString("bairro")); break;
+                    parametro.setBairro(rs.getString("value")); break;
                 case "cep":
-                    parametro.setCep(rs.getString("cep")); break;
+                    parametro.setCep(rs.getString("value")); break;
                 case "cidade":
-                    parametro.setCidade(rs.getString("cidade")); break;
+                    parametro.setCidade(rs.getString("value")); break;
                 case "uf":
-                    parametro.setUf(rs.getString("uf")); break;
-                case "host":
-                    parametro.setHost(rs.getString("host")); break;
+                    parametro.setUf(rs.getString("value")); break;
                 case "host_mail":
-                    parametro.setHostMail(rs.getString("host_mail")); break;
+                    parametro.setHostMail(rs.getString("value")); break;
                 case "host":
-                    parametro.setHost(rs.getString("host")); break;
+                    parametro.setHost(rs.getString("value")); break;
                 case "usuario":
-                    parametro.setUsuario(rs.getString("usuario")); break;
+                    parametro.setUsuario(rs.getString("value")); break;
                 case "senha":
-                    parametro.setSenha(rs.getString("senha")); break;
+                    parametro.setSenha(rs.getString("value")); break;
+                case "from":
+                    parametro.setFrom(rs.getString("value")); break;
             }
         }
 

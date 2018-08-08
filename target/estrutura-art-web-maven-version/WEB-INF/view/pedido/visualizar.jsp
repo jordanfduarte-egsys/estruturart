@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="${source}css/module/pedido/visualizar.css">
 
 <div class="content p-4">
-    <h2>Detalhe do pedido #${pedido.getIdString()}</h2>
+    <h2>Detalhe do pedido <i class="fab fa-slack-hash"></i>${pedido.getIdString()}</h2>
     <div class="card mb-4">
         <div class="card-body">
             <div class="form-row">
@@ -120,7 +120,7 @@
                                         <div class="pull-left pg-0 text-left">
                                             ${iterator.getModelo().getDescricao()}
                                         </div>
-                                        <div class="pull-right text-right" data-id="${iterator.getId()}">
+                                        <div class="pull-right text-right" data-id="${iterator.getId()}" data-status="${iterator.getStatusItemId()}">
                                             <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar lançamentos do item" class="js-lancamento fa-lg"><i class="far fa-money-bill-alt text-success"></i></a>
                                             <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar fotos do item" class="js-fotos fa-lg"><i class="fas fa-camera-retro text-secondary"></i></a>
                                         </div>
@@ -179,21 +179,79 @@
 </div>
 
 <div class="modal fade" id="cancelarPedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Cancelar pedido #${pedido.getIdString()}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Deseja cancelar o pedido <b></b> ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Confirmar</button>
-                </div>
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Cancelar pedido #${pedido.getIdString()}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja cancelar o pedido <b></b> ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary">Confirmar</button>
             </div>
         </div>
     </div>
+</div>
+
+<div class="modal fade" id="lancamentos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;"></div>
+
+<script type="text/x-handlebars-template" id="modal-template-lancamento">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Lançamentos do item <i class="fab fa-slack-hash"></i>{{idString}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    {{if status_item_id == 1}}
+                        <fieldset class="col-md-12 mb-3 border form-control">
+                            <legend>Novo</legend>
+                            <div class="form-row">
+                                <div class="col-md-7 mb-3">
+                                    <label for="descricao">Descrição lançamento *</label>
+                                    <input type="text" class="form-control" id="descricao" name="descricao" placeholder="Informação do lançamento" value="">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="valor">
+                                        Valor *
+                                    </label>
+                                    <input type="text" data-format="price" class="form-control" id="valor" name="valor" placeholder="R$ 10,00" value="">
+                                </div>
+                                <div class="col-md-1 mb-3">
+                                    <label for="cpf_cnpj">&nbsp;</label></br>
+                                    <button type="button" class="btn btn-primary btn-icon js-new-lancamento" data-id="{{id}}">
+                                        <i class="fa fa-plus"></i>&nbsp;
+                                        <i class="fas fa-dollar-sign text-success"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    {{/if}}
+                <fieldset>
+                    <div class="js-target-lancamentos"></div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="row-lancamentos">
+    <div style="border: 1px solid #CCC;padding: 5px;" class="form-row m-0 mb-2">
+        <div class="pull-left col-md-12">
+            <div class="pull-left">{{descricao}}</div>
+        </div>
+        <div class="pull-left col-md-12">
+            <span>Inclusão: <b>{{dataInclusaoString toDateTimeString}}</b>&nbsp;</span>
+            <span>Preço: R$ {{preco numberToReal}}&nbsp;</span>
+            <span>Pintura: <b>R$ {{precoPintura numberToReal}}</b>&nbsp;</span>
+            <span class="pull-right">Total: <b>R$ {{totalMaisPintura numberToReal}}</b></span>
+        </div>
+    </div>
+</script>

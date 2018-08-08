@@ -51,7 +51,7 @@ var crud = {
             flashMessenger.setType(FlashMessenger.SUCCESS).add(res.message).getMessages();
             window.setTimeout(function() {
               window.location.reload();
-            }, 500);
+            }, 1000);
           } else {
             flashMessenger.setType(FlashMessenger.ERROR).add(res.message).getMessages();
           }
@@ -101,7 +101,113 @@ var crud = {
     },
 
     lancamento: function() {
-      alert("MODAL LANÇAMENTO");
+      var $modal = $('#lancamentos');
+      var $self = $(this);
+
+      var req = $.ajax({
+        url: BASE_URL + 'pedido/lancamento-item',
+        type: 'POST',
+        dataType: 'json',
+        data: {id: $self.parent().data('id')}
+      });
+
+      req.done(function(res) {
+        if (res.status) {
+          var $list = rendererList(
+            res.list,
+            "#row-lancamentos",
+            null
+          );
+
+          var $modalTemplate = renderer(
+            {
+              idString: res.list[0]['idString'],
+              id: $self.parent().data('id'),
+              status_item_id: $self.parent().data('status')
+            },
+            "#modal-template-lancamento",
+            null
+          );
+
+          $modalTemplate.find('.js-target-lancamentos').html($list);
+          $modal.html($modalTemplate);
+          $modal.modal('show');
+
+          $modal.find('.js-new-lancamento').off().on('click', crud.event.novoLancamento);
+
+          $('[data-format="price"]').off().priceFormat({
+            prefix: '',
+            centsSeparator: ',',
+            thousandsSeparator: '.',
+            clearOnEmpty: true
+          });
+        } else {
+          flashMessenger.setType(FlashMessenger.ERROR)
+            .add(res.message)
+            .getMessages();
+        }
+      });
+
+      req.fail(function() {
+        flashMessenger.setType(FlashMessenger.ERROR)
+          .add("Ocorreu um erro ao abrir o modal de lançamento")
+          .getMessages();
+      });
+    },
+
+    novoLancamento: function() {
+      var id = $(this).data('id');
+      var $self = $(this);
+      var $body = $self.closest('.modal-body');
+      var desc = $body.find('input[name="descricao"]').val();
+      var valor = $body.find('input[name="valor"]').val();
+      var isValid = true;
+
+      $body.find('input[name="descricao"]').removeClass('is-invalid');
+      if (desc == "") {
+        $body.find('input[name="descricao"]').addClass('is-invalid');
+        isValid = false;
+      }
+
+      $body.find('input[name="valor"]').removeClass('is-invalid');
+      if (valor == "") {
+        $body.find('input[name="valor"]').addClass('is-invalid');
+        isValid = false;
+      }
+
+      if (!isValid) {
+        return false;
+      }
+
+      var req = $.ajax({
+        url: BASE_URL + 'pedido/salvar-lancamento-item',
+        type: 'POST',
+        dataType: 'json',
+        data: {id: id, valor: toFloat(valor), descricao: desc}
+      });
+
+      req.done(function(res) {
+        if (res.status) {
+          flashMessenger.setType(FlashMessenger.SUCCESS)
+            .add(res.message)
+            .getMessages();
+
+          $('.modal').modal('hide');
+          window.setTimeout(function() {
+            window.location.reload();
+          }, 1000);
+        } else {
+          flashMessenger.setType(FlashMessenger.ERROR)
+            .add(res.message)
+            .getMessages();
+        }
+      });
+
+      req.fail(function() {
+        flashMessenger.setType(FlashMessenger.ERROR)
+          .add("Ocorreu um erro ao salvaro lançamento. Verifique!")
+          .getMessages();
+      });
     },
 
     fotos: function() {

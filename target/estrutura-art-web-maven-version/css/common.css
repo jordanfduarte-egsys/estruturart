@@ -6,9 +6,9 @@
 }
 
 .d-flex > .message {
-    position: absolute;
+    /* position: absolute;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
 }
 
 .align-rigth {
@@ -44,6 +44,10 @@ img[data-image] {
 }
 .message .alert {
     line-height: 21px;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, -1%);
+    z-index: 99999;
 }
 .message .alert button {
     margin-top: 7px;
@@ -58,4 +62,7 @@ img[data-image] {
 
 .opaco:not(.tr-none) {
     border-left: 5px solid red !important;
+}
+fieldset > legend {
+    width: auto !important;
 }

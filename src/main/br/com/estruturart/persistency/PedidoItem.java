@@ -9,6 +9,8 @@ import java.util.List;
 import com.mysql.jdbc.Statement;
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbModelo;
+import br.com.estruturart.model.TbUsuario;
+import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbStatusItem;
 import br.com.estruturart.persistency.Lancamento;
 
@@ -117,5 +119,40 @@ public class PedidoItem extends AbstractPersistency
         }
 
         return itens;
+    }
+
+    public TbPedidoItem findPedidoByItem(int itemId) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT i.*, p.usuario_id FROM pedido_itens i INNER JOIN pedido p ON "
+            + " i.pedido_id = p.id INNER JOIN usuario u ON p.usuario_id = u.id WHERE i.id = %d",
+            itemId
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        TbPedidoItem item = new TbPedidoItem();
+        if (rs.next()) {
+            TbUsuario usuario = new TbUsuario();
+            TbPedido pedido = new TbPedido();
+            item.setId(rs.getInt("id"));
+            item.setLargura(rs.getFloat("largura"));
+            item.setAltura(rs.getFloat("altura"));
+            item.setDataInclusao(rs.getDate("data_inclusao"));
+            item.setQuantidade(rs.getInt("quantidade"));
+            item.setStatusItemId(rs.getInt("status_item_id"));
+            item.setPedidoId(rs.getInt("pedido_id"));
+            item.setModeloId(rs.getInt("modelo_id"));
+
+            pedido.setId(rs.getInt("pedido_id"));
+            usuario.setId(rs.getInt("usuario_id"));
+            pedido.setUsuario(usuario);
+            item.setPedido(pedido);
+
+        }
+
+        return item;
     }
 }

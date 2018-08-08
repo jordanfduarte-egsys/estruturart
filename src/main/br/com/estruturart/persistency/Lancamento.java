@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import com.mysql.jdbc.Statement;
 import br.com.estruturart.model.TbLancamento;
 
@@ -46,7 +47,7 @@ public class Lancamento extends AbstractPersistency
     {
         Connection conn = ConnectionManager.getConnection();
 
-        String sql = String.format("SELECT * FROM lancamento WHERE pedido_itens_id = %d", itemId);
+        String sql = String.format("SELECT * FROM lancamento WHERE pedido_itens_id = %d ORDER BY data_inclusao", itemId);
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -57,7 +58,7 @@ public class Lancamento extends AbstractPersistency
             lan.setId(rs.getInt("id"));
             lan.setPreco(rs.getFloat("preco"));
             lan.setPrecoPintura(rs.getFloat("preco_pintura"));
-            lan.setDataInclusao(rs.getDate("data_inclusao"));
+            lan.setDataInclusao(new Date(rs.getTimestamp("data_inclusao").getTime()));
             lan.setDescricao(rs.getString("descricao"));
             lan.setDesconto(rs.getFloat("desconto"));
             lan.setUsuarioId(rs.getInt("usuario_id"));

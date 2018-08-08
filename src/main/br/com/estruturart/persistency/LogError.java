@@ -8,7 +8,7 @@ import com.mysql.jdbc.Statement;
 
 public class LogError
 {
-    public int insert(String message) throws SQLException
+    public void insert(String message) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();
         String sql = String.format("INSERT INTO log_error (descricao) " + " VALUES (\"%s\")", message);
@@ -16,10 +16,6 @@ public class LogError
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.executeUpdate();
 
-        if (ps.getGeneratedKeys().next()) {
-            return ps.getGeneratedKeys().getInt(1);
-        }
         conn.close();
-        return 0;
     }
 }

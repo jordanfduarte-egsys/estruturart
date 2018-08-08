@@ -146,7 +146,27 @@ function bindMask() {
     });
 }
 
+function toDateString(date) {
+  var dateAux = date.split("-");
+  var horario = dateAux[2].split(" ");
+  dateAux[2] = horario[0];
+
+  return "{0}/{1}/{2}".format(dateAux[2], dateAux[1], dateAux[0])
+}
+
+function toDateTimeString(date) {
+  var dateAux = date.split("-");
+  var horario = dateAux[2].split(" ");
+  dateAux[2] = horario[0];
+  horario = horario[1];
+  return "{0}/{1}/{2} {3}".format(dateAux[2], dateAux[1], dateAux[0], horario)
+}
+
 function numberToReal(numero) {
+    if (numero == '' || numero == null) {
+      return "0,00";
+    }
+
     var numero = (+numero).toFixed(2).split('.');
     numero[0] = numero[0].split(/(?=(?:...)*$)/).join('.');
     return numero.join(',');

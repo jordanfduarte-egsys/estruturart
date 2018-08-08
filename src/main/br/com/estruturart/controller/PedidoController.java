@@ -14,8 +14,10 @@ import br.com.estruturart.model.TbParametro;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbStatusPedido;
 import br.com.estruturart.utility.ParamRequestManager;
+import br.com.estruturart.utility.StringUtilsPad;
 import br.com.estruturart.utility.PedidoJsonModel;
 import br.com.estruturart.utility.JsonModel;
+import java.io.StringWriter;
 import br.com.estruturart.utility.Util;
 import br.com.estruturart.utility.FlashMessenger;
 import br.com.estruturart.service.SendEmailService;
@@ -23,12 +25,15 @@ import br.com.estruturart.persistency.Pedido;
 import br.com.estruturart.persistency.PedidoItem;
 import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.persistency.Cidade;
+import br.com.estruturart.persistency.Lancamento;
 import br.com.estruturart.persistency.Endereco;
 import br.com.estruturart.persistency.LogPedido;
 import br.com.estruturart.persistency.StatusPedido;
+import br.com.estruturart.model.TbLancamento;
 import br.com.estruturart.utility.Util;
 import org.apache.commons.io.IOUtils;
 import java.io.FileReader;
+import java.io.Reader;
 import java.util.Enumeration;
 import java.util.Date;
 import java.util.Calendar;
@@ -246,44 +251,57 @@ public class PedidoController extends AbstractServlet
 
     public void statusAction() throws Exception
     {
-        int id = Integer.parseInt(this.getParamOr("id", "0"));
-        int status = Integer.parseInt(this.getParamOr("status", "0"));
+        int id = Integer.parseInt(this.getParameterOrValue("id", "0"));
+        int status = Integer.parseInt(this.getParameterOrValue("status", "0"));
 
+        TbStatusPedido statusPedido = null;
         Pedido modelPedido = new Pedido();
         Parametro modelParametros = new Parametro();
         StatusPedido statusPedidoModel = new StatusPedido();
         LogPedido logPedido = new LogPedido();
         JsonModel jsonModel = new JsonModel();
         SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
-
+System.out.println("STATUS: " + status);
+System.out.println("STATUS: " + id);
         if (status > 0 && id > 0) {
             TbPedido pedido = modelPedido.findPedidoVisualizacao(id);
             TbParametro parametro = modelParametros.findAll();
             int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
 
-            emailService.setSubject(parametro.getSubject());
+            emailService.setSubject("Alteração de status do pedido #" + pedido.getIdString());
             emailService.setTo(pedido.getUsuario().getEmail());
-            emailService.setFrom(parametro.getTo());
-            emailService.setHost(parametro.getHost());
+            emailService.setFrom(parametro.getFrom());
+            emailService.setHost(parametro.getHostMail());
 
             /**
             * http://commons.apache.org/proper/commons-io/
             * https://github.com/leemunroe/responsive-html-email-template
              */
-            String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
-            str.replaceAll("{{nome_usuario}}", pedido.getUsuario().getNome());
-            str.replaceAll("{{id_pedido}}", pedido.getId());
-            str.replaceAll("{{endereco}}", parametro.getLogradouro());
-            str.replaceAll("{{numero}}", parametro.getNumero());
-            str.replaceAll("{{cidade}}", parametro.getCidade());
-            str.replaceAll("{{uf}}", parametro.getUf());
-            
+            // String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            Reader input = new FileReader(sourceFilder + "/../WEB-INF/view/pedido/mail-status.jsp");
+            StringWriter output = new StringWriter();
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                input.close();
+            }
+            String str = output.toString();
+
+            str.replaceAll("#nome_usuario", pedido.getUsuario().getNome());
+            str.replaceAll("#id_pedido", String.valueOf(pedido.getId()));
+            str.replaceAll("#endereco", parametro.getLogradouro());
+            str.replaceAll("#cep", parametro.getCep());
+            str.replaceAll("#numero", parametro.getNumero());
+            str.replaceAll("#cidade", parametro.getCidade());
+            str.replaceAll("#uf", parametro.getUf());
+
             switch (status) {
                 case TbStatusPedido.PEDIDO_PENDENTE:
                 case TbStatusPedido.ORCAMENTO_PENDENTE:
                 case TbStatusPedido.PRODUCAO:
-                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+                    statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("#status_pedido", statusPedido.getNome());
 
                     emailService.setHtml(str);
                     emailService.send();
@@ -291,7 +309,7 @@ public class PedidoController extends AbstractServlet
                     modelPedido.update(pedido);
                     logPedido.insert(status, usuarioId, pedido.getId());
                 break;
-                case TbStatusPedido.PEDIDO_PAGO:                    
+                case TbStatusPedido.PEDIDO_PAGO:
                     pedido.setStatusPedidoId(status);
                     // @TODO gerar nota fiscal
                     modelPedido.update(pedido);
@@ -304,14 +322,14 @@ public class PedidoController extends AbstractServlet
                         logPedido.insert(TbStatusPedido.PRODUCAO, usuarioId, pedido.getId());
                     }
 
-                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+                    statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("#status_pedido", statusPedido.getNome());
                     emailService.setHtml(str);
                     emailService.send();
                 break;
                 case TbStatusPedido.INSTALACAO:
-                    TbStatusPedido statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("{{status_pedido}}", statusPedido.getNome());
+                    statusPedido = statusPedidoModel.findById(status);
+                    str.replaceAll("#status_pedido", statusPedido.getNome());
 
                     pedido.setStatusPedidoId(status);
                     emailService.setHtml(str);
@@ -338,7 +356,7 @@ public class PedidoController extends AbstractServlet
 
     public void cancelarAction() throws Exception
     {
-        int id = Integer.parseInt(this.getParamOr("id", "0"));
+        int id = Integer.parseInt(this.getParameterOrValue("id", "0"));
 
         Pedido modelPedido = new Pedido();
         Parametro modelParametros = new Parametro();
@@ -354,19 +372,30 @@ public class PedidoController extends AbstractServlet
             SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
             TbParametro parametro = modelParametros.findAll();
 
-            String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
-            str.replaceAll("{{nome_usuario}}", pedido.getUsuario().getNome());
-            str.replaceAll("{{id_pedido}}", pedido.getId());
-            str.replaceAll("{{endereco}}", parametro.getLogradouro());
-            str.replaceAll("{{numero}}", parametro.getNumero());
-            str.replaceAll("{{cidade}}", parametro.getCidade());
-            str.replaceAll("{{uf}}", parametro.getUf());
-            str.replaceAll("{{status_pedido}}", "Cancelado");            
+            // String str = IOUtils.toString(new FileReader("/WEB-INF/view/pedido/mail-status.jsp"), "utf-8");
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            Reader input = new FileReader(sourceFilder + "/../WEB-INF/view/pedido/mail-status.jsp");
+            StringWriter output = new StringWriter();
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                input.close();
+            }
+            String str = output.toString();
 
-            emailService.setSubject(parametro.getSubject());
+            str.replaceAll("&nome_usuario", pedido.getUsuario().getNome());
+            str.replaceAll("&id_pedido", String.valueOf(pedido.getId()));
+            str.replaceAll("&endereco", parametro.getLogradouro());
+            str.replaceAll("&cep", parametro.getCep());
+            str.replaceAll("&numero", parametro.getNumero());
+            str.replaceAll("&cidade", parametro.getCidade());
+            str.replaceAll("&uf", parametro.getUf());
+            str.replaceAll("&status_pedido", "Cancelado");
+
+            emailService.setSubject("Alteração de status do pedido #" + pedido.getIdString());
             emailService.setTo(pedido.getUsuario().getEmail());
-            emailService.setFrom(parametro.getTo());
-            emailService.setHost(parametro.getHost());
+            emailService.setFrom(parametro.getFrom());
+            emailService.setHost(parametro.getHostMail());
             emailService.setHtml(str);
             emailService.send();
 
@@ -375,6 +404,61 @@ public class PedidoController extends AbstractServlet
         } else {
             jsonModel.setStatus(false);
             jsonModel.setMessage("Pedido informado inválido. Verifique!");
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void lancamentoItemAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getParameterOrValue("id", "0"));
+        JsonModel jsonModel = new JsonModel();
+        Lancamento lancamentoModel = new Lancamento();
+
+        if (id > 0) {
+            jsonModel.setList(lancamentoModel.findLancamentosByItem(id));
+            jsonModel.setStatus(true);
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Parametro informado inválido. Verifique!");
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void salvarLancamentoItemAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getParameterOrValue("id", "0"));
+        float valor = Float.parseFloat(this.getParameterOrValue("valor", "0.0"));
+        String descricao = this.getParameterOrValue("descricao", "");
+
+        JsonModel jsonModel = new JsonModel();
+        Lancamento lancamentoModel = new Lancamento();
+        PedidoItem pedidoItemModel = new PedidoItem();
+        if (id > 0 && valor > 0 && !descricao.equals("")) {
+            TbLancamento lancamento = new TbLancamento();
+            TbPedidoItem item = pedidoItemModel.findPedidoByItem(id);
+
+            lancamento.setPreco(valor);
+            lancamento.setPrecoPintura(0);
+            lancamento.setDescricao(
+                String.format(
+                    descricao + ". Lancamento referente ao item #%s do pedido %s no dia %s",
+                    StringUtilsPad.padLeft(String.valueOf(id), 5, "0"),
+                    StringUtilsPad.padLeft(String.valueOf(item.getPedido().getUsuario().getId()), 5, "0"),
+                    new SimpleDateFormat("dd/MM/yyyy").format(new Date())
+                )
+            );
+            lancamento.setDesconto(0);
+            lancamento.setUsuarioId(item.getPedido().getUsuario().getId());
+            lancamento.setPedidoItensId(id);
+            lancamentoModel.insert(lancamento);
+
+            jsonModel.setMessage("Lançamento realizado com sucesso!");
+            jsonModel.setStatus(true);
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Ocorreu um erro ao realizar o lançamento. Verifique!");
         }
 
         setRequestXhtmlHttpRequest(jsonModel);

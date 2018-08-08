@@ -11,11 +11,13 @@ function renderer(data, templateNome, $el, mode = APPEND) {
     $template = mapper(data, $template, '');
 
     var $elTo = $($template);
-    if (mode == APPEND) {
-        $el.append($elTo);
-        $elTo.hide().show('slow');
-    } else {
-        $el.prepend($elTo);
+    if ($el != null) {
+      if (mode == APPEND) {
+          $el.append($elTo);
+          $elTo.hide().show('slow');
+      } else {
+          $el.prepend($elTo);
+      }
     }
 
     return $elTo;
@@ -31,13 +33,17 @@ function rendererList(data, templateNome, $el, mode = APPEND) {
         $template = $template + mapper(value, $templateAux, '');
     }
 
-    if (mode == APPEND) {
-        var $elTo = $($template);
-        $el.append($elTo);
-        $elTo.hide().show('slow');
-    } else {
-        $el.prepend($template);
+    var $elTo = $($template);
+    if ($el != null) {
+      if (mode == APPEND) {
+          $el.append($elTo);
+          $elTo.hide().show('slow');
+      } else {
+          $el.prepend($elTo);
+      }
     }
+
+    return $elTo;
 }
 
 function mapper(data, $template, keyAdjust) {

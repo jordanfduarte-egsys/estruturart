@@ -11,6 +11,7 @@ import br.com.estruturart.persistency.Pedido;
 import br.com.estruturart.persistency.LogPedido;
 import br.com.estruturart.persistency.PedidoItem;
 import br.com.estruturart.persistency.Lancamento;
+import br.com.estruturart.utility.StringUtilsPad;
 
 import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbPedidoItem;
@@ -60,7 +61,7 @@ public class FinalizarOrcamento
     public void salvarEndereco() throws java.sql.SQLException
     {
         orcamento.getEndereco().setComplemento(
-            String.format("Endereço cadastrado ao criar o pedido %d", orcamento.getPedido().getId())
+            String.format("Endere?o cadastrado ao criar o pedido %d", orcamento.getPedido().getId())
         );
         orcamento.getEndereco().setUsuarioId(orcamento.getUsuario().getId());
         orcamento.getEndereco().setPedidoId(orcamento.getPedido().getId());
@@ -104,11 +105,10 @@ public class FinalizarOrcamento
             lancamento.setPrecoPintura(modelo.getPrecoPintura());
             lancamento.setDescricao(
                 String.format(
-                    "Lançamento referente ao item #%d do pedido %d no dia %s",
-                    pedidoItemEntity.getId(),
-                    orcamento.getPedido().getId(),
+                    "Lan?amento referente ao item #%s do pedido %s no dia %s",
+                    StringUtilsPad.padLeft(String.valueOf(pedidoItemEntity.getId()), 5, "0"),
+                    StringUtilsPad.padLeft(String.valueOf(orcamento.getPedido().getId()), 5, "0"),
                     new SimpleDateFormat("dd/MM/yyyy").format(new Date())
-
                 )
             );
             lancamento.setDesconto(modelo.getPorcentagemAcrescimo());

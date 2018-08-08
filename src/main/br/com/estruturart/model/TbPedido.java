@@ -283,6 +283,10 @@ public class TbPedido extends AbstractModel
             color = "#ffc107";
         }
 
+        if (getStatusPedidoId() == 7) {
+            color = "#CCC";
+        }
+
         return color;
     }
 
@@ -290,7 +294,7 @@ public class TbPedido extends AbstractModel
     {
         boolean isValid = true;
         if (getDataPrevisaoInstalacao() == null) {
-            this.getValidation().add(new RouteParam("prev_entrega", "Informe a data de previsÃ£o de entrega vÃ¡lida!"));
+            this.getValidation().add(new RouteParam("prev_entrega", "Informe a data de previsão de entrega válida!"));
             isValid = false;
         }
 

@@ -38,6 +38,7 @@ br\com\estruturart\persistency\Pedido.class
 br\com\estruturart\model\TbStatusModelo.class
 br\com\estruturart\utility\RouteParam.class
 br\com\estruturart\utility\PedidoJsonModel.class
+br\com\estruturart\model\TbParametro.class
 br\com\estruturart\model\TbStatusPedido.class
 br\com\estruturart\persistency\StatusPedido.class
 br\com\estruturart\persistency\Lancamento.class
@@ -65,5 +66,6 @@ br\com\estruturart\persistency\Modelo.class
 br\com\estruturart\persistency\Estado.class
 br\com\estruturart\model\TbStatusItem.class
 br\com\estruturart\model\TbTipoPessoa.class
+br\com\estruturart\persistency\Parametro.class
 br\com\estruturart\controller\AbstractServlet.class
 br\com\estruturart\controller\FornecedorController.class

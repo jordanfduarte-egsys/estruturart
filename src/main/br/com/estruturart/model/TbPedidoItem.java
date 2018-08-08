@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import br.com.estruturart.model.TbLancamento;
 import br.com.estruturart.model.TbModelo;
+import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbStatusItem;
 import br.com.estruturart.utility.StringUtilsPad;
 
@@ -22,6 +23,7 @@ public class TbPedidoItem extends AbstractModel
     private List<TbLancamento> lancamentos = new ArrayList<TbLancamento>();
     private TbModelo modelo = new TbModelo();
     private TbStatusItem statusItem = new TbStatusItem();
+    private TbPedido pedido = new TbPedido();
 
     public static final int ATIVO = 1;
     public static final int CANCELADO = 2;
@@ -219,6 +221,16 @@ public class TbPedidoItem extends AbstractModel
         }
 
         return false;
+    }
+
+    public TbPedido getPedido()
+    {
+        return this.pedido;
+    }
+
+    public void setPedido(TbPedido pedido)
+    {
+        this.pedido = pedido;
     }
 
     public boolean isValid() { return true; }

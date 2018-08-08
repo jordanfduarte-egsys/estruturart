@@ -9,18 +9,19 @@ import br.com.estruturart.utility.Util;
 public class TbParametro extends AbstractModel
 {
     private Integer id = 0;
-    private String cep;
-    private String logradouro;
-    private String bairro;
-    private String numero;
-    private String complemento;
-    private String uf;
-    private String cidade;
-    private String subject;
-    private String from;
-    private String hostMail;
-    private String usuario;
-    private String senha;
+    private String cep = "";
+    private String logradouro = "";
+    private String bairro = "";
+    private String numero = "";
+    private String complemento = "";
+    private String uf = "";
+    private String cidade = "";
+    private String subject = "";
+    private String from = "";
+    private String hostMail = "";
+    private String host = "";
+    private String usuario = "";
+    private String senha = "";
 
     public Integer getId()
     {
@@ -132,26 +133,35 @@ public class TbParametro extends AbstractModel
         this.hostMail = hostMail;
     }
 
-	public String getUsuario()
-	{
-		return this.usuario;
-	}
+    public void setHost(String host)
+    {
+        this.host = host;
+    }
 
-	public void setUsuario(String usuario)
-	{
-		this.usuario = usuario;
-	}
+    public String getHost()
+    {
+        return this.host;
+    }
 
-	public String getSenha()
-	{
-		return this.senha;
-	}
+    public String getUsuario()
+    {
+        return this.usuario;
+    }
 
-	public void setSenha(String senha)
-	{
-		this.senha = senha;
-	}
+    public void setUsuario(String usuario)
+    {
+        this.usuario = usuario;
+    }
 
+    public String getSenha()
+    {
+        return this.senha;
+    }
+
+    public void setSenha(String senha)
+    {
+        this.senha = senha;
+    }
 
     public boolean isValid() {return true; }
 }

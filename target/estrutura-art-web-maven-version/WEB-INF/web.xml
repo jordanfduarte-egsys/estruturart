@@ -135,6 +135,10 @@
     <url-pattern>/pedido/editar/id/*</url-pattern>
     <url-pattern>/pedido/visualizar/id/*</url-pattern>
     <url-pattern>/pedido/buscar</url-pattern>
+    <url-pattern>/pedido/status</url-pattern>
+    <url-pattern>/pedido/cancelar</url-pattern>
+    <url-pattern>/pedido/lancamento-item</url-pattern>
+    <url-pattern>/pedido/salvar-lancamento-item</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Fornecedor</servlet-name>

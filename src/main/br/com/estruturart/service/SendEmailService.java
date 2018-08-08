@@ -8,6 +8,8 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 import br.com.estruturart.service.LogErrorService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class SendEmailService
 {
@@ -20,7 +22,7 @@ public class SendEmailService
     private String host;
     private LogErrorService logService;
 
-    public void SendMailService(HttpServletRequest request, HttpServletResponse response)
+    public SendEmailService(HttpServletRequest request, HttpServletResponse response)
     {
         this.request = request;
         this.response = response;

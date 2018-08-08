@@ -244,7 +244,7 @@
         table[class=body] .img-responsive {
           height: auto !important;
           max-width: 100% !important;
-          width: auto !important; }}
+          width: auto !important;
 
       /* -------------------------------------
           PRESERVE THESE STYLES IN THE HEAD
@@ -291,8 +291,8 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Olá {{nome_usuario}},</p>
-                        <p>Seu pedido <b>#{{id_pedido}}</b> está em <b>{{status_pedido}}</b></p>
+                        <p>Olá #nome_usuario,</p>
+                        <p>Seu pedido <b>##id_pedido</b> está em <b>#status_pedido</b></p>
                         <br/>
                         <p>Obrigado.</p>
                       </td>
@@ -309,7 +309,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">EstruturArt, {{endereco}}, {{numero}} {{cidade}}/{{uf}}</span>
+                    <span class="apple-link">EstruturArt, #endereco, #numero - #cep - #cidade/#uf</span>
                   </td>
                 </tr>
                 <tr>

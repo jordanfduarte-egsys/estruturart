@@ -226,7 +226,6 @@ public class Util
                 strFinal += String.valueOf(str.charAt(i - count));
             } else {
                 strFinal +=  String.valueOf((mask.charAt(i)));
-                //strFinal += String.valueOf(str.charAt(i));
                 count++;
             }
         }

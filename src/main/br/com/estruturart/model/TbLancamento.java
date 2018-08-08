@@ -1,13 +1,18 @@
 package br.com.estruturart.model;
 
 import java.util.Date;
+import br.com.estruturart.utility.StringUtilsPad;
+import java.text.SimpleDateFormat;
 
 public class TbLancamento extends AbstractModel
 {
     private int id = 0;
+    private String idString = "";
+    private float totalMaisPintura = 0;
     private float preco;
     private float precoPintura;
     private Date dataInclusao;
+    private String dataInclusaoString;
     private String descricao;
     private float desconto;
     private int usuarioId;
@@ -21,6 +26,7 @@ public class TbLancamento extends AbstractModel
     public void setId(int id)
     {
         this.id = id;
+        this.idString = StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0");
     }
 
     public float getPreco()
@@ -31,6 +37,7 @@ public class TbLancamento extends AbstractModel
     public void setPreco(float preco)
     {
         this.preco = preco;
+        this.totalMaisPintura += preco;
     }
 
     public float getPrecoPintura()
@@ -41,6 +48,7 @@ public class TbLancamento extends AbstractModel
     public void setPrecoPintura(float precoPintura)
     {
         this.precoPintura = precoPintura;
+        this.totalMaisPintura += precoPintura;
     }
 
     public Date getDataInclusao()
@@ -51,6 +59,8 @@ public class TbLancamento extends AbstractModel
     public void setDataInclusao(Date dataInclusao)
     {
         this.dataInclusao = dataInclusao;
+        SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
+        this.dataInclusaoString = df.format(getDataInclusao().getTime());
     }
 
     public String getDescricao()
