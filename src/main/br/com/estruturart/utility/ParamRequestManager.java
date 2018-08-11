@@ -63,4 +63,9 @@ public class ParamRequestManager
     {
         this.routeParams.clear();
     }
+
+    public List<RouteParam> getAll()
+    {
+        return this.routeParams;
+    }
 }

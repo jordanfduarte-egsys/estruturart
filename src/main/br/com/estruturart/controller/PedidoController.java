@@ -13,6 +13,7 @@ import br.com.estruturart.persistency.Parametro;
 import br.com.estruturart.model.TbParametro;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbStatusPedido;
+import br.com.estruturart.model.TbPedidoItemFoto;
 import br.com.estruturart.utility.ParamRequestManager;
 import br.com.estruturart.utility.StringUtilsPad;
 import br.com.estruturart.utility.PedidoJsonModel;
@@ -29,6 +30,7 @@ import br.com.estruturart.persistency.Lancamento;
 import br.com.estruturart.persistency.Endereco;
 import br.com.estruturart.persistency.LogPedido;
 import br.com.estruturart.persistency.StatusPedido;
+import br.com.estruturart.persistency.PedidoItemFoto;
 import br.com.estruturart.model.TbLancamento;
 import br.com.estruturart.utility.Util;
 import org.apache.commons.io.IOUtils;
@@ -39,7 +41,12 @@ import java.util.Date;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import org.apache.commons.fileupload.FileItem;
 import java.util.List;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import br.com.estruturart.service.UploadService;
+import br.com.estruturart.utility.RouteParam;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 
 /**
  * Servlet implementation class Pedido
@@ -81,6 +88,9 @@ public class PedidoController extends AbstractServlet
         Pedido pedidoModel = new Pedido();
         StatusPedido statusPedidoModel = new StatusPedido();
         LogPedido modelLog = new LogPedido();
+        String extensoes = getServletContext().getInitParameter("extensoesImagem");
+        int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
+        int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
 
         List<TbStatusPedido> statusPedido = statusPedidoModel.findAll();
         List<TbLogPedido> logsPedido = modelLog.findLogPedido(id);
@@ -89,6 +99,9 @@ public class PedidoController extends AbstractServlet
         getRequest().setAttribute("pedido", pedido);
         getRequest().setAttribute("statusPedido", statusPedido);
         getRequest().setAttribute("logs", logsPedido);
+        getRequest().setAttribute("extensoes", extensoes);
+        getRequest().setAttribute("widthModelo", widthModelo);
+        getRequest().setAttribute("heigthModelo", heigthModelo);
     }
 
     public void editarAction() throws Exception
@@ -459,6 +472,96 @@ System.out.println("STATUS: " + id);
         } else {
             jsonModel.setStatus(false);
             jsonModel.setMessage("Ocorreu um erro ao realizar o lançamento. Verifique!");
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void fotosItemAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getParameterOrValue("id", "0"));
+        JsonModel jsonModel = new JsonModel();
+        PedidoItemFoto fotoModel = new PedidoItemFoto();
+
+        if (id > 0) {
+            jsonModel.setList(fotoModel.findItemFoto(id));
+            jsonModel.setStatus(true);
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Parametro informado inválido. Verifique!");
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void salvarFotoItemAction() throws Exception
+    {
+        ServletFileUpload upload = new ServletFileUpload();
+        upload.setFileSizeMax(UploadService.MEMORY_THRESHOLD);
+        upload.setFileItemFactory(new DiskFileItemFactory());
+        List<FileItem> formItems = upload.parseRequest(getRequest());
+        int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
+        int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
+        String extensoes = getServletContext().getInitParameter("extensoesImagem");
+        JsonModel jsonModel = new JsonModel();
+        PedidoItem pedidoItem = new PedidoItem();
+        PedidoItemFoto pedidoItemFoto = new PedidoItemFoto();
+        TbPedidoItemFoto itemFoto = new TbPedidoItemFoto();
+        for (FileItem itemFile : formItems) {
+            String fieldname = itemFile.getFieldName();
+            String fieldvalue = itemFile.getString();
+
+            if (itemFile.isFormField()) {
+                if (fieldname.equals("obs")) {
+                    itemFoto.setObservacao(fieldvalue);
+                }
+
+                if (fieldname.equals("id")) {
+                    itemFoto.setPedidoItensId(Integer.parseInt(fieldvalue));
+                }
+            } else {
+                itemFoto.setFileFoto(itemFile);
+            }
+        }
+
+        if (itemFoto.getPedidoItensId() > 0) {
+            TbPedidoItem item = pedidoItem.findPedidoByItem(itemFoto.getPedidoItensId());
+            UploadService uploadService = new UploadService(this.getRequest());
+            uploadService.setExtensoes(extensoes.split(","));
+            uploadService.setFileItem(itemFoto.getFileFoto());
+            uploadService.setFolder("/item/" + item.getId() + "/");
+
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
+            itemFoto.setCaminhoArquivo(imagem);
+            System.out.println("A IMAGEM ==================");
+            System.out.println(imagem);
+            System.out.println("A IMAGEM ==================");
+            System.out.println("A IMAGEM ==================");
+
+            if (imagem.equals("")) {
+                itemFoto.getValidation().add(new RouteParam("foto", uploadService.getMessageErro()));
+            }
+
+            if (itemFoto.isValid()) {
+                itemFoto.setPedidoItensId(item.getId());
+                pedidoItemFoto.insert(itemFoto);
+
+                jsonModel.setMessage("Foto enviada com sucesso!");
+                jsonModel.setStatus(true);
+            } else {
+                String message = "";
+                for (RouteParam param : itemFoto.getValidation().getAll()) {
+                    message += param.getValue() + "<br/>";
+                }
+
+                jsonModel.setMessage(message);
+                jsonModel.setStatus(false);
+            }
+
+        } else {
+            jsonModel.setMessage("Ocorreu um erro ao salvar a foto!");
+            jsonModel.setStatus(false);
         }
 
         setRequestXhtmlHttpRequest(jsonModel);

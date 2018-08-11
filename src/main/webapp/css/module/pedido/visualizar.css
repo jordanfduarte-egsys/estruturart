@@ -145,3 +145,12 @@
     border-bottom: 1px solid #CCC;
     height: 22px;
 }
+#fotos .js-target-fotos{
+    overflow-x: hidden;
+    display: inline-flex;
+    box-shadow: 0px 0px 19px #888888;
+}
+
+#fotos .js-next-view, #fotos .js-prev-view {
+    cursor: pointer;
+}

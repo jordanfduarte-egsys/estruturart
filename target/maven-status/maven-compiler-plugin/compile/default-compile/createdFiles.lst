@@ -11,6 +11,7 @@ br\com\estruturart\controller\UsuarioController.class
 br\com\estruturart\model\TbFornecedor.class
 br\com\estruturart\model\TbPedido.class
 br\com\estruturart\model\TbStatusMaterial.class
+br\com\estruturart\persistency\PedidoItemFoto.class
 br\com\estruturart\controller\AuthController.class
 br\com\estruturart\service\LogErrorService.class
 br\com\estruturart\utility\FlashMessenger.class
@@ -38,6 +39,7 @@ br\com\estruturart\persistency\Pedido.class
 br\com\estruturart\model\TbStatusModelo.class
 br\com\estruturart\utility\RouteParam.class
 br\com\estruturart\utility\PedidoJsonModel.class
+br\com\estruturart\model\TbPedidoItemFoto.class
 br\com\estruturart\model\TbParametro.class
 br\com\estruturart\model\TbStatusPedido.class
 br\com\estruturart\persistency\StatusPedido.class

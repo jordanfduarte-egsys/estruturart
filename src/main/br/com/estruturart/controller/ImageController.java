@@ -24,7 +24,7 @@ public class ImageController extends AbstractServlet {
             filename = cntx.getRealPath("/files/sem-foto.jpg");
             mime = cntx.getMimeType(filename);
         }
-        System.out.println("LINK" + filename);
+    System.out.println("LINK" + filename);
         getResponse().setContentType(mime);
         File file = new File(filename);
         getResponse().setContentLength((int) file.length());

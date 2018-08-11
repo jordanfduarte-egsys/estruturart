@@ -120,7 +120,7 @@
                                         <div class="pull-left pg-0 text-left">
                                             ${iterator.getModelo().getDescricao()}
                                         </div>
-                                        <div class="pull-right text-right" data-id="${iterator.getId()}" data-status="${iterator.getStatusItemId()}">
+                                        <div class="pull-right text-right" data-id="${iterator.getId()}" data-idString="${iterator.getIdString()}" data-status="${iterator.getStatusItemId()}">
                                             <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar lançamentos do item" class="js-lancamento fa-lg"><i class="far fa-money-bill-alt text-success"></i></a>
                                             <a href="javascript:void(0);" data-toggle="tooltip" title="Visualizar fotos do item" class="js-fotos fa-lg"><i class="fas fa-camera-retro text-secondary"></i></a>
                                         </div>
@@ -199,6 +199,7 @@
 </div>
 
 <div class="modal fade" id="lancamentos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;"></div>
+<div class="modal fade" id="fotos" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="display: none;"></div>
 
 <script type="text/x-handlebars-template" id="modal-template-lancamento">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -244,6 +245,56 @@
     </div>
 </script>
 
+<script type="text/x-handlebars-template" id="modal-template-fotos">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Fotos do item <i class="fab fa-slack-hash"></i>{{idString}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                        {{#if status_item_id == 1}}
+                            <fieldset class="col-md-12 mb-3 border form-control">
+                                <legend>Nova foto</legend>
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="observacao">Observação *</label>
+                                        <input type="text" class="form-control p-2" id="observacao" name="observacao" placeholder="Sobre a foto" value="">
+                                    </div>
+                                    <div class="col-md-7 mb-3">
+                                        <label>&nbsp;</label><br/>
+                                        <input type="file" name="nova_foto" class="form-control p-1"/>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="cpf_cnpj">&nbsp;</label></br>
+                                        <button type="button" class="btn btn-primary pull-right btn-icon js-new-foto" data-id="{{id}}">
+                                            <i class="fa fa-plus"></i>&nbsp;Adicionar
+                                        </button>
+                                    </div>
+                                    <div class="col-md-10 mb-3">
+                                        <span>Formato aceito ${extensoes}</span>
+                                        <br>
+                                        <span>Dimensão do arquivo recomendado ${widthModelo}x${heigthModelo}px</span>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        {{/if}}
+                    </c:if>
+                {{#if total > 0}}
+                    <fieldset class="col-md-12 mb-3 border form-control">
+                        <div class="pull-left col-md-1 pt-6 js-prev-view text-primary" data-toggle="tooltip" title="Voltar"><i class="fas fa-chevron-left fa-2x"></i></div>
+                        <div class="js-target-fotos  col-md-10 pull-left p-2 text-center col-md-10">Nenhuma foto cadastrada!</div>
+                        <div class="pull-right col-md-1 text-right pt-6 js-next-view text-primary" data-toggle="tooltip" title="Avançar"><i class="fas fa-chevron-right fa-2x"></i></div>
+                    </fieldset>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</script>
+
 <script type="text/x-handlebars-template" id="row-lancamentos">
     <div style="border: 1px solid #CCC;padding: 5px;" class="form-row m-0 mb-2">
         <div class="pull-left col-md-12">
@@ -254,6 +305,17 @@
             <span>Preço: R$ {{preco numberToReal}}&nbsp;</span>
             <span>Pintura: <b>R$ {{precoPintura numberToReal}}</b>&nbsp;</span>
             <span class="pull-right">Total: <b>R$ {{totalMaisPintura numberToReal}}</b></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="row-fotos">
+    <div style="border: 1px solid #CCC;padding: 5px;" class="form-row mr-2 col-md-2">
+        <div class="pull-left col-md-12 text-center">
+            {{observacaoLimitado}}
+        </div>
+        <div class="pull-left col-md-12">
+            <img src="${source}{{caminhoArquivoCompleto}}" data-image="show" class="" data-toggle="tooltip" title="{{observacao}}" style="width: 78px;"/>
         </div>
     </div>
 </script>

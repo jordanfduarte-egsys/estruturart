@@ -26,7 +26,6 @@ public class TbLancamento extends AbstractModel
     public void setId(int id)
     {
         this.id = id;
-        this.idString = StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0");
     }
 
     public float getPreco()
@@ -101,6 +100,7 @@ public class TbLancamento extends AbstractModel
     public void setPedidoItensId(int pedidoItensId)
     {
         this.pedidoItensId = pedidoItensId;
+        this.idString = StringUtilsPad.padLeft(String.valueOf(pedidoItensId), 5, "0");
     }
 
     public boolean isValid() { return true; }

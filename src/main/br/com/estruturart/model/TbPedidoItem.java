@@ -12,6 +12,7 @@ import br.com.estruturart.utility.StringUtilsPad;
 public class TbPedidoItem extends AbstractModel
 {
     private int id = 0;
+    private String idString = "";
     private float largura;
     private float altura;
     private Date dataInclusao;
@@ -40,9 +41,15 @@ public class TbPedidoItem extends AbstractModel
         return this.id;
     }
 
+    public String getIdString()
+    {
+        return this.idString;
+    }
+
     public void setId(int id)
     {
         this.id = id;
+        this.idString = StringUtilsPad.padLeft(String.valueOf(id), 5, "0");
     }
 
     public float getLargura()
@@ -153,11 +160,6 @@ public class TbPedidoItem extends AbstractModel
     public void setLancamentos(List<TbLancamento> lancamentos)
     {
         this.lancamentos = lancamentos;
-    }
-
-    public String getIdString()
-    {
-        return StringUtilsPad.padLeft(String.valueOf(getId()), 5, "0");
     }
 
     public String getPrecoItemMaisPintura()

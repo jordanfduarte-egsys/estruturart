@@ -25,7 +25,7 @@ public class UploadService
     private String messageErro;
     private FileItem fileItem;
     private String[] extensoes;
-
+    private String folder;
     public static final int MEMORY_THRESHOLD = 1024 * 1024 * 3; // 3MB
 
     public UploadService(HttpServletRequest request)
@@ -126,10 +126,11 @@ public class UploadService
                 fileName = messageDigest + "." + format;
                 System.out.println("MD5 NOME: " + fileName);
 
-                String folderTo = folder + "/modelos/";
+                String folderTo = folder +  getFolder();
                 File uploadDir = new File(folderTo);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
+                if (!uploadDir.exists() || !uploadDir.isDirectory()) {
+                    uploadDir.mkdirs();
+                    System.out.println("CRIANDO");
                 }
                 System.out.println("VEIO ");
                 System.out.println("MD5 NOME COMPLETO: " + folderTo + fileName);
@@ -148,7 +149,7 @@ public class UploadService
                 }
 
                 if (nomeAntigo != null) {
-                    String folderToDelete = folder + "/modelos/" + nomeAntigo;
+                    String folderToDelete = folder + getFolder() + nomeAntigo;
                     File uploadDirDelete = new File(folderToDelete);
                     if (uploadDirDelete.exists()) {
                         uploadDirDelete.delete();
@@ -156,12 +157,15 @@ public class UploadService
                 }
             } catch (FileUploadException e) {
                 fileName = "";
+                System.out.println(e.getMessage());
                 this.setMessageErro("Ocorreu um erro ao salvar o arquivo no diretório. Informe a equipe de suporte!");
             } catch (Exception1001 e) {
                 fileName = "";
+                System.out.println(e.getMessage());
                 this.setMessageErro(e.getMessage());
             } catch (Exception e) {
                 fileName = "";
+                System.out.println(e.getMessage());
                 this.setMessageErro("Ocorreu um erro ao realizar o upload. Tente novamente!");
             }
         }
@@ -247,5 +251,15 @@ public class UploadService
     public void setFileItem(FileItem fileItem)
     {
         this.fileItem = fileItem;
+    }
+
+    public String getFolder()
+    {
+        return this.folder;
+    }
+
+    public void setFolder(String folder)
+    {
+        this.folder = folder;
     }
 }

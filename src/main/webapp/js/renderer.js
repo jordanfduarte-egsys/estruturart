@@ -91,16 +91,16 @@ function condicaoIf(template, variavel, valueVariavel) {
       controleNovasVariaveis.push(variavel);
 
       if (!eval("_" + condicao)) {
-        template = template.replace(new RegExp("(({{#if " + variavel + ".*?).*(/if}}))", "g"), '');
+        template = template.replace(new RegExp("(({{#if " + variavel + ".*?)[\\s\\S]*(/if}}))", "g"), '');
       } else {
-        var model = template.match(new RegExp("(({{#if " + variavel + ".*?).*(/if}}))", "g"));
+        var model = template.match(new RegExp("(({{#if " + variavel + ".*?)[\\s\\S]*(/if}}))", "g"));
         model.forEach(function(value2) {
           var valueReplace = template.replace(value, '').replace('{{/if}}', '');
-          template = template.replace(value2, valueReplace);
+          template = valueReplace; // template.replace(value2, valueReplace);
         });
       }
     });
-    
+
     controleNovasVariaveis.forEach(function(novaVariavel) {
       delete window["_" + novaVariavel];
     });

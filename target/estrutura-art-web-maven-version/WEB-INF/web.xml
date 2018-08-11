@@ -139,6 +139,9 @@
     <url-pattern>/pedido/cancelar</url-pattern>
     <url-pattern>/pedido/lancamento-item</url-pattern>
     <url-pattern>/pedido/salvar-lancamento-item</url-pattern>
+    <url-pattern>/pedido/salvar-foto-item</url-pattern>
+    <url-pattern>/pedido/fotos-item</url-pattern>
+
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Fornecedor</servlet-name>

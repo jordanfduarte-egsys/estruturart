@@ -144,6 +144,7 @@ public class ModeloController extends AbstractServlet
                         UploadService uploadService = new UploadService(this.getRequest());
                         uploadService.setExtensoes(extensoes.split(","));
                         uploadService.setFileItem(modelo.getFileItem());
+                        uploadService.setFolder("/modelos/");
 
                         String imagem = modelo.getImagem();
                         String sourceFilder = getServletContext().getInitParameter("folderUpload");

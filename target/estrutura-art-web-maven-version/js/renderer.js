@@ -66,9 +66,46 @@ function mapper(data, $template, keyAdjust) {
                 $template = $template.replace(arrSearch[index], value);
             }
 
+            $template = condicaoIf(
+                $template,
+                objectKey,
+                value
+            );
         }
     });
 
     return $template;
+}
+
+function condicaoIf(template, variavel, valueVariavel) {
+  //var variavel = 'fleg';
+  //var valueVariavel = 0;
+  var controleNovasVariaveis = [];
+  //var template = "<div> Ola {{#if fleg == 1}}<b>Jordan</b>{{/if}}</div>";
+  var matching = template.match(new RegExp("(({{#if " + variavel + ".*?)(\\w*)(}}))", "g"));
+
+  if (matching) {
+    matching.forEach(function(value){
+      var condicao = value.replace("{{#if", "").replace("}}", "").trim();
+      window["_" + variavel] = valueVariavel;
+      controleNovasVariaveis.push(variavel);
+
+      if (!eval("_" + condicao)) {
+        template = template.replace(new RegExp("(({{#if " + variavel + ".*?)[\\s\\S]*(/if}}))", "g"), '');
+      } else {
+        var model = template.match(new RegExp("(({{#if " + variavel + ".*?)[\\s\\S]*(/if}}))", "g"));
+        model.forEach(function(value2) {
+          var valueReplace = template.replace(value, '').replace('{{/if}}', '');
+          template = valueReplace; // template.replace(value2, valueReplace);
+        });
+      }
+    });
+
+    controleNovasVariaveis.forEach(function(novaVariavel) {
+      delete window["_" + novaVariavel];
+    });
+  }
+
+  return template;
 }
 

@@ -98,16 +98,19 @@ var crud = {
         onFileSelecionado: function(e) {
             if (e.target.files.length == 0) {
                 flashMessenger.setType(FlashMessenger.ERROR).add("Nenhum Arquivo Selecionado").getMessages();
+                $(this).val('');
                 return;
             }
 
             if (e.target.files[0].size / 1024 / 1024 > 2) {
                 flashMessenger.setType(FlashMessenger.ERROR).add("Arquivo deve ser menor que 2 MB").getMessages();
+                $(this).val('');
                 return;
             }
 
             if (["image/jpeg", "image/jpg", "image/png", "image/bmp"].indexOf(e.target.files[0].type) == -1) {
                 flashMessenger.setType(FlashMessenger.ERROR).add("Extensão do arquivo enviada inválida. Verifique!").getMessages();
+                $(this).val('');
                 return;
             }
 
