@@ -8,6 +8,7 @@ import br.com.estruturart.model.TbModelo;
 import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbStatusItem;
 import br.com.estruturart.utility.StringUtilsPad;
+import java.text.DecimalFormat;
 
 public class TbPedidoItem extends AbstractModel
 {
@@ -233,6 +234,12 @@ public class TbPedidoItem extends AbstractModel
     public void setPedido(TbPedido pedido)
     {
         this.pedido = pedido;
+    }
+
+    public String getDimensao()
+    {
+        return String.format("%sx%smm", new DecimalFormat("#.##").format(this.largura),
+                new DecimalFormat("#.##").format(this.altura));
     }
 
     public boolean isValid() { return true; }

@@ -98,7 +98,7 @@
                         <tbody>
                             <c:forEach items="${pedido.getItens()}" var="iterator">
                                 <tr class="<c:if test="${iterator.getStatusItemId() == 2}">opaco</c:if>">
-                                    <td><b data-toggle="tooltip" title="Status do item: ${iterator.getStatusItem().getNome()}">#${iterator.getIdString()} - </b>${iterator.getModelo().getNome()} - ${iterator.getModelo().getDimensao()}</td>
+                                    <td><b data-toggle="tooltip" title="Status do item: ${iterator.getStatusItem().getNome()}">#${iterator.getIdString()} - </b>${iterator.getModelo().getNome()} - ${iterator.getDimensao()}</td>
                                     <td>Preço: R$ ${iterator.getPrecoItem()}</td>
                                     <td>
                                         <c:if test="${iterator.getIsPintura()}">

@@ -278,7 +278,89 @@ public class Pedido extends AbstractPersistency
             endereco.setCidade(cidade);
             pedido.setEndereco(endereco);
             pedido.setUsuario(usuario);
-            pedido.setItens(itemModel.findItensByPedido(rs.getInt("id")));
+            pedido.setItens(itemModel.findItensByPedido(rs.getInt("id"), false));
+        }
+
+        return pedido;
+    }
+
+    public TbPedido findPedidoVisualizacaoOrdemProducao(int id) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT p.*, c.nome as nome_cliente, c.cpf_cnpj, c.tipo_pessoa, e.cep, e.logradouro, e.bairro, e.complemento, e.numero, sp.nome as nome_status_pedido, "
+            + " cid.nome as nome_cidade, est.nome as nome_estado, est.uf, est.id as estado_id, e.id as endereco_id, e.cidade_id FROM pedido p "
+            + " INNER JOIN status_pedido sp ON p.status_pedido_id = sp.id"
+            + " INNER JOIN usuario c ON p.usuario_id = c.id"
+            + " INNER JOIN endereco e ON e.pedido_id = p.id"
+            + " INNER JOIN cidade cid ON e.cidade_id = cid.id"
+            + " INNER JOIN estado est ON cid.estado_id = est.id"
+            + " WHERE p.id = %d",
+            id
+        );
+
+        System.out.println("-----------------");
+        System.out.println(sql);
+        System.out.println("-----------------");
+
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        TbPedido pedido = new TbPedido();
+        PedidoItem itemModel = new PedidoItem();
+        if (rs.next()) {
+            TbUsuario usuario = new TbUsuario();
+            TbEndereco endereco = new TbEndereco();
+            TbEstado estado = new TbEstado();
+            TbCidade cidade = new TbCidade();
+            TbStatusPedido statusPedido = new TbStatusPedido();
+
+            pedido.setId(rs.getInt("id"));
+            pedido.setCaminhoArquivoNotaFiscal(rs.getString("caminho_arquivo_nota_fiscal"));
+            pedido.setDataInclusao(rs.getDate("data_inclusao"));
+            pedido.setDataPrevisaoInstalacao(rs.getDate("data_previsao_instalacao"));
+            pedido.setValorTotal(rs.getFloat("valor_total"));
+            pedido.setValorMaoObra(rs.getFloat("valor_mao_obra"));
+            pedido.setPedidoPago(rs.getInt("pedido_pago"));
+            pedido.setObservacao(rs.getString("observacao"));
+            pedido.setUsuarioId(rs.getInt("usuario_id"));
+            pedido.setStatusPedidoId(rs.getInt("status_pedido_id"));
+            pedido.setDescontoGeral(rs.getFloat("desconto_geral"));
+
+            statusPedido.setId(rs.getInt("status_pedido_id"));
+            statusPedido.setNome(rs.getString("nome_status_pedido"));
+
+            endereco.setId(rs.getInt("endereco_id"));
+            endereco.setCep(rs.getString("cep"));
+            endereco.setLogradouro(rs.getString("logradouro"));
+            endereco.setBairro(rs.getString("bairro"));
+            endereco.setComplemento(rs.getString("complemento"));
+            endereco.setCidadeId(rs.getInt("cidade_id"));
+            endereco.setNumero(rs.getString("numero"));
+            endereco.setUsuarioId(rs.getInt("usuario_id"));
+            endereco.setEstadoId(rs.getInt("estado_id"));
+
+            cidade.setNome(rs.getString("nome_cidade"));
+            cidade.setUf(rs.getString("uf"));
+            cidade.setId(rs.getInt("cidade_id"));
+
+            estado.setNome(rs.getString("nome_estado"));
+            estado.setUf(rs.getString("uf"));
+            estado.setId(rs.getInt("estado_id"));
+
+            usuario.setId(rs.getInt("usuario_id"));
+            usuario.setNome(rs.getString("nome_cliente"));
+            usuario.setTipoPessoa(rs.getString("tipo_pessoa"));
+            usuario.setCpfCnpj(rs.getString("cpf_cnpj"));
+
+            pedido.setStatusPedido(statusPedido);
+            cidade.setEstado(estado);
+            endereco.setCidade(cidade);
+            pedido.setEndereco(endereco);
+            pedido.setUsuario(usuario);
+            pedido.setItens(itemModel.findItensByPedido(rs.getInt("id"), true));
         }
 
         return pedido;

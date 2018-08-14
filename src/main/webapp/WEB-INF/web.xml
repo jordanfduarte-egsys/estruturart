@@ -141,7 +141,7 @@
     <url-pattern>/pedido/salvar-lancamento-item</url-pattern>
     <url-pattern>/pedido/salvar-foto-item</url-pattern>
     <url-pattern>/pedido/fotos-item</url-pattern>
-
+    <url-pattern>/pedido/imprimir-op/id/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Fornecedor</servlet-name>

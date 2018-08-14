@@ -13,6 +13,7 @@ import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbStatusItem;
 import br.com.estruturart.persistency.Lancamento;
+import br.com.estruturart.persistency.Modelo;
 
 public class PedidoItem extends AbstractPersistency
 {
@@ -70,7 +71,7 @@ public class PedidoItem extends AbstractPersistency
         }
     }
 
-    public List<TbPedidoItem> findItensByPedido(int pedidoId) throws java.sql.SQLException
+    public List<TbPedidoItem> findItensByPedido(int pedidoId, boolean isConsultarMateriais) throws java.sql.SQLException
     {
         Connection conn = ConnectionManager.getConnection();
 
@@ -85,6 +86,7 @@ public class PedidoItem extends AbstractPersistency
         ResultSet rs = ps.executeQuery();
         List<TbPedidoItem> itens = new ArrayList<TbPedidoItem>();
         Lancamento modelLancamento = new Lancamento();
+        Modelo modeloModel = new Modelo();
         while (rs.next()) {
             TbPedidoItem item = new TbPedidoItem();
             TbModelo modelo = new TbModelo();
@@ -112,6 +114,9 @@ public class PedidoItem extends AbstractPersistency
             statusItem.setId(rs.getInt("status_item_id"));
             statusItem.setNome(rs.getString("nome_status_item"));
 
+            if (isConsultarMateriais) {
+                modelo.setMateriais(modeloModel.findMaterialByModelo(rs.getInt("modelo_id")));
+            }
             item.setModelo(modelo);
             item.setStatusItem(statusItem);
             item.setLancamentos(modelLancamento.findLancamentosByItem(rs.getInt("id")));

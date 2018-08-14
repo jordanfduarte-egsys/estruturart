@@ -310,6 +310,16 @@ public class TbPedido extends AbstractModel
         return total;
     }
 
+    public int getTotalDiasProducao()
+    {
+        int total = 0;
+        for (TbPedidoItem item :getItens()) {
+            total += item.getModelo().getQtdDiasProducao();
+        }
+
+        return total;
+    }
+
     public String getPedidoPagoString()
     {
         if (getPedidoPago() == 1) {

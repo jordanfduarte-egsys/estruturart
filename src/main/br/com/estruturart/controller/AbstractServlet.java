@@ -135,7 +135,6 @@ public class AbstractServlet extends HttpServlet {
                 this.redirect("home");
             } else {
                 System.out.println("ANTES DE CHAMAR");
-                this.getParamOr("page", "22");
                 this.getClass().getMethod(method).invoke(this, null);
                 System.out.println("AJAX? " + isXhtmlHttpRequest());
                 if (!this.noRender && !getResponse().isCommitted()) {

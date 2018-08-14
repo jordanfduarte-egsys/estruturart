@@ -1,0 +1,185 @@
+.js-find-cpf-cnpj {
+    margin-top: 28px;
+    margin-left: 9px;
+}
+.table-modelos {
+    max-height: 178px;
+    overflow-y: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 178px;
+}
+.table-modelos-add {
+    min-height: 100px;
+    overflow-y: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: none;
+    padding: 0;
+}
+.table-modelos, .table-modelos-add {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.table-modelos-add .js-row-material {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+.tr-line-one .col1, .tr-line-one .col2{
+    float: right;
+    text-align: right;
+    width: 124px !important;
+}
+
+.td-qtd-item .input-group{
+    margin-top: -5px;
+    margin-left: 5px;
+    width: 100px;
+    float: right;
+}
+.td-btn-added, .td-btn-added-price{
+    text-align: right;
+}
+.tr-line-one .col1 input, .tr-line-one .col2 input {
+    display: inline;
+}
+.tr-line-two {
+    border-right: 1px solid #CCC;
+    width: 54px;
+}
+.tr-line-two button {
+    margin-top: -48px;
+}
+.tr-line-tree {
+    background: none !important;
+    border-bottom: 1px solid #CCC;
+}
+.table-modelos td, .table-modelos th {
+    vertical-align: inherit !important;
+}
+.table-modelos .preco-produto {
+    width: 100px;
+}
+.table-modelos img {
+    width: 86px;
+}
+.tr-line-one td:first-child {
+    width: 100px;
+}
+.table-modelos-add .tr-one {
+    border: 1px solid #CCC;
+    background: #FFF;
+}
+.table-modelos-add .tr-one .td-nome-item {
+    border-right: 1px solid #CCC;
+    border-bottom: none;
+    margin-bottom: 46px;
+    outline: none;
+    position: relative;
+    top: 0px;
+    font-size: 27px;
+    text-align: center;
+}
+.table-modelos-add .td-pintura {
+    text-align: right;
+}
+.table-modelos-add .td-pintura label {
+    vertical-align: 4px;
+}
+.table-modelos-add .td-pintura input {
+    width: 16px;
+    height: 18px;
+}
+.table-modelos-add .td-qtd-item {
+    line-height: 32px;
+    margin: 0px;
+    padding-bottom: 0px;
+}
+.table-modelos-add {
+    padding: 0px;
+    margin: 0px;
+}
+.table-modelos-add .td-btn-added {
+    text-align: right;
+    border-right: 1px solid #CCC;
+}
+.table-modelos-add .td-btn-added button {
+    margin-top: -5px;
+}
+.table-modelos-add .tr-two {
+    border: 1px solid #CCC;
+    border-top: none;
+}
+.table-modelos-add .tr-none {
+    background-color: transparent !important;
+}
+.table-modelos-add.etapa3 tr {
+    border-left: 1px solid #CCC;
+    border-right: 1px solid #CCC;
+}
+.table-modelos-add.etapa3 tr.tr-none {
+    border-left: none !important;
+    border-right: 1px solid #CCC;
+}
+.ul-resumo .li-one, .ul-resumo-historico .li-one{
+    float: left;
+}
+
+.ul-resumo .li-two, .ul-resumo-historico .li-two {
+    float: right;
+}
+.ul-resumo-historico {
+    list-style: none;
+    padding: 0;
+}
+.ul-resumo {
+    list-style: none;
+    padding: 0;
+    margin: 0px 22px 0px 0px;
+    margin-top: -35px;
+}
+
+.ul-resumo li, .ul-resumo-historico li{
+    border-bottom: 1px solid #CCC;
+    height: 22px;
+}
+#fotos .js-target-fotos{
+    overflow-x: hidden;
+    display: inline-flex;
+    box-shadow: 0px 0px 19px #888888;
+}
+
+#fotos .js-next-view, #fotos .js-prev-view {
+    cursor: pointer;
+}
+
+h1 {
+    margin: 0 auto;
+}
+
+ul {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    height: 15px;
+    clear: both;
+}
+.content {
+    padding: 20px;
+}
+.col-img {
+    width: 72px;
+}
+.col-img img {
+    width: 88px;
+}
+
+table tr:not(.tr-none) {
+    border: 1px solid #CCC
+}

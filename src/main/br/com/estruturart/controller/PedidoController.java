@@ -104,6 +104,20 @@ public class PedidoController extends AbstractServlet
         getRequest().setAttribute("heigthModelo", heigthModelo);
     }
 
+    public void imprimirOpAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getParamOr("id", "0"));
+
+        Pedido pedidoModel = new Pedido();
+        TbPedido pedido = pedidoModel.findPedidoVisualizacaoOrdemProducao(id);
+
+        setNoRender(true);
+        getRequest().setAttribute("pedido", pedido);
+        getRequest().setAttribute("source", getServletContext().getInitParameter("source"));
+        getRequest().getRequestDispatcher("/WEB-INF/view/pedido/imprimir-op.jsp")
+            .forward(this.getRequest(), this.getResponse());
+    }
+
     public void editarAction() throws Exception
     {
         int id = Integer.parseInt(this.getParamOr("id", "0"));
