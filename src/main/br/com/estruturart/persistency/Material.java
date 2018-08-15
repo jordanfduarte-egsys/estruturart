@@ -254,4 +254,28 @@ public class Material extends AbstractPersistency
         conn.close();
         return materiaisList;
     }
+
+
+    public List<TbMaterial> findAll() throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM MATERIAL ORDER BY descricao");
+        ResultSet rs = ps.executeQuery();
+        List<TbMaterial> materiaisList = new ArrayList<TbMaterial>();
+        while (rs.next()) {
+            TbMaterial material = new TbMaterial();
+            material.setId(rs.getInt("id"));
+            material.setDescricao(rs.getString("descricao"));
+            material.setMateriaPrima(rs.getInt("materia_prima"));
+            material.setDataInclusao(rs.getDate("data_inclusao"));
+            material.setStatusMaterialId(rs.getInt("status_material_id"));
+            material.setUnidadeMedidaId(rs.getInt("unidade_medida_id"));
+            material.setFornecedorId(rs.getInt("fornecedor_id"));
+            material.setPreco(rs.getFloat("preco"));
+            material.setQuantidade(rs.getInt("quantidade"));
+            materiaisList.add(material);
+        }
+        conn.close();
+        return materiaisList;
+    }
 }

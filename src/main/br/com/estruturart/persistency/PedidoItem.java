@@ -131,7 +131,7 @@ public class PedidoItem extends AbstractPersistency
         Connection conn = ConnectionManager.getConnection();
 
         String sql = String.format(
-            "SELECT i.*, p.usuario_id FROM pedido_itens i INNER JOIN pedido p ON "
+            "SELECT i.*, p.usuario_id, p.valor_total FROM pedido_itens i INNER JOIN pedido p ON "
             + " i.pedido_id = p.id INNER JOIN usuario u ON p.usuario_id = u.id WHERE i.id = %d",
             itemId
         );
@@ -152,6 +152,7 @@ public class PedidoItem extends AbstractPersistency
             item.setModeloId(rs.getInt("modelo_id"));
 
             pedido.setId(rs.getInt("pedido_id"));
+            pedido.setValorTotal(rs.getFloat("valor_total"));
             usuario.setId(rs.getInt("usuario_id"));
             pedido.setUsuario(usuario);
             item.setPedido(pedido);

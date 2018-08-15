@@ -32,11 +32,11 @@
                     </li>
                     <li>
                         <span class="pull-left">Prev. de entrega: ${pedido.getDataPrevisaoInstalacaoString()}</span>
-                        <span class="pull-right">Endereço: ${pedido.getEndereco().getLogradouro()}, ${pedido.getEndereco().getNumero()} - ${pedido.getEndereco().getBairro()} - ${pedido.getEndereco().getCidade().getNome()} - ${pedido.getEndereco().getCidade().getEstado().getUf()} - CEP: ${pedido.getEndereco().getCepString()}</span>
+                        <span class="pull-right">Entrega: ${pedido.getEndereco().getLogradouro()}, ${pedido.getEndereco().getNumero()} - ${pedido.getEndereco().getBairro()} - ${pedido.getEndereco().getCidade().getNome()} - ${pedido.getEndereco().getCidade().getEstado().getUf()} - CEP: ${pedido.getEndereco().getCepString()}</span>
                     </li>
                     <li>
                         <span class="pull-left">Dias para produção: ${pedido.getTotalDiasProducao()}</span>
-                        <span class="pull-right">Observacao: ${pedido.getObservacao()}</span>
+                        <span class="pull-right">Observação: ${pedido.getObservacao()}</span>
                     </li>
                 </ul>
             </div>

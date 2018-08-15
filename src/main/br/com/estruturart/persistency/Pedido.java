@@ -54,6 +54,29 @@ public class Pedido extends AbstractPersistency
         return pedido.getId();
     }
 
+    public void updatePrecoTotal(int pedidoId, float valor) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        String sql = String.format(
+            "UPDATE PEDIDO SET valor_total = '%s' WHERE id = %d",
+            valor, pedidoId
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+        System.out.println(sql);
+
+        if (!isConnection()) {
+            conn.close();
+        }
+    }
+
     public void update(TbPedido pedido) throws SQLException
     {
         Connection conn = null;

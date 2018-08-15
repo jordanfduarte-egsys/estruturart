@@ -288,8 +288,8 @@ public class PedidoController extends AbstractServlet
         LogPedido logPedido = new LogPedido();
         JsonModel jsonModel = new JsonModel();
         SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
-System.out.println("STATUS: " + status);
-System.out.println("STATUS: " + id);
+        System.out.println("STATUS: " + status);
+        System.out.println("STATUS: " + id);
         if (status > 0 && id > 0) {
             TbPedido pedido = modelPedido.findPedidoVisualizacao(id);
             TbParametro parametro = modelParametros.findAll();
@@ -462,6 +462,7 @@ System.out.println("STATUS: " + id);
         JsonModel jsonModel = new JsonModel();
         Lancamento lancamentoModel = new Lancamento();
         PedidoItem pedidoItemModel = new PedidoItem();
+        Pedido pedidoModel = new Pedido();
         if (id > 0 && valor > 0 && !descricao.equals("")) {
             TbLancamento lancamento = new TbLancamento();
             TbPedidoItem item = pedidoItemModel.findPedidoByItem(id);
@@ -481,6 +482,7 @@ System.out.println("STATUS: " + id);
             lancamento.setPedidoItensId(id);
             lancamentoModel.insert(lancamento);
 
+            pedidoModel.updatePrecoTotal(item.getPedidoId(), item.getPedido().getValorTotal() +  valor);
             jsonModel.setMessage("Lançamento realizado com sucesso!");
             jsonModel.setStatus(true);
         } else {

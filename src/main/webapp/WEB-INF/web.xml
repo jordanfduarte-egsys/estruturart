@@ -105,6 +105,12 @@
       <servlet-name>Pedido</servlet-name>
       <servlet-class>br.com.estruturart.controller.PedidoController</servlet-class>
   </servlet>
+  <servlet>
+      <description>Listagem de Lancamentos</description>
+      <display-name>Lancamento</display-name>
+      <servlet-name>Lancamento</servlet-name>
+      <servlet-class>br.com.estruturart.controller.LancamentoController</servlet-class>
+  </servlet>
   <servlet-mapping>
       <servlet-name>Auth</servlet-name>
       <url-pattern>/auth</url-pattern>
@@ -187,5 +193,13 @@
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>
     <url-pattern>/cidade/find-cidade</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Lancamento</servlet-name>
+    <url-pattern>/lancamento</url-pattern>
+    <url-pattern>/lancamento/</url-pattern>
+    <url-pattern>/lancamento/cadastro</url-pattern>
+    <url-pattern>/lancamento/index/page/*</url-pattern>
+    <url-pattern>/lancamento/editar/id/*</url-pattern>
   </servlet-mapping>
 </web-app>

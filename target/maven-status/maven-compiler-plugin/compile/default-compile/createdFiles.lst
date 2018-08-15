@@ -26,6 +26,7 @@ br\com\estruturart\controller\MaterialController.class
 br\com\estruturart\persistency\Cidade.class
 br\com\estruturart\model\TbPerfil.class
 br\com\estruturart\utility\Feriados.class
+br\com\estruturart\controller\LancamentoController.class
 br\com\estruturart\utility\Paginator.class
 br\com\estruturart\persistency\LogError.class
 br\com\estruturart\persistency\Material.class

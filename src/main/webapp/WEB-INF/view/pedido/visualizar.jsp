@@ -97,7 +97,7 @@
                     <table class="table table-striped js-row-material">
                         <tbody>
                             <c:forEach items="${pedido.getItens()}" var="iterator">
-                                <tr class="<c:if test="${iterator.getStatusItemId() == 2}">opaco</c:if>">
+                                <tr class="<c:if test="${iterator.getStatusItemId() == 2}">opaco</c:if>" id="item-${iterator.getId()}">
                                     <td><b data-toggle="tooltip" title="Status do item: ${iterator.getStatusItem().getNome()}">#${iterator.getIdString()} - </b>${iterator.getModelo().getNome()} - ${iterator.getDimensao()}</td>
                                     <td>Preço: R$ ${iterator.getPrecoItem()}</td>
                                     <td>

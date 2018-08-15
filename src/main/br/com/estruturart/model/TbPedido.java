@@ -1,6 +1,7 @@
 package br.com.estruturart.model;
 
 import java.util.Date;
+import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import br.com.estruturart.utility.StringUtilsPad;
 import br.com.estruturart.model.TbPedidoItem;
@@ -176,6 +177,13 @@ public class TbPedido extends AbstractModel
         SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         SimpleDateFormat df1 = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss");
 
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date dateWithoutTime = cal.getTime();
+
         this.url = String.format("{0}/visualizar/id/%s", getId());
 
         this.start = df1.format(getDataPrevisaoInstalacao().getTime());
@@ -183,12 +191,12 @@ public class TbPedido extends AbstractModel
 
         String status = "Pedido Pendente";
         if (getStatusPedidoId() != 7 && getStatusPedidoId() != 6) {
-            if (getDataPrevisaoInstalacao().before(new Date())) {
+            if (getDataPrevisaoInstalacao().compareTo(dateWithoutTime) < 0) {
                 this.color = "#dc3545";
-                status = "Pedido Atrasado";
+                status = "Pedido Atrasado. Ajuste a data de previsão de instalação";
             } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
                 this.color = "#ffc107";
-                status = "Pedido Pendente";
+                status = "Instalação e montagem marcado para hoje.";
             }
         }
 
@@ -277,7 +285,14 @@ public class TbPedido extends AbstractModel
     {
         SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         String color = "#007bff";
-        if (getDataPrevisaoInstalacao().before(new Date())) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date dateWithoutTime = cal.getTime();
+
+        if (getDataPrevisaoInstalacao().compareTo(dateWithoutTime) < 0) {
             color = "#dc3545";
         } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
             color = "#ffc107";
