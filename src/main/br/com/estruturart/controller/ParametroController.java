@@ -18,15 +18,28 @@ public class ParametroController extends AbstractServlet
     public void indexAction() throws Exception
     {
         Parametro modelParametro = new Parametro();
-        TbParametro parametro = modelParametro.findParametros();
+        TbParametro parametro = modelParametro.findAll();
         
         if (this.getMethod().equals(HttpMethod.POST)) {
-            parametro.setTalCoisa();
+            parametro.setCep(getParameterOrValue("cep", ""));
+            parametro.setLogradouro(getParameterOrValue("logradouro", ""));
+            parametro.setBairro(getParameterOrValue("bairro", ""));
+            parametro.setNumero(getParameterOrValue("numero", ""));
+            parametro.setComplemento(getParameterOrValue("complemento", ""));
+            parametro.setUf(getParameterOrValue("uf", ""));
+            parametro.setCidade(getParameterOrValue("cidade", ""));
+            parametro.setFrom(getParameterOrValue("from", ""));
+            parametro.setHostMail(getParameterOrValue("host_mail", ""))
+            parametro.setHost(getParameterOrValue("host", ""));
+            parametro.setUsuario(getParameterOrValue("usuario", ""));
+            parametro.setSenha(getParameterOrValue("senha", ""));
+            
 
             modelParametro.update(parametro);
             getFlashMessenger().setType(FlashMessenger.SUCCESS).add("Parametro salvo com sucesso!");
             redirect("parametro");
         }
+
         this.getRequest().setAttribute("parametro", parametro);
     }
 }
