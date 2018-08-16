@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>404 - EstuturaArt</title>
+  <title>404 - EstuturArt</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
   body {
@@ -66,7 +66,7 @@
       <h1>Oops.</h1>
       <p>Essa página não existe ou foi retirada do ar.</p>
     </div>
-    <img src="/estruturart/image?path=files/spilled-milk.png" class="image">
+    <img src="/estruturart/image?path=/files/spilled-milk.png" class="image">
   </div> 
 </body>
 <footer><a href="/estruturart/" target="_blank">Home</a></footer>
