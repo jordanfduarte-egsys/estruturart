@@ -74,18 +74,8 @@
                         <li><a href="${source}pedido"><i class="fab fa-slack-hash"></i> Pedidos</a></li>
                         <li><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
                         <li><a href="${source}lancamento/fluxo-caixa"><i class="fa fa-fw fa-calendar-alt"></i> Fluxo de caixa</a></li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
-
-                        <li><a href="https://bootadmin.net/demo/icons"><i class="fa fa-fw fa-flag"></i> Icons</a></li>
-                        <li><a href="https://bootadmin.net/demo/buttons"><i class="fa fa-fw fa-toggle-on"></i> Buttons</a></li>
-                        <li><a href="https://bootadmin.net/demo/forms"><i class="fa fa-fw fa-edit"></i> Forms</a></li>
-                        <li><a href="https://bootadmin.net/demo/datatables"><i class="fa fa-fw fa-table"></i> Datatables</a></li>
-                        <li><a href="https://bootadmin.net/demo/cards"><i class="fa fa-fw fa-address-card"></i> Cards</a></li>
-                        <li><a href="https://bootadmin.net/demo/calendar"><i class="fa fa-fw fa-calendar-alt"></i> Calendar</a></li>
-                        <li><a href="https://bootadmin.net/demo/charts"><i class="fa fa-fw fa-chart-pie"></i> Charts</a></li>
+                        <li><a href="${source}parametro"><i class="fa fa-fw fa-cogs"></i> Configuração</a></li>
+                       
                         <li><a href="https://bootadmin.net/demo/maps"><i class="fa fa-fw fa-map-marker-alt"></i> Maps</a></li>
                         <li>
                             <a href="#sm_examples" data-toggle="collapse" aria-expanded="true">
