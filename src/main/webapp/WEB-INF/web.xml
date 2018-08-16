@@ -201,5 +201,7 @@
     <url-pattern>/lancamento/cadastro</url-pattern>
     <url-pattern>/lancamento/index/page/*</url-pattern>
     <url-pattern>/lancamento/editar/id/*</url-pattern>
+    <url-pattern>/lancamento/fluxo-caixa</url-pattern>
+    <url-pattern>/lancamento/fluxo-caixa-impressao</url-pattern>
   </servlet-mapping>
 </web-app>

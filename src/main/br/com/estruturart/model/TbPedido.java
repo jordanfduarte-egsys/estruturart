@@ -271,6 +271,15 @@ public class TbPedido extends AbstractModel
         return "";
     }
 
+    public String getDataInclusaoString()
+    {
+        if (getDataInclusao() instanceof Date) {
+            return this.getSimpleDateFormat("dd/MM/yyyy").format(getDataInclusao());
+        }
+
+        return "";
+    }
+
     public TbStatusPedido getStatusPedido()
     {
         return this.statusPedido;

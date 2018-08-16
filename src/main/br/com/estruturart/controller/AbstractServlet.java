@@ -97,11 +97,14 @@ public class AbstractServlet extends HttpServlet {
             }
         }
 
+        String methodAux = method;
         method = camelcasify(method);
         method = method + "Action";
-
+        System.out.println("METODO SEM MAGINA: " + methodAux);
         try {
+            //@verificar se controller existe e se actrion existe
             this.route.setAction(method);
+            this.route.setActionName(methodAux);
             this.route.setController(this.getClass().getSimpleName().toLowerCase().replace("controller", ""));
             System.out.println("ABSTRACT CHAMANDO ACTION: " + method + "USUARIO LOGADO: "
                     + (this.getSession().getAttribute("usuario") instanceof TbUsuario));

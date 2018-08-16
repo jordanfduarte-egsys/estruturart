@@ -85,6 +85,7 @@ function bindMask() {
     $('[data-format="float"]').off().mask('0000000,00', {reverse: true,  clearOnEmpty: true});
     $('[data-format="float2"]').off().mask('0000000,000', {reverse: true,  clearOnEmpty: true});
     $('[data-format="telefone"]').off().mask('(000) 00000-0000');
+    $('[data-toggle="datepicker"]').mask('00/00/0000');
     $('[data-toggle="datepicker"]').datepicker({
         format: 'dd/mm/yyyy',
         days: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
@@ -143,6 +144,10 @@ function bindMask() {
         var currentValue = $(this).val();
         $(this).val('');
         $(this).val(currentValue);
+    });
+
+    $('body').on('click', '.js-print-table', function() {
+      window.open(BASE_URL + $(this).data('href'));
     });
 }
 

@@ -21,7 +21,7 @@ public class TbModelo extends AbstractModel
     private float larguraNova;
     private float alturaNova;
     private String imagem;
-    private String imagemSource;
+    private String imagemSource = "";
     private float precoPintura = 0;
     private float porcentagemAcrescimo = 1;
     private int qtdDiasProducao = 1;
@@ -277,10 +277,9 @@ public class TbModelo extends AbstractModel
 
     public String getImagemSource()
     {
-        String imagemSourceAux = this.imagemSource;
         this.imagemSource = String.format("image?path=/files/sem-foto.jpg");
-        if (imagemSourceAux == null) {
-            this.imagemSource = String.format("image?path=/files/modelos/%s", imagem);
+        if (!this.imagem.equals("")) {
+            this.imagemSource = String.format("image?path=/files/modelos/%s", this.imagem);
         }
 
         return this.imagemSource;

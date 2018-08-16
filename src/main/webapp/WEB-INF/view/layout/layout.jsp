@@ -73,7 +73,7 @@
                         <li><a href="${source}orcamento"><i class="fas fa-cart-plus"></i> Orçamento</a></li>
                         <li><a href="${source}pedido"><i class="fab fa-slack-hash"></i> Pedidos</a></li>
                         <li><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
+                        <li><a href="${source}lancamento/fluxo-caixa"><i class="fa fa-fw fa-calendar-alt"></i> Fluxo de caixa</a></li>
                         <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
                         <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>
                         <li><a href="${source}usuario"><i class="fa fa-fw fa-flag"></i> Usuários</a></li>

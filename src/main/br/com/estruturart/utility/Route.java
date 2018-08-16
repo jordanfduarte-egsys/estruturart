@@ -4,6 +4,7 @@ public class Route
 {
     private String controller;
     private String action;
+    private String actionName;
 
     public String getController()
     {
@@ -23,6 +24,10 @@ public class Route
     }
     public String getActionName()
     {
-        return this.getAction().replace("Action", "");
+        return this.actionName;
+    }
+    public void setActionName(String actionName)
+    {
+        this.actionName = actionName;
     }
 }

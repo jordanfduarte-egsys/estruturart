@@ -23,6 +23,9 @@ public class TbLancamento extends AbstractModel
     private int materialId = 0;
     private TbMaterial material = new TbMaterial();
     private TbPedidoItem pedidoItem = new TbPedidoItem();
+    private float somaEmpresa;
+    private float lucroEmpresa;
+    private float diferenca;
 
     public int getId()
     {
@@ -142,6 +145,51 @@ public class TbLancamento extends AbstractModel
     public void setPedidoItem(TbPedidoItem pedidoItem)
     {
         this.pedidoItem = pedidoItem;
+    }
+
+    public float getSomaEmpresa()
+    {
+        return this.somaEmpresa;
+    }
+
+    public String getSomaEmpresaString()
+    {
+        return formatMoney(this.somaEmpresa);
+    }
+
+    public void setSomaEmpresa(float somaEmpresa)
+    {
+        this.somaEmpresa = somaEmpresa;
+    }
+
+    public float getLucroEmpresa()
+    {
+        return this.lucroEmpresa;
+    }
+
+    public String getLucroEmpresaString()
+    {
+        return formatMoney(this.lucroEmpresa);
+    }
+
+    public void setLucroEmpresa(float lucroEmpresa)
+    {
+        this.lucroEmpresa = lucroEmpresa;
+    }
+
+    public float getDiferenca()
+    {
+        return this.diferenca;
+    }
+
+    public void setDiferenca(float diferenca)
+    {
+        this.diferenca = diferenca;
+    }
+
+    public String getDiferencaString()
+    {
+        return formatMoney(this.diferenca);
     }
 
     public boolean isValid()

@@ -10,6 +10,7 @@ import java.util.Date;
 import com.mysql.jdbc.Statement;
 import br.com.estruturart.model.TbLancamento;
 import br.com.estruturart.model.TbPedidoItem;
+import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.model.TbMaterial;
 import br.com.estruturart.utility.Paginator;
 import br.com.estruturart.utility.ParamRequestManager;
@@ -184,6 +185,84 @@ public class Lancamento extends AbstractPersistency
             lan.setUsuarioId(rs.getInt("usuario_id"));
             lan.setMaterialId(rs.getInt("material_id"));
             lan.setPedidoItensId(rs.getInt("pedido_itens_id"));
+        }
+
+        return lan;
+    }
+
+    public List<TbLancamento> findFluxoCaixa(String dataIni, String dataFim) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT l.*, m2.descricao as desc_material, i.pedido_id, p.data_inclusao as data_inclusao_pedido, p.data_previsao_instalacao" +
+            " FROM lancamento l " +
+            " LEFT JOIN pedido_itens i ON l.pedido_itens_id = i.id" +
+            " LEFT JOIN pedido p ON i.pedido_id = p.id" +
+            " LEFT JOIN material m ON i.modelo_id = m.id" +
+            " LEFT JOIN material m2 ON l.material_id = m2.id" +
+            " WHERE l.data_inclusao BETWEEN '%s 00:00:00' AND '%s 23:59:59' ORDER BY l.data_inclusao",
+            dataIni,
+            dataFim
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        List<TbLancamento> lans = new ArrayList<TbLancamento>();
+        while (rs.next()) {
+            TbLancamento lan = new TbLancamento();
+            TbMaterial material2 = new TbMaterial();
+            TbPedidoItem item = new TbPedidoItem();
+            TbPedido pedido = new TbPedido();
+
+            lan.setId(rs.getInt("id"));
+            lan.setPreco(rs.getFloat("preco"));
+            lan.setPrecoPintura(rs.getFloat("preco_pintura"));
+            lan.setDataInclusao(new Date(rs.getTimestamp("data_inclusao").getTime()));
+            lan.setDescricao(rs.getString("descricao"));
+            lan.setDesconto(rs.getFloat("desconto"));
+            lan.setUsuarioId(rs.getInt("usuario_id"));
+            lan.setPedidoItensId(rs.getInt("pedido_itens_id"));
+            lan.setMaterialId(rs.getInt("material_id"));
+
+            material2.setId(rs.getInt("material_id"));
+            material2.setDescricao(rs.getString("desc_material"));
+
+            pedido.setId(rs.getInt("pedido_id"));
+            pedido.setDataInclusao(rs.getDate("data_inclusao_pedido"));
+            pedido.setDataPrevisaoInstalacao(rs.getDate("data_previsao_instalacao"));
+            item.setId(rs.getInt("pedido_itens_id"));
+            item.setPedidoId(rs.getInt("pedido_id"));
+            item.setPedido(pedido);
+            lan.setPedidoItem(item);
+            lan.setMaterial(material2);
+            lans.add(lan);
+        }
+
+        return lans;
+    }
+
+    public TbLancamento findFluxoCaixaTotais(String dataIni, String dataFim) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        String sql = String.format(
+            "SELECT SUM(IF (l.preco < 0, ABS(l.preco), 0)) as soma_empresa, SUM(IF (l.preco > 0, l.preco + IFNULL(l.preco_pintura, 0), 0)) as soma_lucro FROM lancamento l " +
+            " LEFT JOIN pedido_itens i ON l.pedido_itens_id = i.id" +
+            " LEFT JOIN material m ON i.modelo_id = m.id" +
+            " LEFT JOIN material m2 ON l.material_id = m2.id" +
+            " WHERE l.data_inclusao BETWEEN '%s 00:00:00' AND '%s 23:59:59' ORDER BY l.data_inclusao",
+            dataIni,
+            dataFim
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        TbLancamento lan = new TbLancamento();
+        if (rs.next()) {
+            lan.setSomaEmpresa(rs.getFloat("soma_empresa"));
+            lan.setLucroEmpresa(rs.getFloat("soma_lucro"));
+            lan.setDiferenca(rs.getFloat("soma_lucro") - rs.getFloat("soma_empresa"));
         }
 
         return lan;

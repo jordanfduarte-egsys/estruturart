@@ -217,6 +217,19 @@ public class Util
         return "";
     }
 
+    public static String dataEnToBr(String dataEn)
+    {
+        String[] aDataEn = dataEn.split("-");
+
+        if (aDataEn.length == 3) {
+            return String.format(
+                "%s/%s/%s", aDataEn[2], StringUtilsPad.padLeft(aDataEn[1], 2, "0"), aDataEn[0]
+            );
+        }
+
+        return "";
+    }
+
     public static String mask(String mask, String str)
     {
         String strFinal = "";
