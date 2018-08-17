@@ -299,6 +299,8 @@ public class PedidoController extends AbstractServlet
             emailService.setTo(pedido.getUsuario().getEmail());
             emailService.setFrom(parametro.getFrom());
             emailService.setHost(parametro.getHostMail());
+            emailService.setUsuario(parametro.getUsuario());
+            emailService.setSenha(parametro.getSenha());
 
             /**
             * http://commons.apache.org/proper/commons-io/
@@ -424,6 +426,8 @@ public class PedidoController extends AbstractServlet
             emailService.setFrom(parametro.getFrom());
             emailService.setHost(parametro.getHostMail());
             emailService.setHtml(str);
+            emailService.setUsuario(parametro.getUsuario());
+            emailService.setSenha(parametro.getSenha());
             emailService.send();
 
             jsonModel.setStatus(true);
