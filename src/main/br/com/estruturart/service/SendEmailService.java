@@ -20,6 +20,8 @@ public class SendEmailService
     private String to;
     private String from;
     private String host;
+    private final String usuario;
+    private final String senha;
     private LogErrorService logService;
 
     public SendEmailService(HttpServletRequest request, HttpServletResponse response)
@@ -39,16 +41,28 @@ public class SendEmailService
 
         // Assuming you are sending email from localhost
         String host = this.host;
+        
+        String port = "465";
 
         // Get system properties
-        Properties properties = System.getProperties();
+        Properties props = new Properties();
+        
+        /** Parâmetros de conexão com servidor Gmail */
+        props.put("mail.smtp.host", host);
+        props.put("mail.smtp.socketFactory.port", port);
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", port);
 
-        // Setup mail server
-        properties.setProperty("mail.smtp.host", host);
-
-        // Get the default Session object.
-        Session session = Session.getDefaultInstance(properties);
-
+        Session session = Session.getDefaultInstance(props,
+            new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                 return new PasswordAuthentication(usuario, senha);
+            }
+        });
+        
+        // Ativa Debug para sessão
+        session.setDebug(true);
         try {
             // Create a default MimeMessage object.
             MimeMessage message = new MimeMessage(session);
@@ -121,5 +135,15 @@ public class SendEmailService
     public void setHost(String host)
     {
         this.host = host;
+    }
+    
+    public void setUsuario(String usuario)
+    {
+        this.usuario = usuario;
+    }
+    
+    public void setSenha(String senha)
+    {
+        this.senha = senha;
     }
 }
