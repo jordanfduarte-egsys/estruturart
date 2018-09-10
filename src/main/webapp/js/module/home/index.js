@@ -34,7 +34,7 @@ var crud = {
             eventsAdded.push(value.id);
             confCalender.events.push({
               start: value.start,
-              url: value.url.format(window.location.href),
+              url: value.url.format(window.location.href.replace("/home", "/pedido")),
               title: value.title,
               color: value.color
             });

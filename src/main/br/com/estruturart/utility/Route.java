@@ -21,6 +21,7 @@ public class Route
     public void setAction(String action)
     {
         this.action = action;
+        setActionName(action.replaceAll("Action", ""));
     }
     public String getActionName()
     {

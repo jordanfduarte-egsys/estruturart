@@ -277,9 +277,9 @@ public class TbModelo extends AbstractModel
 
     public String getImagemSource()
     {
-        this.imagemSource = String.format("image?path=/files/sem-foto.jpg");
+        this.imagemSource = String.format("files/sem-foto.jpg");
         if (!this.imagem.equals("")) {
-            this.imagemSource = String.format("image?path=/files/modelos/%s", this.imagem);
+            this.imagemSource = String.format("files/modelos/%s", this.imagem);
         }
 
         return this.imagemSource;

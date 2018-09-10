@@ -45,6 +45,7 @@
              <tr>
                  <th scope="col">#</th>
                  <th scope="col">Nome</th>
+                 <th scope="col">Código Interno</th>
                  <th scope="col">Perfil</th>
                  <th scope="col">Status</th>
                  <th scope="col">Tipo Pessoa</th>
@@ -58,6 +59,7 @@
                          <tr>
                              <th scope="row">${iterator.getId()}</th>
                              <td>${iterator.getNome()}</td>
+                             <td>${iterator.getCodigo()}</td>
                              <td>${iterator.getPerfil().getDescricao()}</td>
                              <td>${iterator.getStatusUsuario().getDescricao()}</td>
                              <td>${iterator.getTipoPessoaNome()}</td>
@@ -71,7 +73,7 @@
                  </c:if>
                  <c:if test="${paginator.getIterator().size() == 0}">
                      <tr>
-                         <td colspan="6">Nenhum usuário cadastrado!</td>
+                         <td colspan="7">Nenhum usuário cadastrado!</td>
                      </tr>
                 </c:if>
              </tbody>

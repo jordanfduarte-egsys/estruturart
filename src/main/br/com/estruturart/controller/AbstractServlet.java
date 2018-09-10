@@ -206,6 +206,7 @@ public class AbstractServlet extends HttpServlet {
         String sStackTrace = sw.toString();
         System.out.println("EXCEPTION O QUE ?" + sStackTrace);
         this.route.setAction("error");
+        this.route.setActionName("error");
         this.route.setController("error");
 
         this.prePopulateView();
@@ -223,6 +224,43 @@ public class AbstractServlet extends HttpServlet {
         this.getRequest().setAttribute("source", getServletContext().getInitParameter("source"));
         this.getRequest().setAttribute("route", this.route);
         this.getRequest().setAttribute("flashMessenger", flashMessenger);
+
+        switch(this.route.getController()) {
+            case "auth":
+                this.getRequest().setAttribute("title", "Início");
+            break;
+            case "usuario":
+                this.getRequest().setAttribute("title", "Usuários");
+            break;
+            case "fornecedor":
+                this.getRequest().setAttribute("title", "Fornecedores");
+            break;
+            case "material":
+                this.getRequest().setAttribute("title", "Materiais");
+            break;
+            case "modelo":
+                this.getRequest().setAttribute("title", "Modelos");
+            break;
+            case "orcamento":
+                this.getRequest().setAttribute("title", "Orçamento");
+            break;
+            case "pedido":
+                this.getRequest().setAttribute("title", "Pedidos");
+            break;
+            case "lancamento":
+                this.getRequest().setAttribute("title", "Lançamentos");
+            break;
+            case "parametro":
+                this.getRequest().setAttribute("title", "Configuração");
+            break;
+            default :
+                this.getRequest().setAttribute("title", "");
+            break;
+        }
+
+        if (this.route.getController().equals("lancamento") && this.route.getActionName().equals("fluxo-caixa")) {
+            this.getRequest().setAttribute("title", "Fluxo de caixa");
+        }
     }
 
     public String getMethod() {

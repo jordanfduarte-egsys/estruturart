@@ -39,6 +39,8 @@ public class Parametro extends AbstractPersistency
                     parametro.setNumero(rs.getString("value")); break;
                 case "bairro":
                     parametro.setBairro(rs.getString("value")); break;
+                case "complemento":
+                    parametro.setComplemento(rs.getString("value")); break;
                 case "cep":
                     parametro.setCep(rs.getString("value")); break;
                 case "cidade":
@@ -60,5 +62,67 @@ public class Parametro extends AbstractPersistency
 
         conn.close();
         return parametro;
+    }
+
+    public void update(TbParametro parametro) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        String sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'logradouro'", parametro.getLogradouro());
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'numero'", parametro.getNumero());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'bairro'", parametro.getBairro());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'cep'", parametro.getCep());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'cidade'", parametro.getCidade());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'uf'", parametro.getUf());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'host_mail'", parametro.getHostMail());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'host'", parametro.getHost());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'usuario'", parametro.getUsuario());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'senha'", parametro.getSenha());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'from'", parametro.getFrom());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        sql = String.format("UPDATE configuracao SET value = '%s' WHERE field = 'complemento'", parametro.getComplemento());
+        ps = conn.prepareStatement(sql);
+        ps.execute();
+
+        if (!isConnection()) {
+            conn.close();
+        }
     }
 }

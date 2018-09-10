@@ -69,3 +69,8 @@ fieldset > legend {
 .pt-6 {
     padding-top: 3.5rem!important;
 }
+
+body.home {
+    background: url(../files/home.png) no-repeat center fixed;
+    background-size: cover;
+}

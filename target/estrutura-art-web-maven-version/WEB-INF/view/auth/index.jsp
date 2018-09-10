@@ -3,7 +3,7 @@
 <div class="container h-100">
        <div class="row h-100 justify-content-center align-items-center">
            <div class="col-md-4">
-               <h1 class="text-center mb-4">${nomeEmpresa}</h1>
+               <h1 class="text-center mb-4 text-white">${nomeEmpresa}</h1>
                <div class="card">
                    <div class="card-body">
                            <c:if test="${msgPassword != null || msgUsuario != null}">
@@ -33,7 +33,7 @@
                            <div class="form-check mb-3">
                                <label class="form-check-label">
                                    <input type="checkbox" name="remember" class="form-check-input">
-                                   Remember Me
+                                   Lembrar senha
                                </label>
                            </div>
 

@@ -20,8 +20,8 @@ public class SendEmailService extends Authenticator
     private String to;
     private String from;
     private String host;
-    private final String usuario;
-    private final String senha;
+    private String usuario;
+    private String senha;
     private LogErrorService logService;
 
     public SendEmailService(HttpServletRequest request, HttpServletResponse response)
@@ -41,13 +41,13 @@ public class SendEmailService extends Authenticator
 
         // Assuming you are sending email from localhost
         String host = this.host;
-        
+
         // Porta Gmail
         String port = "465";
 
         // Get system properties
         Properties props = new Properties();
-        
+
         /** Parâmetros de conexão com servidor Gmail */
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.socketFactory.port", port);
@@ -57,7 +57,7 @@ public class SendEmailService extends Authenticator
 
         // @see https://www.devmedia.com.br/enviando-email-com-javamail-utilizando-gmail/18034
         Session session = Session.getDefaultInstance(props, this);
-        
+
         // Ativa Debug para sessão
         session.setDebug(true);
         try {
@@ -133,17 +133,17 @@ public class SendEmailService extends Authenticator
     {
         this.host = host;
     }
-    
+
     public void setUsuario(String usuario)
     {
         this.usuario = usuario;
     }
-    
+
     public void setSenha(String senha)
     {
         this.senha = senha;
     }
-    
+
     @Override
     protected PasswordAuthentication getPasswordAuthentication()
     {

@@ -20,6 +20,10 @@
                             ${fornecedor.getValidation().getParamOr('nome', '')}
                         </div>
                     </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" data-format="telefone" class="form-control <c:if test="${fornecedor.getValidation().hasParam('telefone')}">is-invalid</c:if>" id="telefone" name="telefone" placeholder="(000) 00000-0000" value="${fornecedor.getTelefone()}">
+                    </div>
                </div>
 
                 <div class="card-footer bg-white">

@@ -206,6 +206,7 @@ public class TbPedidoItem extends AbstractModel
         return formatMoney(total);
     }
 
+
     public String getSomaPrecoPintura()
     {
         float total = 0;

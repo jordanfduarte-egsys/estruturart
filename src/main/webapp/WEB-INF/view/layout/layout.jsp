@@ -16,9 +16,9 @@
         <link rel="stylesheet" href="${source}js/datepicker-master/dist/datepicker.css">
         <link rel="stylesheet" href="${source}js/fullcalendar-3.9.0/fullcalendar.min.css">
 
-        <title>Estrutura Art ${title}</title>
+        <title>${nomeEmpresa}|${title}</title>
     </head>
-    <body class="bg-light">
+    <body class="bg-light <c:if test="${route.getController().equals('auth')}">home</c:if>"></body>
         <input id="urlBase" type="hidden" value="${source}"/>
 
         <c:if test="${isAuth == true}">
@@ -28,10 +28,8 @@
 
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-envelope"></i> 5</a></li>
-                        <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-bell"></i> 3</a></li>
                         <li class="nav-item dropdown">
-                            <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> ${auth.getNome()}</a>
+                            <a href="#" id="dd_user" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> ${auth.getCodigo()} - ${auth.getNome()}</a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dd_user">
                                 <a href="${source}usuario/editar/id/${auth.getId()}" class="dropdown-item">Perfil</a>
                                 <a href="${source}auth/logout" class="dropdown-item">Sair</a>
@@ -46,50 +44,17 @@
             <c:if test="${isAuth == true}">
                 <div class="sidebar sidebar-dark bg-dark">
                     <ul class="list-unstyled">
-                        <li><a href="https://bootadmin.net/demo"><i class="fa fa-fw fa-industry"></i> Home</a></li>
-                        <li>
-                            <a href="#sm_base" data-toggle="collapse">
-                                <i class="fa fa-fw fa-cube"></i> Base
-                            </a>
-                            <ul id="sm_base" class="list-unstyled collapse">
-                                <li><a href="https://bootadmin.net/demo/base/colors">Colors</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/typography">Typography</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/tables">Tables</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/progress">Progress</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/modal">Modal</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/alerts">Alerts</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/popover">Popover</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/tooltip">Tooltip</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/dropdown">Dropdown</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/navs">Navs</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/collapse">Collapse</a></li>
-                                <li><a href="https://bootadmin.net/demo/base/lists">Lists</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="${source}usuario"><i class="fa fa-fw fa-user"></i> Usuários</a></li>
-                        <li><a href="${source}fornecedor"><i class="fa fa-fw fa-cube"></i> Fornecedores</a></li>
-                        <li><a href="${source}material"><i class="fa fa-fw fa-cubes"></i> Materiais</a></li>
-                        <li><a href="${source}modelo"><i class="fab fa-windows"></i> Modelos</a></li>
-                        <li><a href="${source}orcamento"><i class="fas fa-cart-plus"></i> Orçamento</a></li>
-                        <li><a href="${source}pedido"><i class="fab fa-slack-hash"></i> Pedidos</a></li>
-                        <li><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
-                        <li><a href="${source}lancamento/fluxo-caixa"><i class="fa fa-fw fa-calendar-alt"></i> Fluxo de caixa</a></li>
-                        <li><a href="${source}parametro"><i class="fa fa-fw fa-cogs"></i> Configuração</a></li>
-                       
-                        <li><a href="https://bootadmin.net/demo/maps"><i class="fa fa-fw fa-map-marker-alt"></i> Maps</a></li>
-                        <li>
-                            <a href="#sm_examples" data-toggle="collapse" aria-expanded="true">
-                                <i class="fa fa-fw fa-lightbulb"></i> Examples
-                            </a>
-                            <ul id="sm_examples" class="list-unstyled collapse show">
-                                <li><a href="https://bootadmin.net/demo/examples/blank">Blank/Starter</a></li>
-                                <li><a href="https://bootadmin.net/demo/examples/pricing">Pricing</a></li>
-                                <li class="active"><a href="https://bootadmin.net/demo/examples/invoice">Invoice</a></li>
-                                <li><a href="https://bootadmin.net/demo/examples/faq">FAQ</a></li>
-                                <li><a href="https://bootadmin.net/demo/examples/login">Login</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="https://bootadmin.net/demo/docs"><i class="fa fa-fw fa-book"></i> Documentation</a></li>
+                        <li class="<c:if test="${route.getController().equals('home')}">active</c:if>"><a href="${source}home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+                        <li class="<c:if test="${route.getController().equals('usuario')}">active</c:if>"><a href="${source}usuario"><i class="fa fa-fw fa-user"></i> Usuários</a></li>
+                        <li class="<c:if test="${route.getController().equals('fornecedor')}">active</c:if>"><a href="${source}fornecedor"><i class="fa fa-fw fa-cube"></i> Fornecedores</a></li>
+                        <li class="<c:if test="${route.getController().equals('material')}">active</c:if>"><a href="${source}material"><i class="fa fa-fw fa-cubes"></i> Materiais</a></li>
+                        <li class="<c:if test="${route.getController().equals('modelo')}">active</c:if>"><a href="${source}modelo"><i class="fab fa-windows"></i> Modelos</a></li>
+                        <li class="<c:if test="${route.getController().equals('orcamento')}">active</c:if>"><a href="${source}orcamento"><i class="fas fa-cart-plus"></i> Orçamento</a></li>
+                        <li class="<c:if test="${route.getController().equals('pedido')}">active</c:if>"><a href="${source}pedido"><i class="fab fa-slack-hash"></i> Pedidos</a></li>
+                        <li class="<c:if test="${route.getController().equals('lancamento')}">active</c:if>"><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
+                        <li class="<c:if test="${route.getController().equals('lancamento') && route.getActionName().equals('fluxo-caixa')}">active</c:if>"><a href="${source}lancamento/fluxo-caixa"><i class="fa fa-fw fa-calendar-alt"></i> Fluxo de caixa</a></li>
+                        <li class="<c:if test="${route.getController().equals('parametro')}">active</c:if>"><a href="${source}parametro"><i class="fa fa-fw fa-cogs"></i> Configuração</a></li>
+                        <li><a href="${source}auth/logout"><i class="fa fa-fw fa-sign-out-alt"></i> Sair</a></li>
                     </ul>
                 </div>
             </c:if>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>404 - EstuturArt</title>
+  <title>Oops - EstuturArt</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
   body {
@@ -30,7 +30,7 @@
     width: 50%;
     margin: 5% auto 0;
   }
-  h1 { 
+  h1 {
     font-size: 5em;
     color: #fff;
     line-height: .7em;
@@ -56,18 +56,18 @@
     text-align: center;
     width: 90%;
   }
-  }  
+  }
   </style>
 </head>
 
-<body>  
+<body>
   <div>
     <div class="dialog">
       <h1>Oops.</h1>
-      <p>Essa p√°gina n√£o existe ou foi retirada do ar.</p>
+      <p>Essa p·gina n„o existe ou foi retirada do ar.</p>
     </div>
-    <img src="/estruturart/image?path=/files/spilled-milk.png" class="image">
-  </div> 
+    <img src="/estrutura-art-web-maven-version/image?path=/files/spilled-milk.png" class="image">
+  </div>
 </body>
 <footer><a href="/estruturart/" target="_blank">Home</a></footer>
 </html>

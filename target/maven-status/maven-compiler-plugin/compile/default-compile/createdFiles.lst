@@ -24,6 +24,7 @@ br\com\estruturart\utility\Util.class
 br\com\estruturart\model\TbEstado.class
 br\com\estruturart\controller\MaterialController.class
 br\com\estruturart\persistency\Cidade.class
+br\com\estruturart\controller\ParametroController.class
 br\com\estruturart\model\TbPerfil.class
 br\com\estruturart\utility\Feriados.class
 br\com\estruturart\controller\LancamentoController.class

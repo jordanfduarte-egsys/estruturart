@@ -43,6 +43,12 @@
       <servlet-class>br.com.estruturart.controller.AuthController</servlet-class>
   </servlet>
   <servlet>
+      <description>Parâmetro</description>
+      <display-name>Parametro</display-name>
+      <servlet-name>Parametro</servlet-name>
+      <servlet-class>br.com.estruturart.controller.ParametroController</servlet-class>
+  </servlet>
+  <servlet>
       <description>Webservice</description>
       <display-name>Webservice</display-name>
       <servlet-name>Webservice</servlet-name>
@@ -203,5 +209,9 @@
     <url-pattern>/lancamento/editar/id/*</url-pattern>
     <url-pattern>/lancamento/fluxo-caixa</url-pattern>
     <url-pattern>/lancamento/fluxo-caixa-impressao</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Parametro</servlet-name>
+    <url-pattern>/parametro</url-pattern>
   </servlet-mapping>
 </web-app>

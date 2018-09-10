@@ -19,7 +19,7 @@ public class ParametroController extends AbstractServlet
     {
         Parametro modelParametro = new Parametro();
         TbParametro parametro = modelParametro.findAll();
-        
+
         if (this.getMethod().equals(HttpMethod.POST)) {
             parametro.setCep(getParameterOrValue("cep", ""));
             parametro.setLogradouro(getParameterOrValue("logradouro", ""));
@@ -29,11 +29,10 @@ public class ParametroController extends AbstractServlet
             parametro.setUf(getParameterOrValue("uf", ""));
             parametro.setCidade(getParameterOrValue("cidade", ""));
             parametro.setFrom(getParameterOrValue("from", ""));
-            parametro.setHostMail(getParameterOrValue("host_mail", ""))
+            parametro.setHostMail(getParameterOrValue("host_mail", ""));
             parametro.setHost(getParameterOrValue("host", ""));
             parametro.setUsuario(getParameterOrValue("usuario", ""));
             parametro.setSenha(getParameterOrValue("senha", ""));
-            
 
             modelParametro.update(parametro);
             getFlashMessenger().setType(FlashMessenger.SUCCESS).add("Parametro salvo com sucesso!");

@@ -52,6 +52,7 @@ public class Fornecedor extends AbstractPersistency
             fornecedor.setId(rs.getInt("id"));
             fornecedor.setNome(rs.getString("nome"));
             fornecedor.setStatus(rs.getInt("status"));
+            fornecedor.setTelefone(rs.getString("telefone"));
             fornecedor.setDataInclusao(rs.getDate("data_inclusao"));
             fornecedores.add(fornecedor);
         }
@@ -74,6 +75,7 @@ public class Fornecedor extends AbstractPersistency
             fornecedor.setId(rs.getInt("id"));
             fornecedor.setNome(rs.getString("nome"));
             fornecedor.setStatus(rs.getInt("status"));
+            fornecedor.setTelefone(rs.getString("telefone"));
             fornecedor.setDataInclusao(rs.getDate("data_inclusao"));
         }
 
@@ -85,9 +87,10 @@ public class Fornecedor extends AbstractPersistency
     {
         Connection conn = ConnectionManager.getConnection();
         String sql = String.format(
-            "INSERT INTO FORNECEDOR (nome, status)" + " VALUES ('%s', %d)",
+            "INSERT INTO FORNECEDOR (nome, status, telefone)" + " VALUES ('%s', %d, '%s')",
             fornecedor.getNome(),
-            1
+            1,
+            fornecedor.getTelefone()
         );
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -103,8 +106,11 @@ public class Fornecedor extends AbstractPersistency
     public int update(TbFornecedor fornecedor) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();
-        String sql = String.format("UPDATE FORNECEDOR SET nome = '%s' " + "WHERE id = %d", fornecedor.getNome(),
-                fornecedor.getId());
+        String sql = String.format("UPDATE FORNECEDOR SET nome = '%s', telefone = '%s' WHERE id = %d",
+            fornecedor.getNome(),
+            fornecedor.getTelefone(),
+            fornecedor.getId()
+        );
 
         PreparedStatement ps = conn.prepareStatement(sql);
         int rows = ps.executeUpdate();
@@ -150,6 +156,7 @@ public class Fornecedor extends AbstractPersistency
             TbFornecedor fornecedor = new TbFornecedor();
             fornecedor.setId(rs.getInt("id"));
             fornecedor.setNome(rs.getString("nome"));
+            fornecedor.setTelefone(rs.getString("telefone"));
             fornecedor.setStatus(rs.getInt("status"));
             fornecedor.setDataInclusao(rs.getDate("data_inclusao"));
 

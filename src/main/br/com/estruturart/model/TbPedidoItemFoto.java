@@ -36,7 +36,7 @@ public class TbPedidoItemFoto extends AbstractModel
     {
         this.caminhoArquivo = caminhoArquivo;
         this.caminhoArquivoCompleto = String.format(
-            "image?path=/files/item/%d/%s",
+            "files/item/%d/%s",
             getPedidoItensId(),
             caminhoArquivo
         );

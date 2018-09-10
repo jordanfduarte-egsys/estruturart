@@ -46,6 +46,7 @@ public class FornecedorController extends AbstractServlet {
 
             if (this.getMethod().equals(HttpMethod.POST)) {
                 fornecedor.setNome(this.getRequest().getParameter("nome"));
+                fornecedor.setTelefone(this.getRequest().getParameter("telefone"));
 
                 if (fornecedor.isValid()) {
                     if (fkFornecedor != 0) {

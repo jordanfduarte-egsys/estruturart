@@ -79,11 +79,13 @@
                                         <tr>
                                             <th>Material</th>
                                             <th>Quantidade</th>
+                                            <th>Fornecedor</th>
                                         </tr>
                                         <c:forEach items="${iterator.getModelo().getMateriais()}" var="material">
                                             <tr>
                                                 <td>${material.getDescricao()} por '${material.getUnidadeMedida().getNome()}</td>
                                                 <td>${material.getQuantidade()}</td>
+                                                <td>${material.getFornecedor().getNome()}</td>
                                             </tr>
                                         </c:forEach>
                                     </table>

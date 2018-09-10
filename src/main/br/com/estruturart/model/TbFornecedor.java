@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import br.com.estruturart.persistency.Fornecedor;
 import br.com.estruturart.utility.RouteParam;
+import br.com.estruturart.utility.Util;
 
 public class TbFornecedor extends AbstractModel
 {
@@ -12,6 +13,7 @@ public class TbFornecedor extends AbstractModel
     private String nome = "";
     private Date dataInclusao;
     private int status;
+    private String telefone = "";
 
     /**
      * @return the id
@@ -86,8 +88,28 @@ public class TbFornecedor extends AbstractModel
         return this.status == 1 ? "Ativo" : "Inativo";
     }
 
-    public String getDateFormat(String format) {
+    public String getDateFormat(String format)
+    {
         return this.getSimpleDateFormat(format).format(this.getDataInclusao());
+    }
+
+    public String getTelefone()
+    {
+        return this.telefone;
+    }
+
+    public String getTelefoneString()
+    {
+        if (this.telefone.equals("")) {
+            return "-";
+        }
+
+        return this.telefone;
+    }
+
+    public void setTelefone(String telefone)
+    {
+        this.telefone = telefone;
     }
 
     @Override

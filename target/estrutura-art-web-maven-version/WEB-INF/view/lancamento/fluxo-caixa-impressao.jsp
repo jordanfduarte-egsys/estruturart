@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="${source}js/datepicker-master/dist/datepicker.css">
         <link rel="stylesheet" href="${source}js/fullcalendar-3.9.0/fullcalendar.min.css">
 
-        <title>Estrutura Art ${title}</title>
+        <title>Fluxo de caixa</title>
     </head>
     <body class="bg-light" onload="window.print(); return false;">
         <div class="d-flex">
@@ -57,7 +57,7 @@
                                 <tr>
                                     <th scope="row">
                                         <c:if test="${iterator1.getPedidoItem().getId() > 0}">
-                                        <a href="${source}pedido/visualizar/id/${iterator1.getPedidoItem().getPedidoId()}#item-${iterator1.getPedidoItem().getId()}" target="_BLANK">#${iterator1.getPedidoItem().getIdString()}</a>
+                                            #${iterator1.getPedidoItem().getIdString()}
                                         </c:if>
                                         <c:if test="${iterator1.getPedidoItem().getId() == 0}">-</c:if>
                                     </th>
