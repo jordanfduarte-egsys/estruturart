@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.persistency.Cidade;
 import br.com.estruturart.persistency.Usuario;
+import br.com.estruturart.persistency.Modelo;
 import br.com.estruturart.model.CepModel;
 import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.model.TbUsuario;
@@ -26,7 +27,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-@WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario" })
+@WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario", "/find-cep-object",
+    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -154,6 +156,15 @@ public class WebserviceController extends AbstractServlet {
         Usuario usuario = new Usuario();
         setRequestXhtmlHttpRequestModel(usuario.findUsuarioByCpjCNpj(
             this.getRequest().getParameter("cpf_cnpj")
+        ));
+    }
+
+    public void buscarModeloAction() throws Exception
+    {
+        setNoRender(true);
+        Modelo modelo = new Modelo();
+        setRequestXhtmlHttpRequestModel(modelo.findModeloByNomeList(
+            this.getParameterOrValue("nome", ""), this.getParameterOrValue("id", "0")
         ));
     }
 }
