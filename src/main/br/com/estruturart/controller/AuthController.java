@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import javax.ws.rs.HttpMethod;
 
 import br.com.estruturart.model.TbUsuario;
+import br.com.estruturart.model.TbPerfil;
 import br.com.estruturart.persistency.Usuario;
 
 /**
@@ -41,12 +42,20 @@ public class AuthController extends AbstractServlet {
                 System.out.println("Pass: " + pass);
                 TbUsuario usuario = modelUsuario.getUsuario(name, pass);
                 if (usuario.getId() > 0) {
-                    HttpSession session = this.getSession();
+                    if (usuario.getStatusUsuarioId() == 1) {
+                        if (usuario.getPerfilId() == TbPerfil.FUNCIONARIO) {
+                            HttpSession session = this.getSession();
 
-                    session.setAttribute("usuario", usuario);
-                    this.redirect("home");
+                            session.setAttribute("usuario", usuario);
+                            this.redirect("home");
+                        } else {
+                            msgUsuario = "Perfil inválido. Verifique!";
+                        }
+                    } else {
+                        msgUsuario = "Usuário bloqueado!";
+                    }
                 } else {
-                    msgUsuario = "E-mail ou senha estãoo incorretos!";
+                    msgUsuario = "E-mail ou senha incorreto!";
                 }
             } else {
                 this.getRequest().setAttribute("msgUsuario", msgUsuario);
