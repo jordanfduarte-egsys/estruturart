@@ -6,11 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import br.com.estruturart.utility.ParamRequestManager;
 
-public abstract class AbstractModel
+public abstract class AbstractModel implements IModel
 {
     private ParamRequestManager validationMessages = new ParamRequestManager();
     private SimpleDateFormat simpleDateFormat;
     private NumberFormat numberFormat;
+    private String message;
 
     public abstract boolean isValid() throws SQLException;
 
@@ -42,5 +43,10 @@ public abstract class AbstractModel
         }
 
         return numberFormat.format(money).replace("R$", "").trim();
+    }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
     }
 }

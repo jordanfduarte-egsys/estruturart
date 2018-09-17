@@ -310,4 +310,37 @@ public class Usuario extends AbstractPersistency
         conn.close();
         return usuario;
     }
+
+    public TbUsuario findUsuarioByUsuarioSenha(String usuarioStr, String senhaStr) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        PreparedStatement ps = conn.prepareStatement(
+            "SELECT * FROM USUARIO WHERE email = (\"" + usuarioStr + "\" OR cpf_cnpj = \"" + usuarioStr +"\") "
+            + " AND senha = MD5(\"" + senhaStr + "\") "
+            + " AND perfil_id = 2 "
+            + " AND senha IS NOT NULL "
+            + " AND senha != ''"
+        );
+
+        TbUsuario usuario = new TbUsuario();
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            usuario.setId(rs.getInt("id"));
+            usuario.setTipoPessoa(rs.getString("tipo_pessoa"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setCpfCnpj(rs.getString("cpf_cnpj"));
+            usuario.setRgIncricaoEstadual(rs.getString("rg_inscricao_estadual"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setTelefone(rs.getString("telefone"));
+            usuario.setCodigo(rs.getString("codigo"));
+            usuario.setSenha(rs.getString("senha"));
+            usuario.setDataInclusao(rs.getDate("data_inclusao"));
+            usuario.setPerfilId(rs.getInt("perfil_id"));
+            usuario.setStatusUsuarioId(rs.getInt("status_usuario_id"));
+        }
+
+        conn.close();
+        return usuario;
+    }
 }

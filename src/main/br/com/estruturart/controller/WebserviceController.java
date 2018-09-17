@@ -11,11 +11,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.persistency.Cidade;
+import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.model.CepModel;
+import br.com.estruturart.model.TbUsuario;
 import com.google.gson.Gson;
 import java.net.URL;
 
-@WebServlet(name = "webservice", urlPatterns = { "/find-cep" })
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+@WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -47,5 +55,52 @@ public class WebserviceController extends AbstractServlet {
         }
 
         setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void findUsuarioAction() throws Exception
+    {
+        setNoRender(true);
+        String usuarioStr = getRequest().getParameter("email");
+        String senhaStr = getRequest().getParameter("senha");
+
+
+        Map m= getRequest().getParameterMap();
+        Set s = m.entrySet();
+        Iterator it = s.iterator();
+
+        while(it.hasNext()){
+            Map.Entry<String,String[]> entry = (Map.Entry<String,String[]>)it.next();
+
+            String key             = entry.getKey();
+            String[] value         = entry.getValue();
+
+            System.out.println("Key is "+key+"<br>");
+            if(value.length>1){
+                for (int i = 0; i < value.length; i++) {
+                    System.out.println("<li>" + value[i].toString() + "</li><br>");
+                }
+            } else {
+                System.out.println("Value is "+value[0].toString()+"<br>");
+            }
+
+            System.out.println("-------------------<br>");
+        }
+
+
+
+
+
+        TbUsuario usuarioEntity = new TbUsuario();
+        Usuario usuario = new Usuario();
+
+        System.out.println("Usuario: "  + usuarioStr);
+        System.out.println("Senha: "  + senhaStr);
+        try {
+            usuarioEntity = usuario.findUsuarioByUsuarioSenha(usuarioStr, senhaStr);
+        } catch (Exception e) {
+            usuarioEntity.setMessage(e.getMessage());
+        }
+
+        setRequestXhtmlHttpRequestModel(usuarioEntity);
     }
 }

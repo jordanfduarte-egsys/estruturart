@@ -6,14 +6,14 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
-
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import br.com.estruturart.utility.IJsonModel;
-
+import br.com.estruturart.model.IModel;
 import com.google.gson.Gson;
 
 import br.com.estruturart.model.TbUsuario;
@@ -383,6 +383,26 @@ public class AbstractServlet extends HttpServlet {
         getResponse().setHeader("Content-Disposition", "inline");
         PrintWriter out = getResponse().getWriter();
         out.print(this.toJson(jsonModel));
+        out.flush();
+    }
+
+    public void setRequestXhtmlHttpRequestModel(IModel model) throws IOException {
+        setNoRender(true);
+        getResponse().setContentType("application/json");
+        getResponse().setHeader("Content-Disposition", "inline");
+        PrintWriter out = getResponse().getWriter();
+        Gson gson = new Gson();
+        out.print(gson.toJson(model));
+        out.flush();
+    }
+
+    public void setRequestXhtmlHttpRequestList(List<?> list) throws IOException {
+        setNoRender(true);
+        getResponse().setContentType("application/json");
+        getResponse().setHeader("Content-Disposition", "inline");
+        PrintWriter out = getResponse().getWriter();
+        Gson gson = new Gson();
+        out.print(gson.toJson(list));
         out.flush();
     }
 

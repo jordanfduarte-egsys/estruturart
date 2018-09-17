@@ -56,6 +56,7 @@ br\com\estruturart\model\TbStatusUsuario.class
 br\com\estruturart\model\TbUnidadeMedida.class
 br\com\estruturart\persistency\Endereco.class
 br\com\estruturart\service\FinalizarOrcamento.class
+br\com\estruturart\model\IModel.class
 br\com\estruturart\persistency\UnidadeMedida.class
 br\com\estruturart\controller\OrcamentoController.class
 br\com\estruturart\persistency\ConnectionManager.class

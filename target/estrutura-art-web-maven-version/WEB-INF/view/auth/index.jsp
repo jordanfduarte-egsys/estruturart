@@ -20,7 +20,7 @@
                                <div class="input-group-prepend">
                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
                                </div>
-                               <input type="text" name="name" autocomplete="off" class="form-control" placeholder="Username" value="${name}">
+                               <input type="text" name="name" autocomplete="off" class="form-control" placeholder="E-mail" value="${name}">
                            </div>
 
                            <div class="input-group mb-3">
@@ -39,10 +39,10 @@
 
                            <div class="row">
                                <div class="col pr-2">
-                                   <button type="submit" class="btn btn-block btn-primary">Login</button>
+                                   <button type="submit" class="btn btn-block btn-primary">Entrar</button>
                                </div>
                                <div class="col pl-2">
-                                   <a class="btn btn-block btn-link" href="#">Forgot Password</a>
+                                   <a class="btn btn-block btn-link" href="#">Esqueceu a senha</a>
                                </div>
                            </div>
                        </form>

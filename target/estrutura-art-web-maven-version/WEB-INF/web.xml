@@ -195,6 +195,7 @@
   <servlet-mapping>
     <servlet-name>Webservice</servlet-name>
     <url-pattern>/webservice/find-cep</url-pattern>
+    <url-pattern>/webservice/find-usuario</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>
