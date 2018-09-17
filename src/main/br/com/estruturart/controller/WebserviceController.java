@@ -13,7 +13,10 @@ import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.persistency.Cidade;
 import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.model.CepModel;
+import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.model.TbUsuario;
+import br.com.estruturart.model.TbEstado;
+import java.util.List;
 import com.google.gson.Gson;
 import java.net.URL;
 
@@ -63,7 +66,6 @@ public class WebserviceController extends AbstractServlet {
         String usuarioStr = getRequest().getParameter("email");
         String senhaStr = getRequest().getParameter("senha");
 
-
         Map m= getRequest().getParameterMap();
         Set s = m.entrySet();
         Iterator it = s.iterator();
@@ -86,10 +88,6 @@ public class WebserviceController extends AbstractServlet {
             System.out.println("-------------------<br>");
         }
 
-
-
-
-
         TbUsuario usuarioEntity = new TbUsuario();
         Usuario usuario = new Usuario();
 
@@ -102,5 +100,60 @@ public class WebserviceController extends AbstractServlet {
         }
 
         setRequestXhtmlHttpRequestModel(usuarioEntity);
+    }
+
+    public void findCepObjectAction() throws Exception
+    {
+        setNoRender(true);
+        String cep = getRequest().getParameter("cep");
+
+        BufferedReader reader;
+        Cidade modelCidade = new Cidade();
+        CepModel cepModel = new CepModel();
+        try {
+            URL url = new URL(String.format("http://viacep.com.br/ws/%s/json", cep));
+            reader = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));
+            String jsonStr = "";
+            for (String line; (line = reader.readLine()) != null; ) {
+                jsonStr += line;
+            }
+            reader.close();
+
+            Gson gson = new Gson();
+            cepModel = gson.fromJson(jsonStr, CepModel.class);
+            cepModel.setCidade(modelCidade.findCidadeByName(cepModel.getLocalidade()));
+
+            if (cepModel.getCep().equals(cep)) {
+                cepModel.setId(1);
+            }
+        } catch (IOException e) {
+            cepModel.setMessage(e.getMessage());
+        }
+
+        setRequestXhtmlHttpRequestModel(cepModel);
+    }
+
+    public void findEstadosAction() throws Exception
+    {
+        setNoRender(true);
+        Estado modelEstado = new Estado();
+        setRequestXhtmlHttpRequestList(modelEstado.findEstados());
+    }
+
+    public void findCidadesAction() throws Exception
+    {
+        setNoRender(true);
+        String estadoId = getRequest().getParameter("estado_id");
+        Cidade modelCidade = new Cidade();
+        setRequestXhtmlHttpRequestList(modelCidade.findCidadeByEstado(estadoId));
+    }
+
+    public void findCpfCnpjAction() throws Exception
+    {
+        setNoRender(true);
+        Usuario usuario = new Usuario();
+        setRequestXhtmlHttpRequestModel(usuario.findUsuarioByCpjCNpj(
+            this.getRequest().getParameter("cpf_cnpj")
+        ));
     }
 }

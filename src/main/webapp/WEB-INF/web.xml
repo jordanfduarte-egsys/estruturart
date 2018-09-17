@@ -196,6 +196,10 @@
     <servlet-name>Webservice</servlet-name>
     <url-pattern>/webservice/find-cep</url-pattern>
     <url-pattern>/webservice/find-usuario</url-pattern>
+    <url-pattern>/webservice/find-cep-object</url-pattern>
+    <url-pattern>/webservice/find-estados</url-pattern>
+    <url-pattern>/webservice/find-cidades</url-pattern>
+    <url-pattern>/webservice/find-cpf-cnpj</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>

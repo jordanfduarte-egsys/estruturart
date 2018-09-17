@@ -2,8 +2,9 @@ package br.com.estruturart.model;
 
 import br.com.estruturart.model.TbCidade;
 
-public class CepModel
+public class CepModel extends AbstractModel
 {
+    private Integer id = 0;
     private String cep;
     private String logradouro;
     private String complemento;
@@ -14,6 +15,16 @@ public class CepModel
     private String ibge;
     private String gia;
     private TbCidade cidade;
+
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
+    public Integer getId()
+    {
+        return this.id;
+    }
 
     public String getCep()
     {
@@ -113,5 +124,9 @@ public class CepModel
     public void setCidade(TbCidade cidade)
     {
         this.cidade = cidade;
+    }
+
+    public boolean isValid() {
+        return true;
     }
 }
