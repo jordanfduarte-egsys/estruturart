@@ -6,6 +6,8 @@ import java.io.OutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
+import javax.ws.rs.HttpMethod;
+import br.com.estruturart.service.FinalizarOrcamento;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -18,8 +20,12 @@ import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbEstado;
 import br.com.estruturart.model.TbModelo;
+import br.com.estruturart.model.Orcamento;
 import java.util.List;
 import com.google.gson.Gson;
+import java.sql.Connection;
+import br.com.estruturart.persistency.ConnectionManager;
+
 import java.net.URL;
 
 import java.io.IOException;
@@ -194,54 +200,57 @@ System.out.println("CEP: " + cep);
 
         setRequestXhtmlHttpRequestList(list);
     }
-	
-	public void salvarOrcamento() throws Exception
-	{   
-		String message = "";
-		boolean status = false;
-		Integer id = 0;
+
+    public void salvarOrcamentoAction() throws Exception
+    {
+        String message = "";
+        boolean status = false;
+        Integer id = 0;
         if (this.getMethod().equals(HttpMethod.POST)) {
-			Gson gson = new Gson();
-			Orcamento orcamento = (Orcamento)gson.fromJson(getRequest().getParameter("orcamento"), Orcamento.class);
-            
-			Connection conn = ConnectionManager.getConnection();
-			conn.setAutoCommit(false);
-	
-			try {
-				FinalizarOrcamento finalizarService = new FinalizarOrcamento(
-					getRequest(),
-					getResponse(),
-					orcamento
-				);
-				boolean isOrcamento = !getParameterOrValue("is_orcamento", "0").equals("0");
-				finalizarService.setIsOrcamento(isOrcamento);
-				finalizarService.setConnection(conn);
-				finalizarService.salvar();
-				conn.commit();
+            Gson gson = new Gson();
+            Orcamento orcamento = (Orcamento)gson.fromJson(getRequest().getParameter("orcamento"), Orcamento.class);
 
-				if (isOrcamento) {
-					message = "Orçamento criado com sucesso!";
-				} else {
-					message = "Pedido criado com sucesso!";
-				}
+            Connection conn = ConnectionManager.getConnection();
+            conn.setAutoCommit(false);
 
-				status = true;
-				id = finalizarService.getId();
-			} catch (java.sql.SQLException e) {
-				conn.rollback();
-				conn.close();
-				getLogErrorService().createLog(e);
-				message = "Ocorreu um erro ao criar o orçamento. Verifique!";
-			} catch (Exception e) {
-				conn.rollback();
-				conn.close();
-				getLogErrorService().createLog(e);
-				message = "Ocorreu um erro ao criar o orçamento. Verifique!";
-			}
-		}
-        
+            try {
+                FinalizarOrcamento finalizarService = new FinalizarOrcamento(
+                    getRequest(),
+                    getResponse(),
+                    orcamento
+                );
+                boolean isOrcamento = !getParameterOrValue("is_orcamento", "0").equals("0");
+                finalizarService.setIsOrcamento(isOrcamento);
+                finalizarService.setConnection(conn);
+                finalizarService.salvar();
+                conn.commit();
 
-		//@TODO CRIAR MODEL COM ID, MESSAGE E STATUS
-        setRequestXhtmlHttpRequestModel();
-	}
+                if (isOrcamento) {
+                    message = "Orçamento criado com sucesso!";
+                } else {
+                    message = "Pedido criado com sucesso!";
+                }
+
+                status = true;
+                id = finalizarService.getId();
+            } catch (java.sql.SQLException e) {
+                conn.rollback();
+                conn.close();
+                getLogErrorService().createLog(e);
+                message = "Ocorreu um erro ao criar o orçamento. Verifique!";
+            } catch (Exception e) {
+                conn.rollback();
+                conn.close();
+                getLogErrorService().createLog(e);
+                message = "Ocorreu um erro ao criar o orçamento. Verifique!";
+            }
+        }
+
+        JsonModel jsonModel = new JsonModel();
+        jsonModel.setId(id);
+        jsonModel.setMessage(message);
+        jsonModel.setStatus(status);
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
 }
