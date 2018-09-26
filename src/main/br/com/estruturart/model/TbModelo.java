@@ -35,6 +35,7 @@ public class TbModelo extends AbstractModel
     private int index = 0;
     private boolean isPintura = false;
     private int quantidadeCompra = 1;
+    private String base64Image;
 
     public TbModelo()
     {
@@ -557,5 +558,10 @@ public class TbModelo extends AbstractModel
     public void setAlturaNova(float alturaNova)
     {
         this.alturaNova = alturaNova;
+    }
+
+    public void setBase64Image(String base64Image)
+    {
+        this.base64Image = base64Image;
     }
 }

@@ -37,7 +37,7 @@ public class Cidade extends AbstractPersistency {
         return cidade;
     }
 
-    public List<TbCidade> findCidadeByEstado(String estadoId) throws Exception {
+    public List<TbCidade> findCidadeByEstado(String estadoId, boolean selecione) throws Exception {
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement ps = conn
                 .prepareStatement("SELECT CIDADE.*, ESTADO.nome as nome_estado FROM CIDADE INNER JOIN ESTADO ON CIDADE.estado_id = ESTADO.id WHERE CIDADE.estado_id = \"" + estadoId + "\" ");
@@ -45,9 +45,11 @@ public class Cidade extends AbstractPersistency {
         ResultSet rs = ps.executeQuery();
         List<TbCidade> cidades = new ArrayList<TbCidade>();
         TbCidade cidade = new TbCidade();
-        cidade.setId(0);
-        cidade.setNome("Selecione!");
-        cidades.add(cidade);
+        if (selecione) {
+            cidade.setId(0);
+            cidade.setNome("Selecione!");
+            cidades.add(cidade);
+        }
 
         while (rs.next()) {
             cidade = new TbCidade();

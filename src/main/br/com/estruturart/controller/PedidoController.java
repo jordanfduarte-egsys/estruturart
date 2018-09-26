@@ -211,7 +211,7 @@ public class PedidoController extends AbstractServlet
             }
         }
 
-        cidades = modelCidade.findCidadeByEstado(String.valueOf(pedido.getEndereco().getEstadoId()));
+        cidades = modelCidade.findCidadeByEstado(String.valueOf(pedido.getEndereco().getEstadoId()), true);
 
         getRequest().setAttribute("pedido", pedido);
         getRequest().setAttribute("estados", estados);

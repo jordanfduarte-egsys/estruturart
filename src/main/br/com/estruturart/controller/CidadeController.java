@@ -16,7 +16,7 @@ public class CidadeController extends AbstractServlet {
         JsonModel jsonModel = new JsonModel();
         Cidade modelCidade = new Cidade();
 
-        jsonModel.setList(modelCidade.findCidadeByEstado(estadoId));
+        jsonModel.setList(modelCidade.findCidadeByEstado(estadoId, true));
         setRequestXhtmlHttpRequest(jsonModel);
     }
 }

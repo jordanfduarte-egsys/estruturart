@@ -115,7 +115,7 @@ public class OrcamentoController extends AbstractServlet {
         }
 
         if (orcamento.getEndereco().getEstadoId() > 0) {
-            cidades = modelCidade.findCidadeByEstado(String.valueOf(orcamento.getEndereco().getEstadoId()));
+            cidades = modelCidade.findCidadeByEstado(String.valueOf(orcamento.getEndereco().getEstadoId()), true);
         }
 
         this.getRequest().setAttribute("estados", estados);

@@ -17,12 +17,14 @@ import br.com.estruturart.model.CepModel;
 import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbEstado;
+import br.com.estruturart.model.TbModelo;
 import java.util.List;
 import com.google.gson.Gson;
 import java.net.URL;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -108,7 +110,7 @@ public class WebserviceController extends AbstractServlet {
     {
         setNoRender(true);
         String cep = getRequest().getParameter("cep");
-
+System.out.println("CEP: " + cep);
         BufferedReader reader;
         Cidade modelCidade = new Cidade();
         CepModel cepModel = new CepModel();
@@ -125,7 +127,7 @@ public class WebserviceController extends AbstractServlet {
             cepModel = gson.fromJson(jsonStr, CepModel.class);
             cepModel.setCidade(modelCidade.findCidadeByName(cepModel.getLocalidade()));
 
-            if (cepModel.getCep().equals(cep)) {
+            if (cepModel.getCep().replaceAll("-", "").equals(cep)) {
                 cepModel.setId(1);
             }
         } catch (IOException e) {
@@ -147,7 +149,7 @@ public class WebserviceController extends AbstractServlet {
         setNoRender(true);
         String estadoId = getRequest().getParameter("estado_id");
         Cidade modelCidade = new Cidade();
-        setRequestXhtmlHttpRequestList(modelCidade.findCidadeByEstado(estadoId));
+        setRequestXhtmlHttpRequestList(modelCidade.findCidadeByEstado(estadoId, false));
     }
 
     public void findCpfCnpjAction() throws Exception
@@ -162,9 +164,34 @@ public class WebserviceController extends AbstractServlet {
     public void buscarModeloAction() throws Exception
     {
         setNoRender(true);
-        Modelo modelo = new Modelo();
-        setRequestXhtmlHttpRequestModel(modelo.findModeloByNomeList(
+        Modelo modeloModel = new Modelo();
+        List<TbModelo> list = modeloModel.findModeloByNomeList(
             this.getParameterOrValue("nome", ""), this.getParameterOrValue("id", "0")
-        ));
+        );
+
+        for (TbModelo modelo : list) {
+            String path = "/files/modelos/" + modelo.getImagem();
+            ServletContext cntx = this.getRequest().getServletContext();
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+
+            String filename = sourceFilder + path.replace("/files", "");
+            String mime = cntx.getMimeType(filename);
+            System.out.println("MIME " + mime);
+            if (mime == null) {
+                filename = cntx.getRealPath("/files/sem-foto.jpg");
+                mime = cntx.getMimeType(filename);
+            }
+
+            System.out.println("LINK" + filename);
+            getResponse().setContentType(mime);
+            File file = new File(filename);
+            FileInputStream in = new FileInputStream(file);
+
+            byte imageData[] = new byte[(int) file.length()];
+            in.read(imageData);
+            modelo.setBase64Image(Base64.getEncoder().encodeToString(imageData));
+        }
+
+        setRequestXhtmlHttpRequestList(list);
     }
 }
