@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 @WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario", "/find-cep-object",
-    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo" })
+    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -194,4 +194,54 @@ System.out.println("CEP: " + cep);
 
         setRequestXhtmlHttpRequestList(list);
     }
+	
+	public void salvarOrcamento() throws Exception
+	{   
+		String message = "";
+		boolean status = false;
+		Integer id = 0;
+        if (this.getMethod().equals(HttpMethod.POST)) {
+			Gson gson = new Gson();
+			Orcamento orcamento = (Orcamento)gson.fromJson(getRequest().getParameter("orcamento"), Orcamento.class);
+            
+			Connection conn = ConnectionManager.getConnection();
+			conn.setAutoCommit(false);
+	
+			try {
+				FinalizarOrcamento finalizarService = new FinalizarOrcamento(
+					getRequest(),
+					getResponse(),
+					orcamento
+				);
+				boolean isOrcamento = !getParameterOrValue("is_orcamento", "0").equals("0");
+				finalizarService.setIsOrcamento(isOrcamento);
+				finalizarService.setConnection(conn);
+				finalizarService.salvar();
+				conn.commit();
+
+				if (isOrcamento) {
+					message = "Orçamento criado com sucesso!";
+				} else {
+					message = "Pedido criado com sucesso!";
+				}
+
+				status = true;
+				id = finalizarService.getId();
+			} catch (java.sql.SQLException e) {
+				conn.rollback();
+				conn.close();
+				getLogErrorService().createLog(e);
+				message = "Ocorreu um erro ao criar o orçamento. Verifique!";
+			} catch (Exception e) {
+				conn.rollback();
+				conn.close();
+				getLogErrorService().createLog(e);
+				message = "Ocorreu um erro ao criar o orçamento. Verifique!";
+			}
+		}
+        
+
+		//@TODO CRIAR MODEL COM ID, MESSAGE E STATUS
+        setRequestXhtmlHttpRequestModel();
+	}
 }
