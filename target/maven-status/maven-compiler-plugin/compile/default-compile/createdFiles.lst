@@ -16,6 +16,7 @@ br\com\estruturart\controller\AuthController.class
 br\com\estruturart\service\LogErrorService.class
 br\com\estruturart\utility\FlashMessenger.class
 br\com\estruturart\model\TbEndereco.class
+br\com\estruturart\utility\GsonDeserializeExclusion.class
 br\com\estruturart\controller\ModeloController.class
 br\com\estruturart\model\TbModelo.class
 br\com\estruturart\service\UploadService.class

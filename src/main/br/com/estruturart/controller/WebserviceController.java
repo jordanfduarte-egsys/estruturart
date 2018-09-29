@@ -17,12 +17,18 @@ import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.persistency.Modelo;
 import br.com.estruturart.model.CepModel;
 import br.com.estruturart.persistency.Estado;
+import br.com.estruturart.persistency.Pedido;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbEstado;
 import br.com.estruturart.model.TbModelo;
+import br.com.estruturart.model.TbPedido;
+import br.com.estruturart.utility.ParamRequestManager;
 import br.com.estruturart.model.Orcamento;
+import br.com.estruturart.utility.GsonDeserializeExclusion;
 import java.util.List;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.sql.Connection;
 import br.com.estruturart.persistency.ConnectionManager;
 
@@ -36,7 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 @WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario", "/find-cep-object",
-    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento" })
+    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento", "/find-pedidos" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -207,8 +213,18 @@ System.out.println("CEP: " + cep);
         boolean status = false;
         Integer id = 0;
         if (this.getMethod().equals(HttpMethod.POST)) {
-            Gson gson = new Gson();
+            System.out.println("\n\nJSON: "  + getRequest().getParameter("orcamento"));
+            System.out.println("\n\nISORCAMENTO: "  + getParameterOrValue("is_orcamento", "0").equals("0"));
+
+            Gson gson = new GsonBuilder()
+                .addDeserializationExclusionStrategy(new GsonDeserializeExclusion())
+                .setDateFormat("MMM d, yyyy")
+                .create();
+
             Orcamento orcamento = (Orcamento)gson.fromJson(getRequest().getParameter("orcamento"), Orcamento.class);
+
+
+
 
             Connection conn = ConnectionManager.getConnection();
             conn.setAutoCommit(false);
@@ -252,5 +268,13 @@ System.out.println("CEP: " + cep);
         jsonModel.setStatus(status);
 
         setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void findPedidosAction() throws Exception
+    {
+        ParamRequestManager params = this.postFilter();
+        Pedido modelPedido = new Pedido();
+        List<TbPedido> pedidos = modelPedido.findByRequestManager(params);
+        setRequestXhtmlHttpRequestList(pedidos);
     }
 }

@@ -277,10 +277,10 @@ public class Orcamento extends AbstractModel
             while (true) {
                 // Verifica se hj é o FDS Sunday 1.... Saturday 7
                 cal.setTime(data);
-                week = cal.get(Calendar.WEEK_OF_YEAR);
+                week = cal.get(Calendar.DAY_OF_WEEK);
 
                 // Se hj é feriado ou se é fds, soma mais um dia
-                if (feriados.verificaFeriado(data) || week == 6 || week == 7) {
+                if (feriados.verificaFeriado(data) || week == Calendar.SATURDAY || week == Calendar.SUNDAY) {
                     data = new Date(data.getTime() + TimeUnit.DAYS.toMillis(1));
                 } else {
                     break;

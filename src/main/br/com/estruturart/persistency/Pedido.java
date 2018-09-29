@@ -181,9 +181,9 @@ public class Pedido extends AbstractPersistency
             + " WHERE 1 %s",
             args
         );
-        System.out.println("-----------------");
+        System.out.println("-------SQL PEDIDO----------\n\n\n");
         System.out.println(sql);
-        System.out.println("-----------------");
+        System.out.println("-------FIM SQL PEDIDO-------\n\n\n");
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<TbPedido> pedidos = new ArrayList<TbPedido>();
@@ -194,8 +194,8 @@ public class Pedido extends AbstractPersistency
 
             pedido.setId(rs.getInt("id"));
             pedido.setCaminhoArquivoNotaFiscal(rs.getString("caminho_arquivo_nota_fiscal"));
-            pedido.setDataInclusao(rs.getDate("data_inclusao"));
-            pedido.setDataPrevisaoInstalacao(rs.getDate("data_previsao_instalacao"));
+            pedido.setDataInclusao(new Date(rs.getDate("data_inclusao").getTime()));
+            pedido.setDataPrevisaoInstalacao(new Date(rs.getDate("data_previsao_instalacao").getTime()));
             pedido.setValorTotal(rs.getFloat("valor_total"));
             pedido.setValorMaoObra(rs.getFloat("valor_mao_obra"));
             pedido.setPedidoPago(rs.getInt("pedido_pago"));

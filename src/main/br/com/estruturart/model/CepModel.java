@@ -5,7 +5,7 @@ import br.com.estruturart.model.TbCidade;
 public class CepModel extends AbstractModel
 {
     private Integer id = 0;
-    private String cep;
+    private String cep = "";
     private String logradouro;
     private String complemento;
     private String bairro;
