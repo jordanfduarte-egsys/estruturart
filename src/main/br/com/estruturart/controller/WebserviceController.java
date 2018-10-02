@@ -25,6 +25,12 @@ import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.utility.ParamRequestManager;
 import br.com.estruturart.model.Orcamento;
 import br.com.estruturart.utility.GsonDeserializeExclusion;
+import org.apache.commons.fileupload.FileItem;
+import br.com.estruturart.model.TbPedidoItem;
+import br.com.estruturart.model.TbPedidoItemFoto;
+import br.com.estruturart.persistency.PedidoItem;
+import br.com.estruturart.persistency.PedidoItemFoto;
+import br.com.estruturart.service.UploadService;
 import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -291,5 +297,77 @@ System.out.println("CEP: " + cep);
         System.out.println("\n\n\n PEDIDO ");
 
         setRequestXhtmlHttpRequestModel(pedido);
+    }
+
+    public void novaFotoCameraItem() throws Exception
+    {
+        int idItem = String.valueOf(getRequest().getParameter("id"));
+        String imageBase64 = getRequest().getParameter("base64");
+        String obs = getRequest().getParameter("observacao");
+        PedidoItem pedidoItem = new PedidoItem();
+        TbPedidoItem item = pedidoItem.findPedidoByItem(idItem);
+        JsonModel jsonModel = new JsonModel();
+
+        if (item.getId() > 0) {
+            String[] strings = imageBase64.split(",");
+            String extension;
+            switch (strings[0]) {
+                case "data:image/jpeg;base64":
+                    extension = "jpeg";
+                    break;
+                case "data:image/png;base64":
+                    extension = "png";
+                    break;
+                default:
+                    extension = "jpg";
+                    break;
+            }
+
+            byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
+            int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
+            String extensoes = getServletContext().getInitParameter("extensoesImagem");
+            String path = sourceFilder + "\\__temp." + extension;
+            File file = new File(path);
+            try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                outputStream.write(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            FileItem fileItem = new FileItem();
+            fileItem.write(file);
+            UploadService uploadService = new UploadService(this.getRequest());
+            uploadService.setExtensoes(extensoes.split(","));
+            uploadService.setFileItem(fileItem);
+            uploadService.setFolder("/item/" + item.getId() + "/");
+
+            String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
+
+
+            PedidoItemFoto pedidoItemFoto = new PedidoItemFoto();
+            TbPedidoItemFoto itemFoto = new TbPedidoItemFoto();
+            if (!imagem.equals("")) {
+                itemFoto.setCaminhoArquivo(imagem);
+                itemFoto.setObservacao(obs);
+                itemFoto.setPedidoItensId(item.getId());
+                pedidoItemFoto.insert(itemFoto);
+
+                jsonModel.setMessage("Foto enviada com sucesso!");
+                jsonModel.setStatus(true);
+
+                file.delete();
+            } else {
+                jsonModel.setMessage("Ocorreu um erro ao enviar a foto!");
+                jsonModel.setStatus(false);
+            }
+        } else {
+            jsonModel.setMessage("Item n?o encontrado!");
+            jsonModel.setStatus(false);
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
     }
 }
