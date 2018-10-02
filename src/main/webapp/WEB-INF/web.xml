@@ -197,12 +197,13 @@
     <url-pattern>/webservice/find-cep</url-pattern>
     <url-pattern>/webservice/find-usuario</url-pattern>
     <url-pattern>/webservice/find-cep-object</url-pattern>
-    <url-pattern>/webservice/find-estados</url-pattern>
+    <url-pattern>/webservice/find-estados</url-pattern>a
     <url-pattern>/webservice/find-cidades</url-pattern>
     <url-pattern>/webservice/find-cpf-cnpj</url-pattern>
     <url-pattern>/webservice/buscar-modelo</url-pattern>
 	<url-pattern>/webservice/salvar-orcamento</url-pattern>
     <url-pattern>/webservice/find-pedidos</url-pattern>
+    <url-pattern>/webservice/detalhe-pedido</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>

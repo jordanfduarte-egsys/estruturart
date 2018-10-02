@@ -61,7 +61,7 @@ public class FinalizarOrcamento
     public void salvarEndereco() throws java.sql.SQLException
     {
         orcamento.getEndereco().setComplemento(
-            String.format("Endere?o cadastrado ao criar o pedido %d", orcamento.getPedido().getId())
+            String.format("Endereço cadastrado ao criar o pedido %d", orcamento.getPedido().getId())
         );
         orcamento.getEndereco().setUsuarioId(orcamento.getUsuario().getId());
         orcamento.getEndereco().setPedidoId(orcamento.getPedido().getId());

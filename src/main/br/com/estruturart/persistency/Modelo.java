@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import com.mysql.jdbc.Statement;
 
@@ -224,7 +225,7 @@ public class Modelo extends AbstractPersistency
             material.setId(rs.getInt("id"));
             material.setDescricao(rs.getString("descricao"));
             material.setMateriaPrima(rs.getInt("materia_prima"));
-            material.setDataInclusao(rs.getDate("data_inclusao"));
+            material.setDataInclusao(new Date(rs.getDate("data_inclusao").getTime()));
             material.setStatusMaterialId(rs.getInt("status_material_id"));
             material.setUnidadeMedidaId(rs.getInt("unidade_medida_id"));
             material.setFornecedorId(rs.getInt("fornecedor_id"));

@@ -1,6 +1,6 @@
 package br.com.estruturart.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;

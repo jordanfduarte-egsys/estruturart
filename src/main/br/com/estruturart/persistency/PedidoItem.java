@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import com.mysql.jdbc.Statement;
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbModelo;
@@ -95,7 +96,7 @@ public class PedidoItem extends AbstractPersistency
             item.setId(rs.getInt("id"));
             item.setLargura(rs.getFloat("largura"));
             item.setAltura(rs.getFloat("altura"));
-            item.setDataInclusao(rs.getDate("data_inclusao"));
+            item.setDataInclusao(new Date(rs.getDate("data_inclusao").getTime()));
             item.setQuantidade(rs.getInt("quantidade"));
             item.setStatusItemId(rs.getInt("status_item_id"));
             item.setPedidoId(rs.getInt("pedido_id"));

@@ -42,7 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 @WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario", "/find-cep-object",
-    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento", "/find-pedidos" })
+    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento", "/find-pedidos", "/detalhe-pedido" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -276,5 +276,20 @@ System.out.println("CEP: " + cep);
         Pedido modelPedido = new Pedido();
         List<TbPedido> pedidos = modelPedido.findByRequestManager(params);
         setRequestXhtmlHttpRequestList(pedidos);
+    }
+
+    public void detalhePedidoAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getRequest().getParameter("id"));
+        Pedido pedidoModel = new Pedido();
+        TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
+
+        System.out.println("\n\n\n PEDIDO");
+
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(pedido));
+        System.out.println("\n\n\n PEDIDO ");
+
+        setRequestXhtmlHttpRequestModel(pedido);
     }
 }

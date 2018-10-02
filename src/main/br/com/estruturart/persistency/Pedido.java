@@ -260,8 +260,8 @@ public class Pedido extends AbstractPersistency
 
             pedido.setId(rs.getInt("id"));
             pedido.setCaminhoArquivoNotaFiscal(rs.getString("caminho_arquivo_nota_fiscal"));
-            pedido.setDataInclusao(rs.getDate("data_inclusao"));
-            pedido.setDataPrevisaoInstalacao(rs.getDate("data_previsao_instalacao"));
+            pedido.setDataInclusao(new Date(rs.getDate("data_inclusao").getTime()));
+            pedido.setDataPrevisaoInstalacao(new Date(rs.getDate("data_previsao_instalacao").getTime()));
             pedido.setValorTotal(rs.getFloat("valor_total"));
             pedido.setValorMaoObra(rs.getFloat("valor_mao_obra"));
             pedido.setPedidoPago(rs.getInt("pedido_pago"));
