@@ -16,6 +16,7 @@ public class TbPedidoItemFoto extends AbstractModel
     private String observacao;
     private String observacaoLimitado;
     private Integer pedidoItensId = 0;
+    private String base64Imagem = "";
 
     public Integer getId()
     {
@@ -96,6 +97,16 @@ public class TbPedidoItemFoto extends AbstractModel
     public void setFileFoto(FileItem fileFoto)
     {
         this.fileFoto = fileFoto;
+    }
+
+    public void setBase64Imagem(String base64Imagem)
+    {
+        this.base64Imagem = base64Imagem;
+    }
+
+    public String getBase64Imagem()
+    {
+        return this.base64Imagem;
     }
 
     public boolean isValid()

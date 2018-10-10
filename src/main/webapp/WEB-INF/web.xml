@@ -22,7 +22,7 @@
   </context-param>
   <context-param>
       <param-name>folderUpload</param-name>
-      <param-value>C:/DEV/projects/estrutura-art-web-maven-version/src/main/webapp/files</param-value>
+      <param-value>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\estrutura-art-web-maven-version\files</param-value>
   </context-param>
   <context-param>
       <param-name>widthModelo</param-name>
@@ -204,6 +204,8 @@
 	<url-pattern>/webservice/salvar-orcamento</url-pattern>
     <url-pattern>/webservice/find-pedidos</url-pattern>
     <url-pattern>/webservice/detalhe-pedido</url-pattern>
+    <url-pattern>/webservice/nova-foto-camera-item</url-pattern>
+    <url-pattern>/webservice/find-imagem</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>

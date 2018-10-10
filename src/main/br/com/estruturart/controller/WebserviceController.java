@@ -2,17 +2,23 @@ package br.com.estruturart.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebServlet;
 import javax.ws.rs.HttpMethod;
+import javax.xml.bind.DatatypeConverter;
 import br.com.estruturart.service.FinalizarOrcamento;
+import java.util.Date;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.persistency.Cidade;
+import br.com.estruturart.persistency.PedidoItemFoto;
 import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.persistency.Modelo;
 import br.com.estruturart.model.CepModel;
@@ -26,6 +32,10 @@ import br.com.estruturart.utility.ParamRequestManager;
 import br.com.estruturart.model.Orcamento;
 import br.com.estruturart.utility.GsonDeserializeExclusion;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.io.IOUtils;
+
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbPedidoItemFoto;
 import br.com.estruturart.persistency.PedidoItem;
@@ -39,7 +49,7 @@ import java.sql.Connection;
 import br.com.estruturart.persistency.ConnectionManager;
 
 import java.net.URL;
-
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Base64;
@@ -48,7 +58,7 @@ import java.util.Map;
 import java.util.Set;
 
 @WebServlet(name = "webservice", urlPatterns = { "/find-cep", "/find-usuario", "/find-cep-object",
-    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento", "/find-pedidos", "/detalhe-pedido" })
+    "/find-estados", "/find-cidades", "/find-cpf-cnpj", "/buscar-modelo", "/salvar-orcamento", "/find-pedidos", "/detalhe-pedido", "/nova-foto-camera-item", "/find-imagem" })
 public class WebserviceController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788197597839L;
 
@@ -187,22 +197,24 @@ System.out.println("CEP: " + cep);
             this.getParameterOrValue("nome", ""), this.getParameterOrValue("id", "0")
         );
 
+        String separator = File.separator;
         for (TbModelo modelo : list) {
-            String path = "/files/modelos/" + modelo.getImagem();
+            String path = separator + "files" + separator + "modelos" + separator + modelo.getImagem();
             ServletContext cntx = this.getRequest().getServletContext();
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
 
-            String filename = sourceFilder + path.replace("/files", "");
+            String filename = sourceFilder + path.replace( separator + "files", "");
             String mime = cntx.getMimeType(filename);
             System.out.println("MIME " + mime);
             if (mime == null) {
-                filename = cntx.getRealPath("/files/sem-foto.jpg");
+                filename = cntx.getRealPath(separator + "files" + separator + "sem-foto.jpg");
                 mime = cntx.getMimeType(filename);
             }
 
             System.out.println("LINK" + filename);
             getResponse().setContentType(mime);
             File file = new File(filename);
+            if (!file.exists()) continue;
             FileInputStream in = new FileInputStream(file);
 
             byte imageData[] = new byte[(int) file.length()];
@@ -299,54 +311,77 @@ System.out.println("CEP: " + cep);
         setRequestXhtmlHttpRequestModel(pedido);
     }
 
-    public void novaFotoCameraItem() throws Exception
+    public void novaFotoCameraItemAction() throws Exception
     {
-        int idItem = String.valueOf(getRequest().getParameter("id"));
+        int idItem = Integer.parseInt(getRequest().getParameter("id"));
         String imageBase64 = getRequest().getParameter("base64");
+        String extension = getRequest().getParameter("format");
         String obs = getRequest().getParameter("observacao");
+
         PedidoItem pedidoItem = new PedidoItem();
         TbPedidoItem item = pedidoItem.findPedidoByItem(idItem);
         JsonModel jsonModel = new JsonModel();
 
         if (item.getId() > 0) {
-            String[] strings = imageBase64.split(",");
-            String extension;
-            switch (strings[0]) {
-                case "data:image/jpeg;base64":
-                    extension = "jpeg";
+            String contextType = "image/jpg";
+            switch (extension) {
+                case "jpg":
+                    contextType = "image/jpg";
                     break;
-                case "data:image/png;base64":
-                    extension = "png";
+                case "jpeg":
+                    contextType = "image/jpeg";
                     break;
                 default:
-                    extension = "jpg";
+                    contextType = "image/png";
                     break;
             }
 
-            byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+            System.out.println("\n\nID: " + idItem);
+            System.out.println("EXT: " + extension);
+            System.out.println("OBS: " + obs);
+
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
             int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
             int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
             String extensoes = getServletContext().getInitParameter("extensoesImagem");
-            String path = sourceFilder + "\\__temp." + extension;
+            String separator = File.separator;
+            String path = sourceFilder + separator + String.valueOf(new Date().getTime()) + "." + extension;
             File file = new File(path);
-            try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            file.setReadable(true, false);
+            file.setExecutable(true, false);
+            file.setWritable(true, false);
+            try {
+                org.apache.commons.codec.binary.Base32 b2 = new org.apache.commons.codec.binary.Base32();
+                byte[] data = b2.decode(imageBase64);
+                FileOutputStream out = new FileOutputStream(file);
+                OutputStream outputStream = new BufferedOutputStream(
+                    out
+                );
+
                 outputStream.write(data);
+                outputStream.flush();
+                outputStream.close();
+
+                out.flush();
+                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            FileItem fileItem = new FileItem();
-            fileItem.write(file);
+            FileInputStream inpuStream = new FileInputStream(file);
             UploadService uploadService = new UploadService(this.getRequest());
             uploadService.setExtensoes(extensoes.split(","));
-            uploadService.setFileItem(fileItem);
-            uploadService.setFolder("/item/" + item.getId() + "/");
-
-            String sourceFilder = getServletContext().getInitParameter("folderUpload");
-            String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
-
-
+            uploadService.setFolder(separator + "item" + separator + item.getId() + separator);
+            System.out.println("NOME ANTIGO: " + file.getName());
+            InputStream fileContent = uploadService.redimencionar(inpuStream, 800, 600);
+            String imagem = uploadService.savePosRedimencionamento(
+                file.getName(),
+                extension,
+                sourceFilder,
+                null,
+                fileContent
+            );
+            inpuStream.close();
+            fileContent.close();
             PedidoItemFoto pedidoItemFoto = new PedidoItemFoto();
             TbPedidoItemFoto itemFoto = new TbPedidoItemFoto();
             if (!imagem.equals("")) {
@@ -358,16 +393,62 @@ System.out.println("CEP: " + cep);
                 jsonModel.setMessage("Foto enviada com sucesso!");
                 jsonModel.setStatus(true);
 
-                file.delete();
+                System.out.println("CAMINHO : " + path);
+                File file2 = new File(path);
+
+                file2.setReadable(true, false);
+                file2.setExecutable(true, false);
+                file2.setWritable(true, false);
+                boolean isDeleted = file2.delete();
+                System.out.println("REMOVIDO : " + isDeleted);
             } else {
                 jsonModel.setMessage("Ocorreu um erro ao enviar a foto!");
                 jsonModel.setStatus(false);
             }
         } else {
-            jsonModel.setMessage("Item n?o encontrado!");
+            jsonModel.setMessage("Item não encontrado!");
             jsonModel.setStatus(false);
         }
 
         setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void findImagemAction() throws Exception
+    {
+        int idItem = Integer.parseInt(getRequest().getParameter("id"));
+        int idUltimaFoto = Integer.parseInt(getRequest().getParameter("idmaisquatro"));
+        PedidoItemFoto modelFoto = new PedidoItemFoto();
+
+        List<TbPedidoItemFoto> fotos = modelFoto.findFotos(idItem, idUltimaFoto);
+        String separator = File.separator;
+        ServletContext cntx = this.getRequest().getServletContext();
+        String sourceFilder = getServletContext().getInitParameter("folderUpload");
+
+        for (TbPedidoItemFoto foto : fotos) {
+            String path = separator + "item" + separator + foto.getPedidoItensId() + separator + foto.getCaminhoArquivo();
+
+            String filename = sourceFilder + path;
+            String mime = cntx.getMimeType(filename);
+            System.out.println("MIME " + mime);
+            if (mime == null) {
+                fotos.remove(foto);
+                continue;
+            }
+
+            System.out.println("LINK" + filename);
+            getResponse().setContentType(mime);
+            File file = new File(filename);
+            if (!file.exists()) {
+                fotos.remove(foto);
+                continue;
+            }
+
+            FileInputStream in = new FileInputStream(file);
+
+            byte imageData[] = new byte[(int) file.length()];
+            in.read(imageData);
+            foto.setBase64Imagem(Base64.getEncoder().encodeToString(imageData));
+        }
+        setRequestXhtmlHttpRequestList(fotos);
     }
 }

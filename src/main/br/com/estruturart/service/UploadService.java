@@ -22,7 +22,7 @@ import br.com.estruturart.utility.Exception1001;
 public class UploadService
 {
     private HttpServletRequest request;
-    private String messageErro;
+    private String messageErro = "";
     private FileItem fileItem;
     private String[] extensoes;
     private String folder;
@@ -33,7 +33,7 @@ public class UploadService
         this.request = request;
     }
 
-    private InputStream redimencionar(InputStream is, int width, int height) throws IOException
+    public InputStream redimencionar(InputStream is, int width, int height) throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedImage image = ImageIO.read(is);
@@ -65,24 +65,27 @@ public class UploadService
         String fileName = "";
         if (ServletFileUpload.isMultipartContent(this.request)) {
             try {
+                System.out.println("ENTRO AQUI1");
                 if (!isUploadImagem()) {
                     throw new Exception1001("Nenhum arquivo informado no upload. Selecione um arquivo novamente!");
                 }
-
+                System.out.println("ENTRO AQUI2");
                 /* Escreve a o arquivo na pasta img */
                 FileItem item = fileItem;
                 System.out.println("IMG OK 2");
                 fileName = item.getName();
+
                 InputStream fileContent = item.getInputStream();
                 String contentType = item.getContentType();
                 int index = fileName.lastIndexOf(".");
                 String format = "";
-
+                System.out.println("ENTRO AQUI3");
                 if (index > 0) {
                     format = fileName.substring(index + 1);
                     format = format.toLowerCase();
                 }
-
+                System.out.println("Nome: " + fileName);
+                System.out.println("ENTRO AQUI4");
                 boolean isFormatValid = false;
                 String extensoesAceitas = "";
                 for (int i = 0; i < this.extensoes.length; i++) {
@@ -102,8 +105,10 @@ public class UploadService
                 if (!isFormatValid) {
                     throw new Exception1001("Formato do arquivo inválido, formatos aceitos " + extensoesAceitas + ".");
                 }
-
+                System.out.println("Nome: " + fileName);
+                System.out.println("Seprator: " + System.getProperty("file.separator"));
                 if (fileName.contains(System.getProperty("file.separator"))) {
+                    System.out.println("ULTIMO INDEX: " + fileName.lastIndexOf(System.getProperty("file.separator")));
                     fileName = fileName.substring(fileName.lastIndexOf(System.getProperty("file.separator")));
                 }
 
@@ -112,7 +117,7 @@ public class UploadService
                         "Nome do arquivo informado inválido. Tente enviar um arquivo com nome correto!"
                     );
                 }
-
+                System.out.println("OK: " + contentType);
                 if (contentType.contains("image")) {
                     fileContent = redimencionar(fileContent, width, height);
                 } else {
@@ -120,51 +125,53 @@ public class UploadService
                         "Nome do arquivo informado inválido. Tente enviar um arquivo com nome correto!"
                     );
                 }
+                fileName = savePosRedimencionamento(fileName, format, folder, nomeAntigo, fileContent);
+                // MessageDigest algorithm = MessageDigest.getInstance("MD5");
+                // String messageDigest = convertStringToMd5(fileName + new Date().getTime());
+                // fileName = messageDigest + "." + format;
+                // System.out.println("MD5 NOME: " + fileName);
 
-                MessageDigest algorithm = MessageDigest.getInstance("MD5");
-                String messageDigest = convertStringToMd5(fileName + new Date().getTime());
-                fileName = messageDigest + "." + format;
-                System.out.println("MD5 NOME: " + fileName);
+                // String folderTo = folder +  getFolder();
+                // File uploadDir = new File(folderTo);
+                // if (!uploadDir.exists() || !uploadDir.isDirectory()) {
+                //     uploadDir.mkdirs();
+                //     System.out.println("CRIANDO");
+                // }
+                // System.out.println("VEIO ");
+                // System.out.println("MD5 NOME COMPLETO: " + folderTo + fileName);
+                // FileOutputStream fout = new FileOutputStream(folderTo + fileName);
+                // System.out.println("OK ");
+                // byte[] buffer = new byte[fileContent.available()];
+                // fileContent.read(buffer);
 
-                String folderTo = folder +  getFolder();
-                File uploadDir = new File(folderTo);
-                if (!uploadDir.exists() || !uploadDir.isDirectory()) {
-                    uploadDir.mkdirs();
-                    System.out.println("CRIANDO");
-                }
-                System.out.println("VEIO ");
-                System.out.println("MD5 NOME COMPLETO: " + folderTo + fileName);
-                FileOutputStream fout = new FileOutputStream(folderTo + fileName);
-                System.out.println("OK ");
-                byte[] buffer = new byte[fileContent.available()];
-                fileContent.read(buffer);
+                // fout.write(buffer);
+                // fout.flush();
+                // fout.close();
 
-                fout.write(buffer);
-                fout.flush();
-                fout.close();
+                // if (!uploadDir.exists()) {
+                //     fileName = "";
+                //     throw new Exception1001("Ocorre um erro ao realizar o upload");
+                // }
 
-                if (!uploadDir.exists()) {
-                    fileName = "";
-                    throw new Exception1001("Ocorre um erro ao realizar o upload");
-                }
-
-                if (nomeAntigo != null) {
-                    String folderToDelete = folder + getFolder() + nomeAntigo;
-                    File uploadDirDelete = new File(folderToDelete);
-                    if (uploadDirDelete.exists()) {
-                        uploadDirDelete.delete();
-                    }
-                }
+                // if (nomeAntigo != null) {
+                //     String folderToDelete = folder + getFolder() + nomeAntigo;
+                //     File uploadDirDelete = new File(folderToDelete);
+                //     if (uploadDirDelete.exists()) {
+                //         uploadDirDelete.delete();
+                //     }
+                // }
             } catch (FileUploadException e) {
                 fileName = "";
                 System.out.println(e.getMessage());
                 this.setMessageErro("Ocorreu um erro ao salvar o arquivo no diretório. Informe a equipe de suporte!");
             } catch (Exception1001 e) {
                 fileName = "";
+                e.printStackTrace();
                 System.out.println(e.getMessage());
                 this.setMessageErro(e.getMessage());
             } catch (Exception e) {
                 fileName = "";
+                e.printStackTrace();
                 System.out.println(e.getMessage());
                 this.setMessageErro("Ocorreu um erro ao realizar o upload. Tente novamente!");
             }
@@ -261,5 +268,52 @@ public class UploadService
     public void setFolder(String folder)
     {
         this.folder = folder;
+    }
+
+    public String savePosRedimencionamento(String fileName, String format, String folder, String nomeAntigo, InputStream fileContent) throws IOException, java.security.NoSuchAlgorithmException, Exception1001
+    {
+        MessageDigest algorithm = MessageDigest.getInstance("MD5");
+        String messageDigest = convertStringToMd5(fileName + new Date().getTime());
+        fileName = messageDigest + "." + format;
+        System.out.println("MD5 NOME: " + fileName);
+
+        String folderTo = folder +  getFolder();
+        File uploadDir = new File(folderTo);
+        if (!uploadDir.exists() || !uploadDir.isDirectory()) {
+            uploadDir.mkdirs();
+            System.out.println("CRIANDO");
+        }
+        System.out.println("VEIO ");
+        System.out.println("MD5 NOME COMPLETO: " + folderTo + fileName);
+        FileOutputStream fout = new FileOutputStream(folderTo + fileName);
+        System.out.println("OK ");
+        byte[] buffer = new byte[fileContent.available()];
+        fileContent.read(buffer);
+
+        fout.write(buffer);
+        fout.flush();
+        fout.close();
+        fileContent.close();
+
+        File file2 = new File(folderTo + fileName);
+        file2.setReadable(true, false);
+        file2.setExecutable(true, false);
+        file2.setWritable(true, false);
+
+        if (!uploadDir.exists()) {
+            fileName = "";
+            throw new Exception1001("Ocorre um erro ao realizar o upload");
+        }
+
+        if (nomeAntigo != null) {
+            String folderToDelete = folder + getFolder() + nomeAntigo;
+            File uploadDirDelete = new File(folderToDelete);
+            System.out.println("EXISTE ? " + folderToDelete);
+            if (uploadDirDelete.exists()) {
+                uploadDirDelete.delete();
+            }
+        }
+
+        return fileName;
     }
 }

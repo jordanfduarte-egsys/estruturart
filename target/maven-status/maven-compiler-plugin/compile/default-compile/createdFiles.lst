@@ -3,7 +3,7 @@ br\com\estruturart\utility\Exception1001.class
 br\com\estruturart\utility\Route.class
 br\com\estruturart\utility\StringUtilsPad.class
 br\com\estruturart\controller\WebserviceController.class
-br\com\estruturart\persistency\AbstractPersistency.class
+br\com\estruturart\utility\Base64$InputStream.class
 br\com\estruturart\service\SendEmailService.class
 br\com\estruturart\model\Orcamento.class
 br\com\estruturart\persistency\StatusMaterial.class
@@ -28,6 +28,7 @@ br\com\estruturart\persistency\Cidade.class
 br\com\estruturart\controller\ParametroController.class
 br\com\estruturart\model\TbPerfil.class
 br\com\estruturart\utility\Feriados.class
+br\com\estruturart\utility\Base64$1.class
 br\com\estruturart\controller\LancamentoController.class
 br\com\estruturart\utility\Paginator.class
 br\com\estruturart\persistency\LogError.class
@@ -37,6 +38,7 @@ br\com\estruturart\model\TbUsuario.class
 br\com\estruturart\controller\CidadeController.class
 br\com\estruturart\persistency\LogPedido.class
 br\com\estruturart\model\TbMaterial.class
+br\com\estruturart\utility\Base64Coder.class
 br\com\estruturart\persistency\PedidoItem.class
 br\com\estruturart\persistency\Pedido.class
 br\com\estruturart\model\TbStatusModelo.class
@@ -51,6 +53,7 @@ br\com\estruturart\model\CepModel.class
 br\com\estruturart\utility\ParamRequestManager.class
 br\com\estruturart\controller\ImageController.class
 br\com\estruturart\utility\IJsonModel.class
+br\com\estruturart\utility\Base64.class
 br\com\estruturart\model\TbCidade.class
 br\com\estruturart\utility\JsonModel.class
 br\com\estruturart\model\TbStatusUsuario.class
@@ -67,6 +70,7 @@ br\com\estruturart\persistency\Perfil.class
 br\com\estruturart\persistency\Usuario.class
 br\com\estruturart\persistency\Fornecedor.class
 br\com\estruturart\model\AbstractModel.class
+br\com\estruturart\utility\Base64$OutputStream.class
 br\com\estruturart\model\TbLancamento.class
 br\com\estruturart\persistency\Modelo.class
 br\com\estruturart\persistency\Estado.class
