@@ -52,6 +52,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
@@ -424,31 +425,33 @@ System.out.println("CEP: " + cep);
         ServletContext cntx = this.getRequest().getServletContext();
         String sourceFilder = getServletContext().getInitParameter("folderUpload");
 
+        List<TbPedidoItemFoto> fotosAux = new ArrayList<TbPedidoItemFoto>();
         for (TbPedidoItemFoto foto : fotos) {
             String path = separator + "item" + separator + foto.getPedidoItensId() + separator + foto.getCaminhoArquivo();
 
             String filename = sourceFilder + path;
+            System.out.println("CT: " + filename);
+            File file = new File(filename);
+            if (!file.exists()) {
+                continue;
+            }
             String mime = cntx.getMimeType(filename);
             System.out.println("MIME " + mime);
             if (mime == null) {
-                fotos.remove(foto);
                 continue;
             }
 
             System.out.println("LINK" + filename);
             getResponse().setContentType(mime);
-            File file = new File(filename);
-            if (!file.exists()) {
-                fotos.remove(foto);
-                continue;
-            }
 
             FileInputStream in = new FileInputStream(file);
 
             byte imageData[] = new byte[(int) file.length()];
             in.read(imageData);
             foto.setBase64Imagem(Base64.getEncoder().encodeToString(imageData));
+
+            fotosAux.add(foto);
         }
-        setRequestXhtmlHttpRequestList(fotos);
+        setRequestXhtmlHttpRequestList(fotosAux);
     }
 }
