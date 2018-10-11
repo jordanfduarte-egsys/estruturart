@@ -66,8 +66,10 @@
                                             <td>${iterator.getDescricao()}</td>
                                             <td>${iterator.getFornecedor().getNome()}</td>
                                             <td>${iterator.getQuantidade()}</td>
-                                            <td class="js-preco" data-preco="${iterator.getPreco()}">
-                                                R$ ${iterator.getPrecoBR()}
+                                            <td class="js-preco" data-preco="<c:if test="${iterator.getMateriaPrima() == 1}">${iterator.getPreco()}</c:if>">
+                                                <c:if test="${iterator.getMateriaPrima() == 1}">
+                                                    R$ ${iterator.getPrecoBR()}
+                                                </c:if>
                                                 <a href="javasxript:void(0);" class="js-remover"><i class="fas fa-trash text-right text-danger pull-right"></i></a>
                                                 <input type="hidden" name="materiais[]" value="${iterator.getId()}" />
                                             </td>
@@ -75,7 +77,7 @@
                                     </c:forEach>
                                      <c:if test="${modelo.getMateriais().size() == 0}">
                                          <tr class="js-nenhum-material">
-                                            <td colspan="3">Nenhum material selecionado!</td>
+                                            <td colspan="4">Nenhum material selecionado!</td>
                                           </tr>
                                      </c:if>
                                 </tbody>
@@ -210,7 +212,9 @@
     <td>{{fornecedor.nome}}</td>
     <td>{{quantidade}}</td>
     <td class="js-preco" data-preco="{{preco}}">
-        R$ {{precoBr}}
+        {{#if preco > 0}}
+            R$ {{precoBr}}
+        {{/if}}
         <a href="javasxript:void(0);" class="js-remover"><i class="fas fa-trash text-right text-danger pull-right" ></i></a>
         <input type="hidden" name="materiais[]" value="{{id}}" />
     </td>

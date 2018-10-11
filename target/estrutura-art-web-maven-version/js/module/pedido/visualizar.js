@@ -289,11 +289,11 @@ var crud = {
       var file = $body.find('input[name="nova_foto"]').val();
       var isValid = true;
 
-      $body.find('input[name="observacao"]').removeClass('is-invalid');
-      if (obs == "") {
-        $body.find('input[name="observacao"]').addClass('is-invalid');
-        isValid = false;
-      }
+      // $body.find('input[name="observacao"]').removeClass('is-invalid');
+      // if (obs == "") {
+      //   $body.find('input[name="observacao"]').addClass('is-invalid');
+      //   isValid = false;
+      // }
 
       $body.find('input[name="nova_foto"]').removeClass('is-invalid');
       if (file == "" || file == null) {

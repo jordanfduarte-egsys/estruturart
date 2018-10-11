@@ -232,10 +232,12 @@ public class OrcamentoController extends AbstractServlet {
             System.out.println("========================================");
 
             if (orcamento.isValid(Orcamento.ETAPA3)) {
+                int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
                 Connection conn = ConnectionManager.getConnection();
                 conn.setAutoCommit(false);
 
                 try {
+                    orcamento.setUsuarioLog(usuarioId);
                     FinalizarOrcamento finalizarService = new FinalizarOrcamento(
                         getRequest(),
                         getResponse(),

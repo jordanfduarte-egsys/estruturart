@@ -23,7 +23,7 @@
                  <th scope="col">Imagem</th>
                  <th scope="col">Dimensгo</th>
                  <th scope="col">Preço</th>
-                 <th scope="col">Produзгo</th>
+                 <th scope="col">Produção</th>
                  <th scope="col">Status</th>
                  <th scope="col">&nbsp;</th>
              </tr>

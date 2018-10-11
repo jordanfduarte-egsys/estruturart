@@ -25,6 +25,7 @@ public class Orcamento extends AbstractModel
     private Date prevEntrega;
     private float valorMaoObra = 0;
     private String observacao;
+    private int usuarioLog;
 
     private boolean isValidEtapa1;
     private boolean isValidEtapa2;
@@ -373,5 +374,15 @@ public class Orcamento extends AbstractModel
         }
 
         return totalPintura;
+    }
+
+    public void setUsuarioLog(int id)
+    {
+        this.usuarioLog = id;
+    }
+
+    public int getUsuarioLog()
+    {
+        return usuarioLog;
     }
 }

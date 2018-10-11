@@ -15,7 +15,7 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="nome">Nome</label>
-                        <input type="text" class="form-control <c:if test="${fornecedor.getValidation().hasParam('nome')}">is-invalid</c:if>" id="nome" name="nome" placeholder="Fornecedor Ferro & Alumнnio" value="${fornecedor.getNome()}">
+                        <input type="text" class="form-control <c:if test="${fornecedor.getValidation().hasParam('nome')}">is-invalid</c:if>" id="nome" name="nome" placeholder="Fornecedor Ferro & Alumínio" value="${fornecedor.getNome()}">
                         <div class="invalid-feedback">
                             ${fornecedor.getValidation().getParamOr('nome', '')}
                         </div>

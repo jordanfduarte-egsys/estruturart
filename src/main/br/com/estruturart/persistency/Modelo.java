@@ -40,7 +40,7 @@ public class Modelo extends AbstractPersistency
 
         String subQueryPreco = String.format("(" +
             " SELECT" +
-            "     SUM(mat.preco) + (" +
+            "     SUM(IF(mat.materia_prima = 1, mat.preco, 0)) + (" +
             "         IF (" +
             "             m.preco_pintura IS NULL || m.preco_pintura = ''," +
             "             0," +
@@ -49,15 +49,10 @@ public class Modelo extends AbstractPersistency
             "     )" +
             "     +" +
             "     (" +
-            "             (SUM(mat.preco) + (" +
-            "                 IF (" +
-            "                     m.preco_pintura IS NULL || m.preco_pintura = ''," +
-            "                     0," +
-            "                     m.preco_pintura" +
-            "                 )" +
-            "             ) * m.porcentagem_acrescimo) / 100" +
-                "     )"
-                + "     FROM modelo_material mm INNER JOIN material mat ON mm.material_id = mat.id WHERE m.id = mm.modelo_id) as preco_total"
+            "             (SUM(IF(mat.materia_prima = 1, mat.preco, 0))" +
+            "             * m.porcentagem_acrescimo) / 100" +
+            "     )" +
+            " FROM modelo_material mm INNER JOIN material mat ON mm.material_id = mat.id WHERE m.id = mm.modelo_id) as preco_total"
         );
         String columns = String.format("m.*, STATUS_MODELO.NOME AS status_modelo, %s", subQueryPreco);
         String limit = String.format("LIMIT %d, %d", pageAux, offset);

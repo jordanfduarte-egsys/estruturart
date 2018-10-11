@@ -103,7 +103,7 @@ public class Pedido extends AbstractPersistency
         }
     }
 
-    public List<TbPedido> findByRequestManager(ParamRequestManager params) throws SQLException, java.text.ParseException
+    public List<TbPedido> findByRequestManager(ParamRequestManager params, String order) throws SQLException, java.text.ParseException
     {
         Connection conn = ConnectionManager.getConnection();
         SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
@@ -181,6 +181,11 @@ public class Pedido extends AbstractPersistency
             + " WHERE 1 %s",
             args
         );
+
+        if (order == "data") {
+            sql += " ORDER BY data_previsao_instalacao ASC";
+        }
+
         System.out.println("-------SQL PEDIDO----------\n\n\n");
         System.out.println(sql);
         System.out.println("-------FIM SQL PEDIDO-------\n\n\n");

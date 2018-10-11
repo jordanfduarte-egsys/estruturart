@@ -34,6 +34,8 @@ import br.com.estruturart.persistency.PedidoItemFoto;
 import br.com.estruturart.model.TbLancamento;
 import br.com.estruturart.utility.Util;
 import org.apache.commons.io.IOUtils;
+
+import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.Enumeration;
@@ -202,7 +204,8 @@ public class PedidoController extends AbstractServlet
 
                 pedidoModel.update(pedido);
                 enderecoModel.update(pedido.getEndereco());
-                logPedido.insert(pedido.getStatusPedidoId(), pedido.getUsuario().getId(), pedido.getId());
+                int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
+                logPedido.insert(pedido.getStatusPedidoId(), usuarioId, pedido.getId());
 
                 getFlashMessenger().setType(FlashMessenger.SUCCESS)
                             .add("Pedido alterado com sucesso!");
@@ -225,7 +228,7 @@ public class PedidoController extends AbstractServlet
         SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         Pedido modelPedido = new Pedido();
         getSession().setAttribute("session_pedido", params);
-        List<TbPedido> pedidos = modelPedido.findByRequestManager(params);
+        List<TbPedido> pedidos = modelPedido.findByRequestManager(params, "");
         String data = "";
         boolean isFiltro = false;
 
@@ -396,7 +399,7 @@ public class PedidoController extends AbstractServlet
             int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();
 
             pedido.setStatusPedidoId(TbStatusPedido.CANCELADO);
-            logPedido.insert(pedido.getStatusPedidoId(), pedido.getUsuario().getId(), pedido.getId());
+            logPedido.insert(pedido.getStatusPedidoId(), usuarioId, pedido.getId());
 
             SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
             TbParametro parametro = modelParametros.findAll();
@@ -545,11 +548,12 @@ public class PedidoController extends AbstractServlet
         }
 
         if (itemFoto.getPedidoItensId() > 0) {
+            String separator = File.separator;
             TbPedidoItem item = pedidoItem.findPedidoByItem(itemFoto.getPedidoItensId());
             UploadService uploadService = new UploadService(this.getRequest());
             uploadService.setExtensoes(extensoes.split(","));
             uploadService.setFileItem(itemFoto.getFileFoto());
-            uploadService.setFolder("/item/" + item.getId() + "/");
+            uploadService.setFolder(separator + "item" + separator + item.getId() + separator);
 
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
             String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);

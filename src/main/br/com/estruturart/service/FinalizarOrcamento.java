@@ -105,7 +105,7 @@ public class FinalizarOrcamento
             lancamento.setPrecoPintura(modelo.getPrecoPintura());
             lancamento.setDescricao(
                 String.format(
-                    "Lan?amento referente ao item #%s do pedido %s no dia %s",
+                    "Lançamento referente ao item #%s do pedido %s no dia %s",
                     StringUtilsPad.padLeft(String.valueOf(pedidoItemEntity.getId()), 5, "0"),
                     StringUtilsPad.padLeft(String.valueOf(orcamento.getPedido().getId()), 5, "0"),
                     new SimpleDateFormat("dd/MM/yyyy").format(new Date())
@@ -121,7 +121,7 @@ public class FinalizarOrcamento
     public void salvarLogPedido() throws java.sql.SQLException
     {
         logPedido.insert(
-            orcamento.getPedido().getStatusPedidoId(), orcamento.getUsuario().getId(), orcamento.getPedido().getId()
+            orcamento.getPedido().getStatusPedidoId(), orcamento.getUsuarioLog(), orcamento.getPedido().getId()
         );
     }
 

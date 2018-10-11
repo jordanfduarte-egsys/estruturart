@@ -15,7 +15,7 @@
                 <div class="form-row">
                     <div class="col-md-4 mb-3">
                         <label for="descricao">Descrição *</label>
-                        <input type="text" class="form-control <c:if test="${material.getValidation().hasParam('descricao')}">is-invalid</c:if>" id="descricao" name="descricao" placeholder="Barra de alumнnio" value="${material.getDescricao()}">
+                        <input type="text" class="form-control <c:if test="${material.getValidation().hasParam('descricao')}">is-invalid</c:if>" id="descricao" name="descricao" placeholder="Barra de alumínio" value="${material.getDescricao()}">
                         <div class="invalid-feedback">
                             ${material.getValidation().getParamOr('descricao', '')}
                         </div>

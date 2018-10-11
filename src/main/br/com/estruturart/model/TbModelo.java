@@ -1,6 +1,7 @@
 package br.com.estruturart.model;
 
 import java.util.Date;
+import java.io.File;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class TbModelo extends AbstractModel
     private float alturaPadrao;
     private float larguraNova;
     private float alturaNova;
-    private String imagem;
+    private String imagem = "";
     private String imagemSource = "";
     private float precoPintura = 0;
     private float porcentagemAcrescimo = 1;
@@ -278,9 +279,10 @@ public class TbModelo extends AbstractModel
 
     public String getImagemSource()
     {
-        this.imagemSource = String.format("files/sem-foto.jpg");
+        String separator = File.separator;
+        this.imagemSource = "files" + "/" + "sem-foto.jpg";
         if (!this.imagem.equals("")) {
-            this.imagemSource = String.format("files/modelos/%s", this.imagem);
+            this.imagemSource = "files" + "/" + "modelos" + "/" + this.imagem;
         }
 
         return this.imagemSource;
@@ -315,7 +317,11 @@ public class TbModelo extends AbstractModel
     {
         float total = 0;
         for (TbMaterial material : materiais) {
-            total += material.getPreco();
+            if (material.getMateriaPrima() == 1) {
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
+            }
         }
 
         total = ((total * this.porcentagemAcrescimo) / 100) + total;
@@ -333,7 +339,11 @@ public class TbModelo extends AbstractModel
     {
         float total = 0;
         for (TbMaterial material : materiais) {
-            total += material.getPreco();
+            if (material.getMateriaPrima() == 1) {
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
+            }
         }
 
         return total;
@@ -344,7 +354,9 @@ public class TbModelo extends AbstractModel
         if (this.precoTotalQtdStr == null) {
             float total = 0;
             for (TbMaterial material : materiais) {
-                total += material.getPreco();
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
             }
 
             total = ((total * this.porcentagemAcrescimo) / 100) + total;
@@ -358,7 +370,11 @@ public class TbModelo extends AbstractModel
     {
         float total = 0;
         for (TbMaterial material : materiais) {
-            total += material.getPreco();
+            if (material.getMateriaPrima() == 1) {
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
+            }
         }
 
         return formatMoney(total);
@@ -368,7 +384,11 @@ public class TbModelo extends AbstractModel
     {
         float total = 0;
         for (TbMaterial material : materiais) {
-            total += material.getPreco();
+            if (material.getMateriaPrima() == 1) {
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
+            }
         }
 
         return total;

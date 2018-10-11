@@ -4,6 +4,7 @@ br\com\estruturart\utility\Route.class
 br\com\estruturart\utility\StringUtilsPad.class
 br\com\estruturart\controller\WebserviceController.class
 br\com\estruturart\utility\Base64$InputStream.class
+br\com\estruturart\persistency\AbstractPersistency.class
 br\com\estruturart\service\SendEmailService.class
 br\com\estruturart\model\Orcamento.class
 br\com\estruturart\persistency\StatusMaterial.class

@@ -119,7 +119,7 @@
                                 <span class="input-group-text" id="passIcon"><i class="fas fa-unlock-alt"></i></span>
                             </div>
                             <input type="password" class="form-control  <c:if test="${usuario.getValidation().hasParam('senha')}">is-invalid</c:if>" id="validationServerPass" name="senha" placeholder="*********" aria-describedby="passIcon">
-                            <a data-toggle="tooltip" data-html="true" class="p-2" title="" data-original-title="A senha deve conter no mнnimo seis caracteres alfanumйricos e no mínimo 1 e máximo 3 caracteres especiais, como exemplo {'@', '-', '.', '_', '&', '%', '$', '#', '!', '?'}">
+                            <a data-toggle="tooltip" data-html="true" class="p-2" title="" data-original-title="A senha deve conter no mínimo seis caracteres alfanuméricos e no mínimo 1 e máximo 3 caracteres especiais, como exemplo {'@', '-', '.', '_', '&', '%', '$', '#', '!', '?'}">
                                 <i class="fas fa-info"></i>
                             </a>
                             <div class="invalid-feedback">

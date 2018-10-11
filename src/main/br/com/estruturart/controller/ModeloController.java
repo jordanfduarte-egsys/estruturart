@@ -1,5 +1,6 @@
 package br.com.estruturart.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -55,6 +56,7 @@ public class ModeloController extends AbstractServlet
         int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
         int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
         String extensoes = getServletContext().getInitParameter("extensoesImagem");
+        String separator = File.separator;
 
         List<TbStatusModelo> statusModelo = modelStatusModelo.findAll();
         try {
@@ -75,7 +77,7 @@ public class ModeloController extends AbstractServlet
                     modelo.clearMateriais();
                     for (FileItem item : formItems) {
                         String fieldname = item.getFieldName();
-                        String fieldvalue = item.getString();
+                        String fieldvalue = new String(item.getString().getBytes(), "utf-8");
                         System.out.println("++++++++++++++++++++++");
                         System.out.println("FILED: " + fieldname);
                         System.out.println("FILED V: " + fieldvalue);
@@ -144,7 +146,7 @@ public class ModeloController extends AbstractServlet
                         UploadService uploadService = new UploadService(this.getRequest());
                         uploadService.setExtensoes(extensoes.split(","));
                         uploadService.setFileItem(modelo.getFileItem());
-                        uploadService.setFolder("/modelos/");
+                        uploadService.setFolder(separator + "modelos" + separator);
 
                         String imagem = modelo.getImagem();
                         String sourceFilder = getServletContext().getInitParameter("folderUpload");

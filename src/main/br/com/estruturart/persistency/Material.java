@@ -209,7 +209,7 @@ public class Material extends AbstractPersistency
             + " FROM MATERIAL m"
             + " INNER JOIN STATUS_MATERIAL ON m.status_material_id = STATUS_MATERIAL.id "
             + " LEFT JOIN UNIDADE_MEDIDA ON m.unidade_medida_id = UNIDADE_MEDIDA.id "
-            + " INNER JOIN FORNECEDOR ON m.fornecedor_id = FORNECEDOR.id WHERE LOWER(m.descricao) LIKE \"%s%%\" ORDER BY m.descricao ASC LIMIT 30",
+            + " INNER JOIN FORNECEDOR ON m.fornecedor_id = FORNECEDOR.id WHERE LOWER(m.descricao) LIKE \"%s%%\" AND m.status_material_id = 1 ORDER BY m.descricao ASC LIMIT 30",
             nome
         );
 

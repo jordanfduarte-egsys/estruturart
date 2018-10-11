@@ -24,6 +24,12 @@ var crud = {
                 },
                 onClickEvent: function() {
                     var item = $busca.getSelectedItemData();
+
+                    if (item.materiaPrima == 0)  {
+                      item.precoBr = "0";
+                      item.preco = 0;
+                    }
+
                     renderer(
                         item, // alterações no html modelo
                         "#row-material", // Template modelo que vai ser clonado
