@@ -111,40 +111,72 @@ public class AbstractServlet extends HttpServlet {
             System.out.println("COntroller: " + this.route.getController());
 
             // @todo remover
-            if ((this.getSession().getAttribute("usuario") instanceof TbUsuario) == false
-                    && !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))) {
-                TbUsuario u = new TbUsuario();
-                u.setId(1);
-                u.setCodigo("DKSI");
-                u.setCpfCnpj("08142781913");
-                u.setEmail("jordan.duarte.pr@gmail.com");
-                u.setNome("Jordan");
-                u.setPerfilId(1);
-                u.setRgIncricaoEstadual("dkskdksd");
-                u.setSenha("kdoskodkoskods");
-                u.setStatusUsuarioId(1);
-                u.setTelefone("82833383");
-                u.setTipoPessoa("1");
+            // if ((this.getSession().getAttribute("usuario") instanceof TbUsuario) == false
+            //         && !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))) {
+            //     TbUsuario u = new TbUsuario();
+            //     u.setId(1);
+            //     u.setCodigo("DKSI");
+            //     u.setCpfCnpj("08142781913");
+            //     u.setEmail("jordan.duarte.pr@gmail.com");
+            //     u.setNome("Jordan");
+            //     u.setPerfilId(1);
+            //     u.setRgIncricaoEstadual("dkskdksd");
+            //     u.setSenha("kdoskodkoskods");
+            //     u.setStatusUsuarioId(1);
+            //     u.setTelefone("82833383");
+            //     u.setTipoPessoa("1");
 
-                this.getSession().setAttribute("usuario", u);
-                System.out.println("Atribuiu um usuario MANUALMENTE");
-            }
+            //     this.getSession().setAttribute("usuario", u);
+            //     System.out.println("Atribuiu um usuario MANUALMENTE");
+            // }
+			
+            if (this.route.getController().toString().equals("webservice")) {
+				boolean debug = false;
+                if (!method.equals("findUsuarioAction") || debug) {
+                    String authentication = request.getHeader( "Authentication" );
+                    if ( authentication == null || authentication.isEmpty() ) {
+                        Gson gson = new Gson();
+                        // OAuth email senha
+                        OAuth usuario = (OAuth)gson.fromJson(Base64.getDecoder().decode(authentication), OAuth.class);
 
-            if (!(this.getSession().getAttribute("usuario") instanceof TbUsuario)
-                    && !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))) {
-                this.redirect("auth");
-            } else if (this.getSession().getAttribute("usuario") instanceof TbUsuario && method.equals("indexAction")
-                    && this.route.getController().toString().equals("auth")) {
-                this.redirect("home");
-            } else {
-                System.out.println("ANTES DE CHAMAR");
+                        Usuario usuarioModel = new Usuario();
+                        TbUsuario usuario = usuarioModel.findUsuarioByUsuarioSenha(usuario.getEmail(), usuario.getSenha());
+
+                        if (usuario.getStatusUsuarioId() != 1) {
+                            this.noRender = true;
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            PrintWriter writer= response.getWriter();
+                            writer.println("{status: false}");
+                        } else {
+                            this.getSession().setAttribute("usuario", usuario);
+                        }
+                    }
+                }
+
                 this.getClass().getMethod(method).invoke(this, null);
-                System.out.println("AJAX? " + isXhtmlHttpRequest());
                 if (!this.noRender && !getResponse().isCommitted()) {
                     this.view();
                 }
 
                 this.noRender = false;
+            } else {
+                if (!(this.getSession().getAttribute("usuario") instanceof TbUsuario)
+                        && !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))) {
+                    this.redirect("auth");
+                } else if (this.getSession().getAttribute("usuario") instanceof TbUsuario && method.equals("indexAction")
+                        && this.route.getController().toString().equals("auth")) {
+                    this.redirect("home");
+                } else {
+                    System.out.println("ANTES DE CHAMAR");
+                    this.getClass().getMethod(method).invoke(this, null);
+                    System.out.println("AJAX? " + isXhtmlHttpRequest());
+                    if (!this.noRender && !getResponse().isCommitted()) {
+                        this.view();
+                    }
+
+                    this.noRender = false;
+                }
             }
         } catch (IllegalArgumentException e) {
             error(e);
