@@ -55,7 +55,7 @@ public class AuthController extends AbstractServlet {
                             if (!getParameterOrValue("remember", "0").equals("0")) {
                                 Gson gson = new Gson();
                                 Cookie cookie = new Cookie("login", Base64.getEncoder().encodeToString(gson.toJson(usuario).getBytes()));
-                                cookie.setSecure(false);
+                                //cookie.setSecure(false);
                                 cookie.setVersion(0);
                                 cookie.setMaxAge(60*60*24); // 24 hour
                                 getResponse().addCookie(cookie);
@@ -119,9 +119,9 @@ public class AuthController extends AbstractServlet {
                     System.out.println("APAGANDO COOKIE");
                     c.setMaxAge(0);
                     c.setValue(null);
-                    c.setPath("/");
+                    c.setPath("/sistemateste");
                     c.setDomain("");
-                    c.setComment("");
+                    c.setComment("Alterando");
                     getResponse().addCookie(c);
                 }
             }
