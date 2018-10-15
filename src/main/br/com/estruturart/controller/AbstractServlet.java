@@ -8,15 +8,18 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import br.com.estruturart.utility.IJsonModel;
 import br.com.estruturart.model.IModel;
+import br.com.estruturart.model.OAuth;
 import com.google.gson.Gson;
 
 import br.com.estruturart.model.TbUsuario;
+import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.service.LogErrorService;
 import br.com.estruturart.utility.FlashMessenger;
 import br.com.estruturart.utility.JsonModel;
@@ -129,34 +132,49 @@ public class AbstractServlet extends HttpServlet {
             //     this.getSession().setAttribute("usuario", u);
             //     System.out.println("Atribuiu um usuario MANUALMENTE");
             // }
-			
+
             if (this.route.getController().toString().equals("webservice")) {
-				boolean debug = false;
+                boolean debug = false;
+                boolean isAction = false;
                 if (!method.equals("findUsuarioAction") || debug) {
                     String authentication = request.getHeader( "Authentication" );
-                    if ( authentication == null || authentication.isEmpty() ) {
+                    if ( authentication != null && !authentication.isEmpty() ) {
                         Gson gson = new Gson();
+                        System.out.println("BASE: " + authentication);
+                        org.apache.commons.codec.binary.Base32 b2 = new org.apache.commons.codec.binary.Base32();
+                        byte[] data = b2.decode(authentication);
                         // OAuth email senha
-                        OAuth usuario = (OAuth)gson.fromJson(Base64.getDecoder().decode(authentication), OAuth.class);
-
+                        OAuth usuario = (OAuth)gson.fromJson(new String(data), OAuth.class);
+                        System.out.println("BASE2: " + new String(data));
                         Usuario usuarioModel = new Usuario();
-                        TbUsuario usuario = usuarioModel.findUsuarioByUsuarioSenha(usuario.getEmail(), usuario.getSenha());
+                        TbUsuario usuarioAux = usuarioModel.findUsuarioByUsuarioSenha(usuario.getEmail(), usuario.getSenha());
 
-                        if (usuario.getStatusUsuarioId() != 1) {
+                        if (usuarioAux.getStatusUsuarioId() != 1) {
                             this.noRender = true;
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
                             PrintWriter writer= response.getWriter();
-                            writer.println("{status: false}");
+                            writer.println("{\"status\": false}");
                         } else {
-                            this.getSession().setAttribute("usuario", usuario);
+                            this.getSession().setAttribute("usuario", usuarioAux);
+                            isAction = true;
                         }
+                    } else {
+                        this.noRender = true;
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json");
+                        PrintWriter writer= response.getWriter();
+                        writer.println("{\"status\": false}");
                     }
+                } else {
+                    isAction = true;
                 }
 
-                this.getClass().getMethod(method).invoke(this, null);
-                if (!this.noRender && !getResponse().isCommitted()) {
-                    this.view();
+                if (isAction) {
+                    this.getClass().getMethod(method).invoke(this, null);
+                    if (!this.noRender && !getResponse().isCommitted()) {
+                        this.view();
+                    }
                 }
 
                 this.noRender = false;
@@ -455,5 +473,17 @@ public class AbstractServlet extends HttpServlet {
         }
 
         return value;
+    }
+
+    public Cookie getCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals( cookieName ))
+                return cookie;
+            }
+        }
+
+        return null;
     }
 }

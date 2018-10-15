@@ -22,7 +22,7 @@ import br.com.estruturart.utility.Paginator;
  * Servlet implementation class Auth
  */
 @WebServlet(name = "material", urlPatterns = { "/material", "/material/cadastro", "/material/index/page/*",
-        "/material/editar/id/*", "/material/buscar-modelo" })
+        "/material/editar/id/*", "/material/buscar-modelo", "/material/alterar-status" })
 public class MaterialController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788151587849L;
 
@@ -113,6 +113,27 @@ public class MaterialController extends AbstractServlet {
         Material material = new Material();
         JsonModel jsonModel = new JsonModel();
         jsonModel.setList(material.findMaterialByNomeList(this.getRequest().getParameter("nome")));
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void alterarStatusAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getRequest().getParameter("id"));
+        int status = Integer.parseInt(this.getRequest().getParameter("status"));
+
+        Material materialModel = new Material();
+        JsonModel jsonModel = new JsonModel();
+
+        TbMaterial material = materialModel.getMaterialById(id);
+        material.setStatusMaterialId(status);
+        if (materialModel.updateStatus(material) > 0) {
+            jsonModel.setStatus(true);
+            jsonModel.setMessage("Status alterado com sucesso!");
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Ocorreu um erro ao alterar o status do material!");
+        }
 
         setRequestXhtmlHttpRequest(jsonModel);
     }

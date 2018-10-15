@@ -4,6 +4,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.ws.rs.HttpMethod;
 
 import br.com.estruturart.model.TbFornecedor;
+import br.com.estruturart.utility.JsonModel;
 import br.com.estruturart.persistency.Fornecedor;
 import br.com.estruturart.utility.Exception1001;
 import br.com.estruturart.utility.FlashMessenger;
@@ -13,7 +14,7 @@ import br.com.estruturart.utility.Paginator;
  * Servlet implementation class Auth
  */
 @WebServlet(name = "fornecedor", urlPatterns = { "/fornecedor", "/fornecedor/cadastro", "/fornecedor/index/page/*",
-        "/fornecedor/editar/id/*" })
+        "/fornecedor/editar/id/*", "/fornecedor/alterar-status" })
 public class FornecedorController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788151587849L;
 
@@ -73,5 +74,26 @@ public class FornecedorController extends AbstractServlet {
     public void editarAction() throws Exception {
         this.getRoute().setAction("cadastroAction");
         this.cadastroAction();
+    }
+
+    public void alterarStatusAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getRequest().getParameter("id"));
+        int status = Integer.parseInt(this.getRequest().getParameter("status"));
+
+        Fornecedor fornecedorModel = new Fornecedor();
+        JsonModel jsonModel = new JsonModel();
+
+        TbFornecedor fornecedor = fornecedorModel.getFornecedorById(id);
+        fornecedor.setStatus(status);
+        if (fornecedorModel.updateStatus(fornecedor) > 0) {
+            jsonModel.setStatus(true);
+            jsonModel.setMessage("Status alterado com sucesso!");
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Ocorreu um erro ao alterar o status do fornecedor!");
+        }
+
+        setRequestXhtmlHttpRequest(jsonModel);
     }
 }

@@ -21,11 +21,13 @@ import br.com.estruturart.persistency.Cidade;
 import br.com.estruturart.persistency.PedidoItemFoto;
 import br.com.estruturart.persistency.Usuario;
 import br.com.estruturart.persistency.Modelo;
+import br.com.estruturart.persistency.LogPedido;
 import br.com.estruturart.model.CepModel;
 import br.com.estruturart.persistency.Estado;
 import br.com.estruturart.persistency.Pedido;
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbEstado;
+import br.com.estruturart.model.TbLogPedido;
 import br.com.estruturart.model.TbModelo;
 import br.com.estruturart.model.TbPedido;
 import br.com.estruturart.utility.ParamRequestManager;
@@ -301,8 +303,11 @@ System.out.println("CEP: " + cep);
     {
         int id = Integer.parseInt(this.getRequest().getParameter("id"));
         Pedido pedidoModel = new Pedido();
-        TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
+        LogPedido modelLog = new LogPedido();
 
+        TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
+        List<TbLogPedido> logsPedido = modelLog.findLogPedido(id);
+        pedido.setLogPedido(logsPedido);
         System.out.println("\n\n\n PEDIDO");
 
         Gson gson = new Gson();

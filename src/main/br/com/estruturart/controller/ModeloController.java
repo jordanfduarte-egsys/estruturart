@@ -26,7 +26,7 @@ import br.com.estruturart.utility.JsonModel;
 /**
  * Servlet implementation class Auth
  */
-@WebServlet(name = "modelo", urlPatterns = { "/modelo", "/modelo/cadastro", "/modelo/index/page/*", "/modelo/editar/id/*", "/modelo/buscar-modelo" })
+@WebServlet(name = "modelo", urlPatterns = { "/modelo", "/modelo/cadastro", "/modelo/index/page/*", "/modelo/editar/id/*", "/modelo/buscar-modelo", "/modelo/alterar-status" })
 public class ModeloController extends AbstractServlet
 {
     private static final long serialVersionUID = -4214231458151587849L;
@@ -217,6 +217,27 @@ public class ModeloController extends AbstractServlet
         Modelo modelo = new Modelo();
         JsonModel jsonModel = new JsonModel();
         jsonModel.setList(modelo.findModeloByNomeList(this.getParameterOrValue("nome", ""), this.getParameterOrValue("id", "0")));
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void alterarStatusAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getRequest().getParameter("id"));
+        int status = Integer.parseInt(this.getRequest().getParameter("status"));
+
+        Modelo modeloModel = new Modelo();
+        JsonModel jsonModel = new JsonModel();
+
+        TbModelo modelo = modeloModel.getModeloById(id);
+        modelo.setStatusModeloId(status);
+        if (modeloModel.updateStatus(modelo) > 0) {
+            jsonModel.setStatus(true);
+            jsonModel.setMessage("Status alterado com sucesso!");
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Ocorreu um erro ao alterar o status do modelo!");
+        }
 
         setRequestXhtmlHttpRequest(jsonModel);
     }

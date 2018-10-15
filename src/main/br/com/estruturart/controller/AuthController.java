@@ -1,8 +1,13 @@
 package br.com.estruturart.controller;
 
+import java.util.Base64;
+
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.HttpMethod;
+
+import com.google.gson.Gson;
 
 import br.com.estruturart.model.TbUsuario;
 import br.com.estruturart.model.TbPerfil;
@@ -47,6 +52,14 @@ public class AuthController extends AbstractServlet {
                             HttpSession session = this.getSession();
 
                             session.setAttribute("usuario", usuario);
+                            if (!getParameterOrValue("remember", "0").equals("0")) {
+                                Gson gson = new Gson();
+                                Cookie cookie = new Cookie("login", Base64.getEncoder().encodeToString(gson.toJson(usuario).getBytes()));
+                                cookie.setSecure(false);
+                                cookie.setVersion(0);
+                                cookie.setMaxAge(60*60*24); // 24 hour
+                                getResponse().addCookie(cookie);
+                            }
                             this.redirect("home");
                         } else {
                             msgUsuario = "Perfil inválido. Verifique!";
@@ -61,6 +74,30 @@ public class AuthController extends AbstractServlet {
                 this.getRequest().setAttribute("msgUsuario", msgUsuario);
                 this.getRequest().setAttribute("msgPassword", msgPassword);
             }
+        } else {
+            Cookie c = getCookie(getRequest(), "login");
+
+            if (c != null) {
+                String jsonLogin = c.getValue();
+                if (!jsonLogin.isEmpty()) {
+                    try {
+                        Gson gson = new Gson();
+                        TbUsuario usuario = (TbUsuario)gson.fromJson(new String(Base64.getDecoder().decode(jsonLogin)), TbUsuario.class);
+                        if (usuario.getId() > 0) {
+                            if (usuario.getStatusUsuarioId() == 1) {
+                                if (usuario.getPerfilId() == TbPerfil.FUNCIONARIO) {
+                                    System.out.println("USUARIO LOGADO: " + jsonLogin);
+                                    HttpSession session = this.getSession();
+                                    session.setAttribute("usuario", usuario);
+                                    this.redirect("home");
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
         }
 
         this.getRequest().setAttribute("msgUsuario", msgUsuario);
@@ -73,6 +110,21 @@ public class AuthController extends AbstractServlet {
         if (this.getSession().getAttribute("usuario") instanceof TbUsuario) {
             System.out.println("TROCO O USUAIRO");
             this.getSession().setAttribute("usuario", null);
+
+            Cookie c = getCookie(getRequest(), "login");
+            System.out.println("COK1: " + c);
+            if (c != null) {
+                String jsonLogin = c.getValue();
+                if (!jsonLogin.isEmpty()) {
+                    System.out.println("APAGANDO COOKIE");
+                    c.setMaxAge(0);
+                    c.setValue(null);
+                    c.setPath("/");
+                    c.setDomain("");
+                    c.setComment("");
+                    getResponse().addCookie(c);
+                }
+            }
         }
 
         this.redirect("auth");

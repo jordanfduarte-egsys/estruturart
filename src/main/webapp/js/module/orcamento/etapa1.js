@@ -1,6 +1,6 @@
 var crud = {
     idEstado: null,
-    
+
     init: function() {
         this.binds();
     },
@@ -86,7 +86,7 @@ var crud = {
                 var $bairro = $('#bairro');
 
                 var request = $.ajax({
-                    url: BASE_URL + 'webservice/find-cep',
+                    url: BASE_URL + 'cidade/find-cep',
                     type: 'POST',
                     dataType: 'json',
                     data: {cep: $(this).val().replace(/[.]|[/]|[-]/g, '')}
@@ -103,8 +103,8 @@ var crud = {
                             $estadoId.val(0);
                             $bairro.val('');
                         }
-                        
-                        if (crud.idEstado != response.object.cidade.estado.id) {                            
+
+                        if (crud.idEstado != response.object.cidade.estado.id) {
                             var showLoading = new ShowLoading();
                             showLoading.show();
                             crud.event.findCidades(

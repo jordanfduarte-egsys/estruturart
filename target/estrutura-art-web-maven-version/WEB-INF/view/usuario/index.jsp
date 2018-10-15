@@ -65,8 +65,8 @@
                              <td>${iterator.getTipoPessoaNome()}</td>
                              <td>${iterator.getDataInclusao('dd/MM/yyyy')}</td>
                              <td class=" actions align-rigth" style="">
-                                <a href="${source}usuario/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger" data-toggle="modal" data-target="#modalStatus" data-original-title="Delete"><i class="fas fas fa-user-times"></i></a>
+                                <a href="${source}usuario/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" data-original-title="Edição"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger js-alterar-status" data-id="${iterator.getId()}" data-status="${iterator.getStatusUsuario().getId()}" data-toggle="modal" data-original-title="Status" title="Alterar status"><i class="fas fas fa-user-times"></i></a>
                              </td>
                          </tr>
                      </c:forEach>
@@ -83,3 +83,25 @@
         </c:if>
      </div>
  </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-alterar-status">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Alterar status do usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Selecione um status para o usuário</p>
+        <select id="status_id" class="custom-select">
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Confirmar</button>
+    </div>
+    </div>
+</div>
+</div>

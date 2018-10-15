@@ -14,7 +14,7 @@ import br.com.estruturart.utility.JsonModel;
 /**
  * Servlet implementation class Auth
  */
-@WebServlet(name = "usuario", urlPatterns = { "/usuario", "/usuario/cadastro", "/usuario/index/page/*", "usuario/editar/id/*", "/usuario/find-cpf-cnpj" })
+@WebServlet(name = "usuario", urlPatterns = { "/usuario", "/usuario/cadastro", "/usuario/index/page/*", "usuario/editar/id/*", "/usuario/find-cpf-cnpj", "/usuario/alterar-status" })
 public class UsuarioController extends AbstractServlet
 {
     private static final long serialVersionUID = -4214231788151597849L;
@@ -101,6 +101,27 @@ public class UsuarioController extends AbstractServlet
         Usuario usuario = new Usuario();
         JsonModel jsonModel = new JsonModel();
         jsonModel.setObject(usuario.findUsuarioByCpjCNpj(this.getRequest().getParameter("cpf_cnpj")));
+
+        setRequestXhtmlHttpRequest(jsonModel);
+    }
+
+    public void alterarStatusAction() throws Exception
+    {
+        int id = Integer.parseInt(this.getRequest().getParameter("id"));
+        int status = Integer.parseInt(this.getRequest().getParameter("status"));
+
+        Usuario usuarioModel = new Usuario();
+        JsonModel jsonModel = new JsonModel();
+
+        TbUsuario usuario = usuarioModel.getUsuarioById(id);
+        usuario.setStatusUsuarioId(status);
+        if (usuarioModel.updateSemSenha(usuario) > 0) {
+            jsonModel.setStatus(true);
+            jsonModel.setMessage("Status alterado com sucesso!");
+        } else {
+            jsonModel.setStatus(false);
+            jsonModel.setMessage("Ocorreu um erro ao alterar o status do usuário!");
+        }
 
         setRequestXhtmlHttpRequest(jsonModel);
     }

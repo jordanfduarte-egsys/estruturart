@@ -172,6 +172,20 @@ public class Material extends AbstractPersistency
         return rows;
     }
 
+    public int updateStatus(TbMaterial material) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format(
+            "UPDATE MATERIAL SET status_material_id = %d WHERE id = %d",
+            material.getStatusMaterialId(), material.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+        conn.close();
+        return rows;
+    }
+
     public boolean findMaterialByNome(String nome, int fkMAterialEdicao, int fkFornecedor) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();

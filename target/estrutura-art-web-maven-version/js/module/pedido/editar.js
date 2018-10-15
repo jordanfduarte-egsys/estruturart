@@ -68,7 +68,7 @@ var crud = {
           var $bairro = $('#bairro');
 
           var request = $.ajax({
-              url: BASE_URL + 'webservice/find-cep',
+              url: BASE_URL + 'cidade/find-cep',
               type: 'POST',
               dataType: 'json',
               data: {cep: $(this).val().replace(/[.]|[/]|[-]/g, '')}

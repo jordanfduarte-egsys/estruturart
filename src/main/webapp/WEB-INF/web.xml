@@ -136,6 +136,7 @@
     <url-pattern>/usuario/index/page/*</url-pattern>
     <url-pattern>/usuario/editar/id/*</url-pattern>
     <url-pattern>/usuario/find-cpf-cnpj</url-pattern>
+    <url-pattern>/usuario/alterar-status</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Pedido</servlet-name>
@@ -162,6 +163,7 @@
     <url-pattern>/fornecedor/cadastro</url-pattern>
     <url-pattern>/fornecedor/index/page/*</url-pattern>
     <url-pattern>/fornecedor/editar/id/*</url-pattern>
+    <url-pattern>/fornecedor/alterar-status</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Material</servlet-name>
@@ -171,6 +173,7 @@
     <url-pattern>/material/index/page/*</url-pattern>
     <url-pattern>/material/editar/id/*</url-pattern>
     <url-pattern>/material/buscar-modelo</url-pattern>
+    <url-pattern>/material/alterar-status</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Modelo</servlet-name>
@@ -180,6 +183,7 @@
     <url-pattern>/modelo/index/page/*</url-pattern>
     <url-pattern>/modelo/editar/id/*</url-pattern>
     <url-pattern>/modelo/buscar-modelo</url-pattern>
+    <url-pattern>/modelo/alterar-status</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Image</servlet-name>
@@ -210,6 +214,7 @@
   <servlet-mapping>
     <servlet-name>Cidade</servlet-name>
     <url-pattern>/cidade/find-cidade</url-pattern>
+    <url-pattern>/cidade/find-cep</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Lancamento</servlet-name>

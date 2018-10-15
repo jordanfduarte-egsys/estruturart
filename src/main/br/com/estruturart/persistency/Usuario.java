@@ -195,6 +195,14 @@ public class Usuario extends AbstractPersistency
             usuario.getTipoPessoa(), usuario.getNome(), usuario.getCpfCnpj(), usuario.getRgIncricaoEstadual(),
             usuario.getEmail(), usuario.getTelefone(), usuario.getSenha(), usuario.getPerfilId(), 2
         );
+        if (usuario.getPerfilId() == 1) {
+            sql = String.format(
+                "INSERT INTO USUARIO (tipo_pessoa, nome, cpf_cnpj, rg_inscricao_estadual, email, telefone, senha, perfil_id, status_usuario_id)"
+                + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
+                usuario.getTipoPessoa(), usuario.getNome(), usuario.getCpfCnpj(), usuario.getRgIncricaoEstadual(),
+                usuario.getEmail(), usuario.getTelefone(), usuario.getPerfilId(), 2
+            );
+        }
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
@@ -217,6 +225,23 @@ public class Usuario extends AbstractPersistency
         }
 
         return usuario.getId();
+    }
+
+    public int updateSemSenha(TbUsuario usuario) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format(
+            "UPDATE USUARIO SET tipo_pessoa = '%s', nome = '%s', cpf_cnpj = '%s', rg_inscricao_estadual = '%s', email = '%s', telefone = '%s', perfil_id = %d, status_usuario_id = %d "
+            + "WHERE id = %d",
+            usuario.getTipoPessoa(), usuario.getNome(), usuario.getCpfCnpj(), usuario.getRgIncricaoEstadual(),
+            usuario.getEmail(), usuario.getTelefone(), usuario.getPerfilId(), usuario.getStatusUsuarioId(), usuario.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+
+        conn.close();
+        return rows;
     }
 
     public int update(TbUsuario usuario) throws SQLException

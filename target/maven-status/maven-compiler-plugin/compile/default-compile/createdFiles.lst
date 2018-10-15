@@ -80,3 +80,4 @@ br\com\estruturart\model\TbTipoPessoa.class
 br\com\estruturart\persistency\Parametro.class
 br\com\estruturart\controller\AbstractServlet.class
 br\com\estruturart\controller\FornecedorController.class
+br\com\estruturart\model\OAuth.class

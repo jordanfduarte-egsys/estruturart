@@ -119,6 +119,23 @@ public class Fornecedor extends AbstractPersistency
         return rows;
     }
 
+    public int updateStatus(TbFornecedor fornecedor) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format("UPDATE FORNECEDOR SET nome = '%s', telefone = '%s', status = %d WHERE id = %d",
+            fornecedor.getNome(),
+            fornecedor.getTelefone(),
+            fornecedor.getStatus(),
+            fornecedor.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+
+        conn.close();
+        return rows;
+    }
+
     public boolean findFornecedorByNome(String nome, int fkFornecedorEdicao) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();

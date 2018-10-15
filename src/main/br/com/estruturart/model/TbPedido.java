@@ -7,6 +7,7 @@ import br.com.estruturart.utility.StringUtilsPad;
 import br.com.estruturart.model.TbPedidoItem;
 import br.com.estruturart.model.TbStatusPedido;
 import br.com.estruturart.utility.RouteParam;
+import br.com.estruturart.model.TbLogPedido;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class TbPedido extends AbstractModel
     private TbEndereco endereco;
     private TbUsuario usuario;
     private List<TbPedidoItem> itens;
+    private List<TbLogPedido> logPedido;
     private TbStatusPedido statusPedido;
 
     private String url;
@@ -44,6 +46,7 @@ public class TbPedido extends AbstractModel
     public TbPedido()
     {
         itens = new ArrayList<TbPedidoItem>();
+        logPedido = new ArrayList<TbLogPedido>();
         statusPedido = new TbStatusPedido();
     }
 
@@ -351,5 +354,15 @@ public class TbPedido extends AbstractModel
         }
 
         return "Não";
+    }
+
+    public void setLogPedido(List<TbLogPedido> logs)
+    {
+        this.logPedido = logs;
+    }
+
+    public List<TbLogPedido> getLogPedido()
+    {
+        return this.logPedido;
     }
 }

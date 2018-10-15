@@ -39,7 +39,7 @@
                              <td>${iterator.getStatusMaterial().getDescricao()}</td>
                              <td class=" actions align-rigth" style="">
                                     <a href="${source}material/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger" data-toggle="tooltip" title="" data-original-title="Inativar"><i class="fa fa-fw fa-trash"></i></a>
+                                    <a href="javascript:void(0);" data-id="${iterator.getId()}" data-status="${iterator.getStatusMaterial().getId()}" class="btn btn-icon btn-pill btn-danger js-alterar-status" data-toggle="tooltip" title="Alterar status"><i class="fas fa-minus-circle">&nbsp;</i></a>
                              </td>
                          </tr>
                      </c:forEach>
@@ -54,3 +54,23 @@
          <jsp:include page="/WEB-INF/view/partial/paginator.jsp"/>
      </div>
  </div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-alterar-status">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Alterar status do material</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p></p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Confirmar</button>
+    </div>
+    </div>
+</div>
+</div>

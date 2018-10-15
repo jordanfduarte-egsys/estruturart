@@ -16,7 +16,8 @@
         <link rel="stylesheet" href="${source}js/datepicker-master/dist/datepicker.css">
         <link rel="stylesheet" href="${source}js/fullcalendar-3.9.0/fullcalendar.min.css">
 
-        <title>${nomeEmpresa}|${title}</title>
+        <link rel="icon" type="image/png" href="${source}files/favicon.png" />
+        <title>${nomeEmpresa} | ${title}</title>
     </head>
     <body class="bg-light <c:if test="${route.getController().equals('auth')}">home</c:if>"></body>
         <input id="urlBase" type="hidden" value="${source}"/>

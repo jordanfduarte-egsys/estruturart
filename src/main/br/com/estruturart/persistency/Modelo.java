@@ -175,6 +175,22 @@ public class Modelo extends AbstractPersistency
         return rows;
     }
 
+    public int updateStatus(TbModelo modelo) throws SQLException {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format(
+            "UPDATE MODELO SET status_modelo_id = %d WHERE id = %d",
+            modelo.getStatusModeloId(), modelo.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+
+        conn.close();
+
+        inserirMateriaisModelo(modelo, false);
+        return rows;
+    }
+
     public boolean findModeloByNome(String nome, int fkModeloEdicao) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();
