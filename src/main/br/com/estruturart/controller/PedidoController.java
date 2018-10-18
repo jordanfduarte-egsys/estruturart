@@ -228,7 +228,7 @@ public class PedidoController extends AbstractServlet
         SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
         Pedido modelPedido = new Pedido();
         getSession().setAttribute("session_pedido", params);
-        List<TbPedido> pedidos = modelPedido.findByRequestManager(params, "");
+        List<TbPedido> pedidos = modelPedido.findByRequestManager(params, "", 0);
         String data = "";
         boolean isFiltro = false;
 

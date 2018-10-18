@@ -56,7 +56,7 @@ public class AuthController extends AbstractServlet {
                                 Gson gson = new Gson();
                                 Cookie cookie = new Cookie("login", Base64.getEncoder().encodeToString(gson.toJson(usuario).getBytes()));
                                 //cookie.setSecure(false);
-                                cookie.setVersion(0);
+                                //cookie.setVersion(0);
                                 cookie.setMaxAge(60*60*24); // 24 hour
                                 getResponse().addCookie(cookie);
                             }
@@ -109,7 +109,6 @@ public class AuthController extends AbstractServlet {
     public void logoutAction() throws Exception {
         if (this.getSession().getAttribute("usuario") instanceof TbUsuario) {
             System.out.println("TROCO O USUAIRO");
-            this.getSession().setAttribute("usuario", null);
 
             Cookie c = getCookie(getRequest(), "login");
             System.out.println("COK1: " + c);
@@ -122,12 +121,19 @@ public class AuthController extends AbstractServlet {
                     c.setPath("/sistemateste");
                     c.setDomain("");
                     c.setComment("Alterando");
-                    getResponse().addCookie(c);
+                    this.getResponse().addCookie(c);
                 }
             }
+
+            this.getSession().setAttribute("usuario", null);
+            this.getSession().invalidate();
         }
 
-        this.redirect("auth");
+        setNoRender(true);
+        getRequest().setAttribute("source", getServletContext().getInitParameter("source"));
+        getRequest().getRequestDispatcher("/WEB-INF/view/auth/logout.jsp")
+            .forward(this.getRequest(), this.getResponse());
+        //this.redirect("auth");
     }
 
     public void flashMessagesAction() {

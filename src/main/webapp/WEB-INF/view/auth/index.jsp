@@ -32,7 +32,7 @@
 
                            <div class="form-check mb-3">
                                <label class="form-check-label">
-                                   <input type="checkbox" name="remember" class="form-check-input">
+                                   <input type="checkbox" value="1" name="remember" class="form-check-input">
                                    Lembrar senha
                                </label>
                            </div>

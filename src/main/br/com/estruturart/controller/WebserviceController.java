@@ -295,7 +295,8 @@ System.out.println("CEP: " + cep);
     {
         ParamRequestManager params = this.postFilter();
         Pedido modelPedido = new Pedido();
-        List<TbPedido> pedidos = modelPedido.findByRequestManager(params, "data");
+        TbUsuario usuario = (TbUsuario)this.getSession().getAttribute("usuario");
+        List<TbPedido> pedidos = modelPedido.findByRequestManager(params, "data", usuario.getId());
         setRequestXhtmlHttpRequestList(pedidos);
     }
 

@@ -341,7 +341,7 @@ public class Usuario extends AbstractPersistency
         Connection conn = ConnectionManager.getConnection();
 
         PreparedStatement ps = conn.prepareStatement(
-            "SELECT * FROM USUARIO WHERE email = (\"" + usuarioStr + "\" OR cpf_cnpj = \"" + usuarioStr +"\") "
+            "SELECT * FROM USUARIO WHERE (email = \"" + usuarioStr + "\" OR cpf_cnpj = \"" + usuarioStr +"\") "
             + " AND senha = MD5(\"" + senhaStr + "\") "
             + " AND perfil_id = 2 "
             + " AND senha IS NOT NULL "
