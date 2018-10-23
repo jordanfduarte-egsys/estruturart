@@ -6,7 +6,7 @@
                <h1 class="text-center mb-4 text-white">${nomeEmpresa}</h1>
                <div class="card">
                    <div class="card-body">
-                           <c:if test="${msgPassword != null || msgUsuario != null}">
+                        <c:if test="${msgPassword != null || msgUsuario != null}">
                             <div class="alert alert-danger" role="alert">
                                 ${msgUsuario}
                                 <c:if test="${msgPassword != null && msgUsuario != null}">
@@ -15,7 +15,7 @@
                                 ${msgPassword}
                             </div>
                         </c:if>
-                       <form method="POST">
+                       <form method="POST" class="js-change-login">
                            <div class="input-group mb-3">
                                <div class="input-group-prepend">
                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -42,9 +42,26 @@
                                    <button type="submit" class="btn btn-block btn-primary">Entrar</button>
                                </div>
                                <div class="col pl-2">
-                                   <a class="btn btn-block btn-link" href="#">Esqueceu a senha</a>
+                                   <a class="btn btn-block btn-link js-reset-pass" href="javascript:void(0);">Esqueceu a senha</a>
                                </div>
                            </div>
+                       </form>
+                       <form method="POST" class="js-change-alterar-senha hide">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                </div>
+                                <input type="text" name="name" autocomplete="off" class="form-control" placeholder="E-mail de recuperação">
+                            </div>
+
+                            <div class="row">
+                                <div class="col pr-2">
+                                    <button type="submit" class="btn btn-block btn-primary js-enviar-email">Recuperar</button>
+                                </div>
+                                <div class="col pl-2">
+                                    <a class="btn btn-block btn-link js-back-reset" href="javascript:void(0);">Voltar</a>
+                                </div>
+                            </div>
                        </form>
                    </div>
                </div>

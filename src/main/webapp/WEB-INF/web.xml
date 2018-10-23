@@ -122,6 +122,7 @@
       <url-pattern>/auth</url-pattern>
       <url-pattern>/auth/logout</url-pattern>
       <url-pattern>/auth/flash-messages</url-pattern>
+      <url-pattern>/auth/recuperar</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Home</servlet-name>

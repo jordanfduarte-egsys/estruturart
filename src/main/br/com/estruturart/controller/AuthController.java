@@ -16,7 +16,7 @@ import br.com.estruturart.persistency.Usuario;
 /**
  * Servlet implementation class Auth
  */
-@WebServlet(name = "auth", urlPatterns = { "/auth", "/auth/index/logout" })
+@WebServlet(name = "auth", urlPatterns = { "/auth", "/auth/index/logout", "/auth/recuperar" })
 public class AuthController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788151597837L;
 
@@ -140,5 +140,10 @@ public class AuthController extends AbstractServlet {
         this.setNoRender(true);
         this.getFlashMessenger().clear();
 
+    }
+
+    public void recuperarAction() {
+        String name = null;
+        name = this.getRequest().getParameter("name");
     }
 }
