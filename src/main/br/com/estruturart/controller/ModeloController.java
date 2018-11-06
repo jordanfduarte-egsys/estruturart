@@ -35,12 +35,12 @@ public class ModeloController extends AbstractServlet
     {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
-        System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
+
         Modelo modeloModel = new Modelo();
         Paginator paginator = modeloModel.findAllPaginated(page, offset, this.postFilter());
 
         paginator.setLink(getServletContext().getInitParameter("source").toString() + "modelo/index/page/{id}");
-        System.out.println("TOTAL MODELO: " + paginator.getIterator().size());
+
         this.getRequest().setAttribute("paginator", paginator);
         this.getRequest().setAttribute("filter", this.postFilter());
     }
@@ -78,10 +78,10 @@ public class ModeloController extends AbstractServlet
                     for (FileItem item : formItems) {
                         String fieldname = item.getFieldName();
                         String fieldvalue = new String(item.getString().getBytes(), "utf-8");
-                        System.out.println("++++++++++++++++++++++");
-                        System.out.println("FILED: " + fieldname);
-                        System.out.println("FILED V: " + fieldvalue);
-                        System.out.println("+++++++++++++++++++++");
+
+
+
+
 
                         if (item.isFormField()) {
                             if (fieldname.equals("nome")) {
@@ -131,7 +131,7 @@ public class ModeloController extends AbstractServlet
                             }
                         } else {
                             modelo.setFileItem(item);
-                            System.out.println("IMG OK");
+
                         }
                     }
 
@@ -150,8 +150,8 @@ public class ModeloController extends AbstractServlet
 
                         String imagem = modelo.getImagem();
                         String sourceFilder = getServletContext().getInitParameter("folderUpload");
-                        System.out.println("IMAGEM: " + imagem);
-                        System.out.println("FOLDER: " + sourceFilder);
+
+
                         boolean isContinue = true;
                         if (modelo.getId() == 0) {
                             imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
@@ -162,13 +162,13 @@ public class ModeloController extends AbstractServlet
                             }
                         } else if (modelo.getId() != 0 && uploadService.isUploadImagem()) {
                             imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, modelo.getImagem());
-                            System.out.println("UPLOAD NA EDICAO: " + uploadService.isUploadImagem());
+
                             if (imagem.equals("")) {
                                 modelo.getValidation().add(new RouteParam("imagem", uploadService.getMessageErro()));
                                 isContinue = false;
                             }
                         }
-                        System.out.println("IMAGEM2: " + imagem);
+
 
                         modelo.setImagem(imagem);
 

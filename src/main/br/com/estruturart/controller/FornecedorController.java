@@ -21,12 +21,12 @@ public class FornecedorController extends AbstractServlet {
     public void indexAction() throws Exception {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
-        System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
+
         Fornecedor modelFornecedor = new Fornecedor();
         Paginator paginator = modelFornecedor.findAllPaginated(page, offset, this.postFilter());
 
         paginator.setLink(getServletContext().getInitParameter("source").toString() + "fornecedor/index/page/{id}");
-        System.out.println("TOTAL FORNECEDOR: " + paginator.getIterator().size());
+
         this.getRequest().setAttribute("paginator", paginator);
         this.getRequest().setAttribute("filter", this.postFilter());
     }

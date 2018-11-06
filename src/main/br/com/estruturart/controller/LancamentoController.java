@@ -30,12 +30,12 @@ public class LancamentoController extends AbstractServlet
     public void indexAction() throws Exception {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
-        System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
+
         Lancamento modelLancamento = new Lancamento();
         Paginator paginator = modelLancamento.findAllPaginated(page, offset, this.postFilter());
 
         paginator.setLink(getServletContext().getInitParameter("source").toString() + "lancamento/index/page/{id}");
-        System.out.println("TOTAL LANCAMENTOS: " + paginator.getIterator().size());
+
         this.getRequest().setAttribute("paginator", paginator);
         this.getRequest().setAttribute("filter", this.postFilter());
     }

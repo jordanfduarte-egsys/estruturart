@@ -76,7 +76,7 @@ public class OrcamentoController extends AbstractServlet {
         List<TbEstado> estados = modelEstado.findEstados();
 
         if (this.getMethod().equals(HttpMethod.POST)) {
-            System.out.println("POST MESMO ?");
+
             TbUsuario usuario = new TbUsuario();
             TbEndereco endereco = new TbEndereco();
             String tipoPessoa = "2";
@@ -104,10 +104,10 @@ public class OrcamentoController extends AbstractServlet {
             orcamento.setUsuario(usuario);
             orcamento.setEndereco(endereco);
 
-            System.out.println("______________________");
-            System.out.println("Cidade ID: " + this.getParameterOrValue("estado_id", "0"));
-            System.out.println("______________________");
-            System.out.println("______________________");
+
+
+
+
 
             if (orcamento.isValid(Orcamento.ETAPA1)) {
                 redirect("orcamento/etapa2");
@@ -131,8 +131,8 @@ public class OrcamentoController extends AbstractServlet {
         if (this.getMethod().equals(HttpMethod.POST)) {
             Enumeration<String> parameterNames = getRequest().getParameterNames();
             List<Integer> listIndex = new ArrayList<Integer>();
-            System.out.println("---------------------------------------");
-            System.out.println("---------------------------------------");
+
+
             while (parameterNames.hasMoreElements()) {
                 String indexStr = parameterNames.nextElement().replaceAll("[^0-9]", "");
                 int index = indexStr.equals("") ? -1 : Integer.parseInt(indexStr);
@@ -145,11 +145,11 @@ public class OrcamentoController extends AbstractServlet {
                     }
                 }
 
-                System.out.println("INDEX: " + index);
+
             }
-            System.out.println("---------------------------------------");
-            System.out.println("---------------------------------------");
-            System.out.println("TOTAL itens: " + orcamento.getModelos().size());
+
+
+
             orcamento.getModelos().clear();
             for (int index : listIndex) {
                 TbModelo modelo = new TbModelo();
@@ -161,7 +161,7 @@ public class OrcamentoController extends AbstractServlet {
                 Integer id = Integer.parseInt(getParameterOrValue(paramId, "0"));
 
                 if (id > 0) {
-                    System.out.println("PRODUTO: " + id);
+
                     modelo = modelModelo.getModeloById(id);
                     modelo.setIndex(index);
 
@@ -170,20 +170,13 @@ public class OrcamentoController extends AbstractServlet {
                     modelo.setQuantidadeCompra(Integer.parseInt(getParameterOrValue(paramQtd, "1")));
                     modelo.setIsPintura(Integer.parseInt(getParameterOrValue(paramIsPintura, "0")) != 0);
 
-                    System.out.println(
-                        "Modelo Add ID: " + id +
-                        ", LARGURA: " + modelo.getLarguraNova() +
-                        ", ALTURA: " + modelo.getAlturaNova() +
-                        ", QTD: " + modelo.getQuantidadeCompra() +
-                        ",  PINTURA :" + modelo.isPintura()
-                    );
 
                     orcamento.getModelos().add(modelo);
                 }
             }
-            System.out.println("TOTAL itens: " + orcamento.getModelos().size());
-            System.out.println("---------------------------------------");
-            System.out.println("---------------------------------------");
+
+
+
 
             if (orcamento.isValid(Orcamento.ETAPA2)) {
                 redirect("orcamento/etapa3");
@@ -220,16 +213,16 @@ public class OrcamentoController extends AbstractServlet {
             orcamento.setValorMaoObra(valorMaoObra);
             orcamento.setObservacao(getParameterOrValue("observacao", ""));
 
-            System.out.println("========================================");
-            System.out.println("========================================");
-            System.out.println("========================================");
-            System.out.println("Desconot: " + getParameterOrValue("desconto", "0"));
-            System.out.println("Mao Obra: " + valorMaoObra);
-            System.out.println("Obs: " + getParameterOrValue("observacao", ""));
-            System.out.println("Entrega: " + getParameterOrValue("prev_entrega", ""));
-            System.out.println("========================================");
-            System.out.println("========================================");
-            System.out.println("========================================");
+
+
+
+
+
+
+
+
+
+
 
             if (orcamento.isValid(Orcamento.ETAPA3)) {
                 int usuarioId = ((TbUsuario) getSession().getAttribute("usuario")).getId();

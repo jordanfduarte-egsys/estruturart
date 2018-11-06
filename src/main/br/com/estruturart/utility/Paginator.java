@@ -46,10 +46,10 @@ public class Paginator
         int li = maxPage;
         int ate = maxPage -1;
         int divisao = this.arredondar(this.total, this.itensPerPage);
-        System.out.println("Total: " + this.total);
-        System.out.println("Divisao: " + divisao);
-        System.out.println("tst: " + Math.ceil(13 / 10));
-        System.out.println("itens por pagina: " + this.itensPerPage);
+
+
+
+
 
         if (divisao < maxPage) {
             ate = divisao - 1;
@@ -102,12 +102,12 @@ public class Paginator
     public List<Integer> getHref()
     {
         List<Integer> hrefs = new ArrayList<Integer>();
-        System.out.println("TO: " + this.to);
-        System.out.println("FROM: " + this.from);
+
+
 
         for (int i = this.to - this.from; i <= this.to; i++) {
             hrefs.add(i);
-            System.out.println("ITERATOR: " + i);
+
         }
 
         return hrefs;

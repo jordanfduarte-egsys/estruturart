@@ -31,7 +31,7 @@ public class LogPedido extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         int id = (rs.next() ? rs.getInt(1) : 0);

@@ -29,12 +29,12 @@ public class MaterialController extends AbstractServlet {
     public void indexAction() throws Exception {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
-        System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
+
         Material modelMaterial = new Material();
         Paginator paginator = modelMaterial.findAllPaginated(page, offset, this.postFilter());
 
         paginator.setLink(getServletContext().getInitParameter("source").toString() + "material/index/page/{id}");
-        System.out.println("TOTAL MATERIL: " + paginator.getIterator().size());
+
         this.getRequest().setAttribute("paginator", paginator);
         this.getRequest().setAttribute("filter", this.postFilter());
     }
@@ -71,18 +71,18 @@ public class MaterialController extends AbstractServlet {
                 material.setPreco(Float.parseFloat(precoStr.equals("") ? "0" : precoStr));
 
                 if (material.isValid()) {
-                    System.out.println("Descricao: " + material.getDescricao());
-                    System.out.println("MAteria Prima: " + material.getMateriaPrima());
-                    System.out.println("Status MAterial: " + material.getStatusMaterialId());
-                    System.out.println("Unidade Medida: " + material.getUnidadeMedidaId());
-                    System.out.println("Fornecedor: " + material.getFornecedorId());
-                    System.out.println("Quantidade: " + material.getQuantidade());
-                    System.out.println("Preco: " + material.getPreco());
+
+
+
+
+
+
+
 
                     if (fkMaterial != 0) {
                         materialModel.update(material);
                     } else {
-                        System.out.println("INSERINDO ");
+
                         materialModel.insert(material);
                     }
 

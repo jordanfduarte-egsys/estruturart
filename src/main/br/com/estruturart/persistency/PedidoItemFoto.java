@@ -53,7 +53,7 @@ public class PedidoItemFoto extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         itemFoto.setId(rs.next() ? rs.getInt(1) : 0);
@@ -77,7 +77,7 @@ public class PedidoItemFoto extends AbstractPersistency
                 "SELECT f.* FROM pedido_itens_fotos f WHERE f.pedido_itens_id = %d AND id < %d ORDER BY data_inclusao DESC LIMIT 4", itemId, idFotoId
             );
         }
-System.out.println("SQL: " + sql);
+
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<TbPedidoItemFoto> fotos = new ArrayList<TbPedidoItemFoto>();

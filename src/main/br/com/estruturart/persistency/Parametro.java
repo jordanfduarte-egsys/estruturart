@@ -22,9 +22,9 @@ public class Parametro extends AbstractPersistency
 
         String sql = String.format("SELECT * FROM CONFIGURACAO");
 
-        System.out.println("-----------------");
-        System.out.println(sql);
-        System.out.println("-----------------");
+
+
+
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

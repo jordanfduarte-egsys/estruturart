@@ -23,7 +23,7 @@ public class UsuarioController extends AbstractServlet
     {
         int page = Integer.parseInt(this.getParamOr("page", "1"));
         int offset = 10;
-        System.out.println("PAGINA ATUAL: " + Integer.parseInt(this.getParamOr("page", "1")));
+
         Usuario modelUsuario = new Usuario();
         Paginator paginator = modelUsuario.findAllPaginated(page, offset, this.postFilter());
 

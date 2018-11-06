@@ -47,8 +47,8 @@ public class Material extends AbstractPersistency
         );
 
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
-        System.out.println(sql);
-        System.out.println(sqlNome);
+
+
 
         ResultSet rs = ps.executeQuery();
 
@@ -145,7 +145,7 @@ public class Material extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         material.setId(rs.next() ? rs.getInt(1) : 0);
@@ -194,7 +194,7 @@ public class Material extends AbstractPersistency
             .prepareStatement("SELECT * FROM MATERIAL WHERE LOWER(descricao) = LOWER(?) AND fornecedor_id = ?");
         ps.setString(1, nome);
         ps.setInt(2, fkFornecedor);
-        System.out.println("EDICAO" + fkMAterialEdicao);
+
         if (fkMAterialEdicao != 0) {
             ps = conn.prepareStatement(
                     "SELECT * FROM MATERIAL WHERE LOWER(descricao) = LOWER(?) AND id <> ? AND fornecedor_id = ?");
@@ -227,7 +227,7 @@ public class Material extends AbstractPersistency
             nome
         );
 
-        System.out.println("SQL: " + sql);
+
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
 

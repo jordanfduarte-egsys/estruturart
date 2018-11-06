@@ -42,7 +42,7 @@ public class Pedido extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         pedido.setId(rs.next() ? rs.getInt(1) : 0);
@@ -70,7 +70,7 @@ public class Pedido extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.execute();
-        System.out.println(sql);
+
 
         if (!isConnection()) {
             conn.close();
@@ -96,7 +96,7 @@ public class Pedido extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.execute();
-        System.out.println(sql);
+
 
         if (!isConnection()) {
             conn.close();
@@ -133,7 +133,7 @@ public class Pedido extends AbstractPersistency
         if (params.hasParam("data_filtro") && !params.getParam("data_filtro").equals("")) {
             String dataStr = Util.dataBrToEn(params.getParam("data_filtro"));
             if (!dataStr.equals("")) {
-                System.out.println("DATA1: " + dataStr);
+
                 Date date = df.parse(dataStr);
                 Calendar c = Calendar.getInstance();
                 c.setTime(date);
@@ -146,10 +146,10 @@ public class Pedido extends AbstractPersistency
             }
         }
 
-        System.out.println("DATA INI: " + params.hasParam("data_ini"));
+
         if (!filtroData && params.hasParam("data_ini") && !params.getParam("data_ini").equals("")) {
             String dataIni = Util.dataBrToEn(params.getParam("data_ini"));
-            System.out.println("DATA INI: " + dataIni);
+
             if (!dataIni.equals("")) {
                 Date date = df.parse(dataIni);
                 Calendar c = Calendar.getInstance();
@@ -190,9 +190,9 @@ public class Pedido extends AbstractPersistency
             sql += " ORDER BY data_previsao_instalacao ASC";
         }
 
-        System.out.println("-------SQL PEDIDO----------\n\n\n");
-        System.out.println(sql);
-        System.out.println("-------FIM SQL PEDIDO-------\n\n\n");
+
+
+
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<TbPedido> pedidos = new ArrayList<TbPedido>();
@@ -250,9 +250,9 @@ public class Pedido extends AbstractPersistency
             id
         );
 
-        System.out.println("-----------------");
-        System.out.println(sql);
-        System.out.println("-----------------");
+
+
+
 
 
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -332,9 +332,9 @@ public class Pedido extends AbstractPersistency
             id
         );
 
-        System.out.println("-----------------");
-        System.out.println(sql);
-        System.out.println("-----------------");
+
+
+
 
 
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -407,9 +407,9 @@ public class Pedido extends AbstractPersistency
             fkPedido
         );
 
-        System.out.println("-----------------");
-        System.out.println(sql);
-        System.out.println("-----------------");
+
+
+
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

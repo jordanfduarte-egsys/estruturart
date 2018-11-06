@@ -94,11 +94,11 @@ public class Usuario extends AbstractPersistency
         );
 
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
-        System.out.println(sql);
-        System.out.println(sqlNome);
-        System.out.println(sqlCpfCnpj);
-        System.out.println(sqlRgIncricaoEstadual);
-        System.out.println(sqlEmail);
+
+
+
+
+
 
         ResultSet rs = ps.executeQuery();
 
@@ -206,13 +206,13 @@ public class Usuario extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         usuario.setId(rs.next() ? rs.getInt(1) : 0);
 
         if (usuario.getId() != 0) {
-            System.out.println("SALVO ?" + usuario.getId());
+
 
             sql = String.format("UPDATE USUARIO SET codigo = '%s' WHERE id = %d", usuario.generateCode(),
                     usuario.getId());
@@ -267,7 +267,7 @@ public class Usuario extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM USUARIO WHERE cpf_cnpj = ?");
         ps.setString(1, cpfCnpj);
-        System.out.println("EDICAO" + fkUsuarioEdicao);
+
         if (fkUsuarioEdicao != 0) {
             ps = conn.prepareStatement("SELECT * FROM USUARIO WHERE cpf_cnpj = ? AND id <> ?");
 

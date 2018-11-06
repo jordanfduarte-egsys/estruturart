@@ -288,10 +288,10 @@ public class Orcamento extends AbstractModel
                 }
             }
         } catch (ParseException e) {
-            System.out.println("ERRO CALCULO DATA");
+
             data = new Date();
         } catch (Exception e) {
-            System.out.println("ERRO CALCULO DATA 2");
+
             data = new Date();
         }
 

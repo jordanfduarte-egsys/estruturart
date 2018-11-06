@@ -29,7 +29,7 @@ public class Endereco extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         endereco.setId(rs.next() ? rs.getInt(1) : 0);
@@ -59,7 +59,7 @@ public class Endereco extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.execute();
-        System.out.println(sql);
+
 
         if (!isConnection()) {
             conn.close();

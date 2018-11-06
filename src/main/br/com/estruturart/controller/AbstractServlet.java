@@ -84,9 +84,6 @@ public class AbstractServlet extends HttpServlet {
             boolean isKey = true;
 
             for (String param : uri.split("/")) {
-                System.out.println("P: " + param);
-                System.out.println("Completa: " + uri);
-
                 if (isKey) {
                     routeParam.setName(param);
                     isKey = false;
@@ -96,14 +93,12 @@ public class AbstractServlet extends HttpServlet {
                     routeParam = new RouteParam();
                     isKey = true;
                 }
-
             }
         }
 
         String methodAux = method;
         method = camelcasify(method);
         method = method + "Action";
-        System.out.println("METODO SEM MAGINA: " + methodAux);
         try {
             //@verificar se controller existe e se actrion existe
             this.route.setAction(method);
@@ -140,12 +135,12 @@ public class AbstractServlet extends HttpServlet {
                     String authentication = request.getHeader( "Authentication" );
                     if ( authentication != null && !authentication.isEmpty() ) {
                         Gson gson = new Gson();
-                        System.out.println("BASE: " + authentication);
+
                         org.apache.commons.codec.binary.Base32 b2 = new org.apache.commons.codec.binary.Base32();
                         byte[] data = b2.decode(authentication);
                         // OAuth email senha
                         OAuth usuario = (OAuth)gson.fromJson(new String(data), OAuth.class);
-                        System.out.println("BASE2: " + new String(data));
+
                         Usuario usuarioModel = new Usuario();
                         TbUsuario usuarioAux = usuarioModel.findUsuarioByUsuarioSenha(usuario.getEmail(), usuario.getSenha());
 
@@ -186,9 +181,9 @@ public class AbstractServlet extends HttpServlet {
                         && this.route.getController().toString().equals("auth")) {
                     this.redirect("home");
                 } else {
-                    System.out.println("ANTES DE CHAMAR");
+
                     this.getClass().getMethod(method).invoke(this, null);
-                    System.out.println("AJAX? " + isXhtmlHttpRequest());
+
                     if (!this.noRender && !getResponse().isCommitted()) {
                         this.view();
                     }
@@ -254,7 +249,7 @@ public class AbstractServlet extends HttpServlet {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         String sStackTrace = sw.toString();
-        System.out.println("EXCEPTION O QUE ?" + sStackTrace);
+
         this.route.setAction("error");
         this.route.setActionName("error");
         this.route.setController("error");
@@ -423,7 +418,6 @@ public class AbstractServlet extends HttpServlet {
     }
 
     private boolean isXhtmlHttpRequest() {
-        System.out.println("VAMOS VER ? " + getResponse().getContentType());
         return getResponse().getContentType().equals("application/json");
     }
 

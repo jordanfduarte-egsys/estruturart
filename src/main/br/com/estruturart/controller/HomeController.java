@@ -11,6 +11,6 @@ public class HomeController extends AbstractServlet {
 
     public void indexAction() throws Exception
     {
-        System.out.println("CHEGO HOME");
+
     }
 }

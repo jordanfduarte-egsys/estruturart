@@ -69,7 +69,7 @@ public class FlashMessenger
             count++;
         }
 
-        System.out.println("MESSAGE: " + buffer.toString());
+
 
         this.isShow = true;
         return buffer.toString();

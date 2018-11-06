@@ -21,7 +21,7 @@ public class AuthController extends AbstractServlet {
     private static final long serialVersionUID = -4214231788151597837L;
 
     public void indexAction() throws Exception {
-        System.out.println("CHEGO");
+
 
         String name = null;
         String pass = null;
@@ -43,8 +43,6 @@ public class AuthController extends AbstractServlet {
             if (msgUsuario == null && msgPassword == null) {
                 Usuario modelUsuario = new Usuario();
 
-                System.out.println("Nome: " + name);
-                System.out.println("Pass: " + pass);
                 TbUsuario usuario = modelUsuario.getUsuario(name, pass);
                 if (usuario.getId() > 0) {
                     if (usuario.getStatusUsuarioId() == 1) {
@@ -86,7 +84,7 @@ public class AuthController extends AbstractServlet {
                         if (usuario.getId() > 0) {
                             if (usuario.getStatusUsuarioId() == 1) {
                                 if (usuario.getPerfilId() == TbPerfil.FUNCIONARIO) {
-                                    System.out.println("USUARIO LOGADO: " + jsonLogin);
+
                                     HttpSession session = this.getSession();
                                     session.setAttribute("usuario", usuario);
                                     this.redirect("home");
@@ -108,14 +106,14 @@ public class AuthController extends AbstractServlet {
 
     public void logoutAction() throws Exception {
         if (this.getSession().getAttribute("usuario") instanceof TbUsuario) {
-            System.out.println("TROCO O USUAIRO");
+
 
             Cookie c = getCookie(getRequest(), "login");
-            System.out.println("COK1: " + c);
+
             if (c != null) {
                 String jsonLogin = c.getValue();
                 if (!jsonLogin.isEmpty()) {
-                    System.out.println("APAGANDO COOKIE");
+
                     c.setMaxAge(0);
                     c.setValue(null);
                     c.setPath("/sistemateste");

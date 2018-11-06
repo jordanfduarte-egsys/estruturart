@@ -111,23 +111,23 @@ public class WebserviceController extends AbstractServlet {
             String key             = entry.getKey();
             String[] value         = entry.getValue();
 
-            System.out.println("Key is "+key+"<br>");
+
             if(value.length>1){
                 for (int i = 0; i < value.length; i++) {
-                    System.out.println("<li>" + value[i].toString() + "</li><br>");
+
                 }
             } else {
-                System.out.println("Value is "+value[0].toString()+"<br>");
+
             }
 
-            System.out.println("-------------------<br>");
+
         }
 
         TbUsuario usuarioEntity = new TbUsuario();
         Usuario usuario = new Usuario();
 
-        System.out.println("Usuario: "  + usuarioStr);
-        System.out.println("Senha: "  + senhaStr);
+
+
         try {
             usuarioEntity = usuario.findUsuarioByUsuarioSenha(usuarioStr, senhaStr);
         } catch (Exception e) {
@@ -141,7 +141,7 @@ public class WebserviceController extends AbstractServlet {
     {
         setNoRender(true);
         String cep = getRequest().getParameter("cep");
-System.out.println("CEP: " + cep);
+
         BufferedReader reader;
         Cidade modelCidade = new Cidade();
         CepModel cepModel = new CepModel();
@@ -208,13 +208,13 @@ System.out.println("CEP: " + cep);
 
             String filename = sourceFilder + path.replace( separator + "files", "");
             String mime = cntx.getMimeType(filename);
-            System.out.println("MIME " + mime);
+
             if (mime == null) {
                 filename = cntx.getRealPath(separator + "files" + separator + "sem-foto.jpg");
                 mime = cntx.getMimeType(filename);
             }
 
-            System.out.println("LINK" + filename);
+
             getResponse().setContentType(mime);
             File file = new File(filename);
             if (!file.exists()) continue;
@@ -234,8 +234,8 @@ System.out.println("CEP: " + cep);
         boolean status = false;
         Integer id = 0;
         if (this.getMethod().equals(HttpMethod.POST)) {
-            System.out.println("\n\nJSON: "  + getRequest().getParameter("orcamento"));
-            System.out.println("\n\nISORCAMENTO: "  + getParameterOrValue("is_orcamento", "0").equals("0"));
+
+
 
             Gson gson = new GsonBuilder()
                 .addDeserializationExclusionStrategy(new GsonDeserializeExclusion())
@@ -309,11 +309,11 @@ System.out.println("CEP: " + cep);
         TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
         List<TbLogPedido> logsPedido = modelLog.findLogPedido(id);
         pedido.setLogPedido(logsPedido);
-        System.out.println("\n\n\n PEDIDO");
+
 
         Gson gson = new Gson();
-        System.out.println(gson.toJson(pedido));
-        System.out.println("\n\n\n PEDIDO ");
+
+
 
         setRequestXhtmlHttpRequestModel(pedido);
     }
@@ -343,9 +343,9 @@ System.out.println("CEP: " + cep);
                     break;
             }
 
-            System.out.println("\n\nID: " + idItem);
-            System.out.println("EXT: " + extension);
-            System.out.println("OBS: " + obs);
+
+
+
 
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
             int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
@@ -378,7 +378,7 @@ System.out.println("CEP: " + cep);
             UploadService uploadService = new UploadService(this.getRequest());
             uploadService.setExtensoes(extensoes.split(","));
             uploadService.setFolder(separator + "item" + separator + item.getId() + separator);
-            System.out.println("NOME ANTIGO: " + file.getName());
+
             InputStream fileContent = uploadService.redimencionar(inpuStream, 800, 600);
             String imagem = uploadService.savePosRedimencionamento(
                 file.getName(),
@@ -400,14 +400,14 @@ System.out.println("CEP: " + cep);
                 jsonModel.setMessage("Foto enviada com sucesso!");
                 jsonModel.setStatus(true);
 
-                System.out.println("CAMINHO : " + path);
+
                 File file2 = new File(path);
 
                 file2.setReadable(true, false);
                 file2.setExecutable(true, false);
                 file2.setWritable(true, false);
                 boolean isDeleted = file2.delete();
-                System.out.println("REMOVIDO : " + isDeleted);
+
             } else {
                 jsonModel.setMessage("Ocorreu um erro ao enviar a foto!");
                 jsonModel.setStatus(false);
@@ -436,18 +436,18 @@ System.out.println("CEP: " + cep);
             String path = separator + "item" + separator + foto.getPedidoItensId() + separator + foto.getCaminhoArquivo();
 
             String filename = sourceFilder + path;
-            System.out.println("CT: " + filename);
+
             File file = new File(filename);
             if (!file.exists()) {
                 continue;
             }
             String mime = cntx.getMimeType(filename);
-            System.out.println("MIME " + mime);
+
             if (mime == null) {
                 continue;
             }
 
-            System.out.println("LINK" + filename);
+
             getResponse().setContentType(mime);
 
             FileInputStream in = new FileInputStream(file);

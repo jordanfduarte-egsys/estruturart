@@ -157,8 +157,8 @@ public class PedidoController extends AbstractServlet
             if (pedido.isValid() && pedido.getEndereco().isValid()) {
                 Enumeration<String> parameterNames = getRequest().getParameterNames();
                 List<Integer> listIndex = new ArrayList<Integer>();
-                System.out.println("---------------------------------------");
-                System.out.println("---------------------------------------");
+
+
                 while (parameterNames.hasMoreElements()) {
                     String indexStr = parameterNames.nextElement().replaceAll("[^0-9]", "");
                     int index = indexStr.equals("") ? -1 : Integer.parseInt(indexStr);
@@ -291,8 +291,8 @@ public class PedidoController extends AbstractServlet
         LogPedido logPedido = new LogPedido();
         JsonModel jsonModel = new JsonModel();
         SendEmailService emailService = new SendEmailService(getRequest(), getResponse());
-        System.out.println("STATUS: " + status);
-        System.out.println("STATUS: " + id);
+
+
         if (status > 0 && id > 0) {
             TbPedido pedido = modelPedido.findPedidoVisualizacao(id);
             TbParametro parametro = modelParametros.findAll();
@@ -558,10 +558,10 @@ public class PedidoController extends AbstractServlet
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
             String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
             itemFoto.setCaminhoArquivo(imagem);
-            System.out.println("A IMAGEM ==================");
-            System.out.println(imagem);
-            System.out.println("A IMAGEM ==================");
-            System.out.println("A IMAGEM ==================");
+
+
+
+
 
             if (imagem.equals("")) {
                 itemFoto.getValidation().add(new RouteParam("foto", uploadService.getMessageErro()));

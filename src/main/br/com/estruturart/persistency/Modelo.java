@@ -61,10 +61,10 @@ public class Modelo extends AbstractPersistency
                 + " INNER JOIN STATUS_MODELO ON m.status_modelo_id = STATUS_MODELO.id WHERE 1 %s "
                 + " order by m.id DESC {limit}",
                 sqlNome);
-        System.out.println("SQL: " + sql.replace("{columns}", columns).replace("{limit}", limit));
+
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
-        System.out.println(sql);
-        System.out.println(sqlNome);
+
+
 
         ResultSet rs = ps.executeQuery();
 
@@ -145,7 +145,7 @@ public class Modelo extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         modelo.setId(rs.next() ? rs.getInt(1) : 0);
@@ -196,7 +196,7 @@ public class Modelo extends AbstractPersistency
         Connection conn = ConnectionManager.getConnection();
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM MODELO WHERE LOWER(nome) = LOWER(?)");
         ps.setString(1, nome);
-        System.out.println("EDICAO" + fkModeloEdicao);
+
         if (fkModeloEdicao != 0) {
             ps = conn.prepareStatement("SELECT * FROM MODELO WHERE LOWER(nome) = LOWER(?) AND id <> ?");
 
@@ -275,7 +275,7 @@ public class Modelo extends AbstractPersistency
             PreparedStatement ps = conn.prepareStatement("DELETE FROM MODELO_MATERIAL WHERE modelo_id = ?");
             ps.setInt(1, modelo.getId());
             ps.executeUpdate();
-            System.out.println("DELETANDO..." + modelo.getId());
+
 
         }
 
@@ -306,7 +306,7 @@ public class Modelo extends AbstractPersistency
 
         sql += " ORDER BY MODELO.nome ASC LIMIT 30";
         PreparedStatement ps = conn.prepareStatement(sql);
-
+System.out.println("SQL: " + sql);
         ResultSet rs = ps.executeQuery();
         List<TbModelo> modelosList = new ArrayList<TbModelo>();
         while (rs.next()) {

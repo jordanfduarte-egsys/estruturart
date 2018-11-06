@@ -47,8 +47,8 @@ public class Lancamento extends AbstractPersistency
         );
 
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
-        System.out.println(sql);
-        System.out.println(sqlNome);
+
+
 
         ResultSet rs = ps.executeQuery();
 
@@ -102,7 +102,7 @@ public class Lancamento extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
-        System.out.println(sql);
+
 
         ResultSet rs = ps.getGeneratedKeys();
         lancamento.setId(rs.next() ? rs.getInt(1) : 0);
@@ -129,10 +129,10 @@ public class Lancamento extends AbstractPersistency
             "UPDATE LANCAMENTO SET preco = '%s', descricao = '%s', pedido_itens_id = %s, material_id = %s WHERE id = %d",
             lancamento.getPreco(), lancamento.getDescricao(), pedidoItem, materialId, lancamento.getId()
         );
-        System.out.println("UPDATE: " + sql);
+
         PreparedStatement ps = conn.prepareStatement(sql);
         ps.execute();
-        System.out.println(sql);
+
 
         if (!isConnection()) {
             conn.close();
