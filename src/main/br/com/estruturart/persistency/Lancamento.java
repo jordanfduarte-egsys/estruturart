@@ -34,7 +34,7 @@ public class Lancamento extends AbstractPersistency
             sqlNome = " AND (m2.descricao LIKE \"%" + filter.getParam("busca") + "%\" OR i.id = \"" + filter.getParam("busca") + "\") ";
         }
 
-        String columns = String.format("l.*, m2.descricao as desc_material, i.pedido_id");
+        String columns = String.format("l.*, m2.descricao as desc_material, i.pedido_id, (l.pedido_itens_id IS NULL OR ((SELECT COUNT(1) FROM lancamento WHERE pedido_itens_id = l.pedido_itens_id) > 1 AND (SELECT id FROM lancamento WHERE pedido_itens_id = l.pedido_itens_id ORDER BY id ASC LIMIT 1) != l.id)) as is_excluir");
         String limit = String.format("LIMIT %d, %d", pageAux, offset);
 
         String sql = String.format(
@@ -67,6 +67,7 @@ public class Lancamento extends AbstractPersistency
             lancamento.setUsuarioId(rs.getInt("usuario_id"));
             lancamento.setPedidoItensId(rs.getInt("pedido_itens_id"));
             lancamento.setMaterialId(rs.getInt("material_id"));
+            lancamento.setExcluir(rs.getInt("is_excluir"));
 
             material2.setId(rs.getInt("material_id"));
             material2.setDescricao(rs.getString("desc_material"));

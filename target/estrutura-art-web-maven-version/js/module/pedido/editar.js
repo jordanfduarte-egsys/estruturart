@@ -141,10 +141,17 @@ var crud = {
 
     removerItem: function(e) {
       e.preventDefault();
-      var id = $(this).closest('tr').data('id');
-      $(this).closest('table').find('tr[data-id="' + id + '"]').addClass('opaco');
-      $(this).parent().append('<input name="item_remover[' + $(this).parent().data('item') + ']" type="hidden" value="' + $(this).parent().data('item') + '">');
-      $(this).remove();
+      var self = $(this);
+      var $modal = $('#modal-alterar-status-item');
+      $modal.find('.modal-body p b').html("#" + self.parent().data('item'));
+      $modal.modal('show');
+
+      $modal.find('.btn-primary').off('click').on('click', function() {
+        var id = self.closest('tr').data('id');
+        self.closest('table').find('tr[data-id="' + id + '"]').addClass('opaco');
+        self.parent().append('<input name="item_remover[' + self.parent().data('item') + ']" type="hidden" value="' + self.parent().data('item') + '">');
+        self.remove();
+      });
     }
   }
 };

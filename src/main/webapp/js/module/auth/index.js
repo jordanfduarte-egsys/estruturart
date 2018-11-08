@@ -11,7 +11,7 @@ var crud = {
       $('.js-change-alterar-senha').find('input[name=name]').val($('.js-change-login').find('input[name=name]').val());
     });
 
-    $('.js-back-reset').on('click', function() {
+    $('.js-back-reset').on('click', function(e) {
       e.preventDefault();
       $('.js-change-login').removeClass('hide');
       $('.js-change-alterar-senha').addClass('hide');
@@ -20,8 +20,8 @@ var crud = {
 
     $('.js-enviar-email').on('click', function(e) {
       e.preventDefault();
-
-      if (!$(this).val().match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
+      var val = $(this).closest('form').find('input[name=name]').val();
+      if (!val.match(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)) {
         flashMessenger.setType(FlashMessenger.ERROR).add("Informe um e-mail válido!").getMessages();
         return false;
       }
@@ -30,7 +30,7 @@ var crud = {
         type: 'POST',
         url: BASE_URL + 'auth/recuperar',
         dataType: 'json',
-        data: {email: $(this).val()},
+        data: {email: val},
         success: function(req) {
           if (req.status) {
             flashMessenger.setType(FlashMessenger.SUCCESS).add(req.message).getMessages();

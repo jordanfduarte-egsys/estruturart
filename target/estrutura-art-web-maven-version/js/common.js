@@ -101,6 +101,13 @@ function bindMask() {
         clearOnEmpty: true
     });
 
+    $('[data-format="porcentagem"]').off().priceFormat({
+      prefix: '',
+      centsSeparator: ',',
+      thousandsSeparator: '',
+      clearOnEmpty: true
+    });
+
     $('body').on('click', '[data-image="show"]', function() {
         var image = new Image();
         image.src = $(this).attr("src");

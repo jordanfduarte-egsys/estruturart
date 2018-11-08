@@ -87,7 +87,7 @@
                  </c:if>
                  <c:if test="${lancamentos.size() == 0}">
                      <tr>
-                         <td colspan="5">Nenhum resultado encontrado com esse filtro!</td>
+                         <td colspan="6">Nenhum resultado encontrado com esse filtro!</td>
                      </tr>
                 </c:if>
              </tbody>

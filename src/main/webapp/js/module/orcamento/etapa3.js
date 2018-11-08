@@ -81,7 +81,8 @@ var crud = {
             e.preventDefault();
 
             $('form').append('<input name="is_orcamento" value="1" type="hidden" />');
-            $(this).off().trigger('click');
+            $(this).off();
+            $(this).parent().find('button[type=submit]').trigger('click');
         }
     }
 }

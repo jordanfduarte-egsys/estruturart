@@ -9,7 +9,7 @@
         <div class="card-body">
             <form action="${source}orcamento/etapa3" method="POST">
                 <div class="form-row">
-                    <fieldset class="col-md-8 mb-3 border">
+                    <fieldset class="col-md-12 mb-3 border">
                         <legend style="width: 91px;">Resumo</legend>
                         <div class="table-modelos-add etapa3 table-error form-control">
                             <table class="table table-striped js-row-material" data-total-itens="${orcamento.getTotalItensAcrescimoSemPintura()}" data-total-pintura="${orcamento.getTotalPintura()}">
@@ -91,7 +91,7 @@
                                     <div class="input-group-prepend" data-toggle="tooltip" title="" data-original-title="Informe uma porcentagem de desconto entre o máximo aceitável!">
                                         <span class="input-group-text"><i class="fas fa-percent"></i></span>
                                     </div>
-                                    <input type="number" min="0" max="100" step="0.1" class="form-control <c:if test="${orcamento.getValidation().hasParam('desconto')}">is-invalid</c:if>" id="desconto" name="desconto" placeholder="% desconto" value="${orcamento.getDesconto()}">
+                                    <input type="text" data-format="porcentagem" min="0" max="100" step="0.1" class="form-control <c:if test="${orcamento.getValidation().hasParam('desconto')}">is-invalid</c:if>" id="desconto" name="desconto" placeholder="% desconto" value="${orcamento.getDesconto()}">
                                     <div class="invalid-feedback">
                                         ${orcamento.getValidation().getParamOr('desconto', '')}
                                     </div>
@@ -120,7 +120,7 @@
                     </fieldset>
                 </div>
                 <div class="card-footer bg-white">
-                    <button type="button" class="btn btn-outline-secondary ja-back-orcamento" data-href="/orcamento/etapa2">Voltar</button>
+                    <button type="button" class="btn btn-outline-secondary js-back-orcamento" data-href="/orcamento/etapa2">Voltar</button>
                     <button type="submit" class="btn btn-default js-save-orcamento" data-status="1"><i class="fas fa-shopping-cart text-primary"></i> Criar pedido</button>
                     <button type="button" class="btn btn-primary js-save-orcamento" data-status="2"><i class="fas fa-shopping-cart"></i> Criar orçamento</button>
                     <a data-toggle="tooltip" data-html="true" class="p-2" title="" data-original-title="Click em 'Criar orçamento' para finalizar e criar o pedido. O status ficará pendente de aprovação. Click em 'Criar pedido' para finalizar e iniciar a produção dessa ordem de serviço.">

@@ -138,10 +138,10 @@ public class Orcamento extends AbstractModel
                     isValidPrevEntrega = false;
                 }
 
-                if (getValorMaoObra() <= 0) {
-                    this.getValidation().add(new RouteParam("mao_obra", "Informe o valor de mão de obra válido!"));
-                    isValidMaoObra = false;
-                }
+                // if (getValorMaoObra() <= 0) {
+                //     this.getValidation().add(new RouteParam("mao_obra", "Informe o valor de mão de obra válido!"));
+                //     isValidMaoObra = false;
+                // }
 
                 isEtapaValid = isValidPrevEntrega && isValidMaoObra;
             break;

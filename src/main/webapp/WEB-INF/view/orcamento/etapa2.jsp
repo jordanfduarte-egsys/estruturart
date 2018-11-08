@@ -9,7 +9,7 @@
         <div class="card-body">
             <form action="${source}orcamento/etapa2" method="POST" id="form">
                 <div class="form-row">
-                    <fieldset class="col-md-8 mb-3 border">
+                    <fieldset class="col-md-12 mb-3 border">
                         <legend style="width: 91px;">Modelos</legend>
                         <input type="text" class="form-control" id="busca" autocomplete="off" placeholder="Busque um modelo para montar o orçamento e tecle ENTER">
                         <input id="filtrado" type="hidden"/>
@@ -25,7 +25,7 @@
                     </fieldset>
                 </div>
                 <div class="form-row">
-                    <fieldset class="col-md-8 mb-3 border">
+                    <fieldset class="col-md-12 mb-3 border">
                         <legend style="width: 173px;">Listagem de itens</legend>
                         <div class="table-modelos-add table-error form-control <c:if test="${orcamento.getValidation().hasParam('modelos')}">is-invalid</c:if>">
                             <table class="table table-striped js-row-material">

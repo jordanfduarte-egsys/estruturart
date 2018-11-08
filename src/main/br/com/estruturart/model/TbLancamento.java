@@ -26,6 +26,7 @@ public class TbLancamento extends AbstractModel
     private float somaEmpresa;
     private float lucroEmpresa;
     private float diferenca;
+    private int excluir;
 
     public int getId()
     {
@@ -208,5 +209,20 @@ public class TbLancamento extends AbstractModel
         }
 
         return isValid;
+    }
+
+    public void setExcluir(int excluir)
+    {
+        this.excluir = excluir;
+    }
+
+    public int getExcluir()
+    {
+        return this.excluir;
+    }
+
+    public boolean isExcluir()
+    {
+        return this.excluir == 1;
     }
 }

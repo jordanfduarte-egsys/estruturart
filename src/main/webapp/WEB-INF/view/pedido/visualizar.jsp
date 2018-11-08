@@ -7,10 +7,10 @@
     <div class="card mb-4">
         <div class="card-body">
             <div class="form-row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-5 mb-3">
                     <h3>Status: ${pedido.getStatusPedido().getNome()}</h3>
                 </div>
-                <div class="col-md-2 mb-3">
+                <div class="col-md-3 mb-3">
                     <c:if test="${pedido.getStatusPedidoId() != 7}">
                         <label for="status_pedido_id">Status</label>
                         <select data-id="${pedido.getId()}" data-status="${pedido.getStatusPedidoId()}" name="status_pedido_id" data-original-status="${pedido.getStatusPedidoId()}" id="status_pedido_id" data-id="${pedido.getId()}" class="form-control <c:if test="${pedido.getValidation().hasParam('status_pedido_id')}">is-invalid</c:if>">
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="form-row">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-5 mb-5">
                     <ul class="ul-resumo">
                         <li>
                             <span class="li-one">Cliente</span>
@@ -70,7 +70,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-5 mb-3">
                     <label for="observacao">Observação: </label>
                     <textarea disabled="disabled" class="form-control <c:if test="${pedido.getValidation().hasParam('observacao')}">is-invalid</c:if>" id="observacao" name="observacao" placeholder="Sobre o orçamento">${pedido.getObservacao()}</textarea>
 
@@ -80,7 +80,7 @@
                 </div>
             </div>
 
-            <fieldset class="col-md-8 mb-3 border">
+            <fieldset class="col-md-10 mb-3 border">
                 <legend style="width: 223px;">Endereço de instalação</legend>
                 <div class="form-row">
                     <div class="mb-3">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </fieldset>
-            <fieldset class="col-md-8 mb-3 border">
+            <fieldset class="col-md-10 mb-3 border">
                 <legend style="width: 48px;">Itens</legend>
                 <div class="table-modelos-add etapa3 table-error form-control">
                     <table class="table table-striped js-row-material">
@@ -132,7 +132,7 @@
                     </table>
                 </div>
             </fieldset>
-            <fieldset class="col-md-8 mb-3 border">
+            <fieldset class="col-md-10 mb-3 border">
                 <legend style="width: 93px;">Histórico</legend>
                 <div class="table-modelos-add etapa3 table-error form-control">
                     <ul class="ul-resumo-historico">

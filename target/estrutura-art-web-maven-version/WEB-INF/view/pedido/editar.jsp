@@ -8,10 +8,10 @@
         <div class="card-body">
             <form action="${source}pedido/editar/id/${pedido.getId()}" method="POST" autocomplete="off" id="pedido">
                 <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <h3>Status: ${pedido.getStatusPedido().getNome()}</h3>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <label for="status_pedido_id">Status</label>
                         <select name="status_pedido_id" disabled="disabled" data-original-status="${pedido.getStatusPedidoId()}" id="status_pedido_id" data-id="${pedido.getId()}" class="form-control <c:if test="${pedido.getValidation().hasParam('status_pedido_id')}">is-invalid</c:if>">
                             <option value="0">Selecione!</option>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <ul class="ul-resumo">
                             <li>
                                 <span class="li-one">Cliente</span>
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <label for="observacao">Observação: </label>
                         <textarea class="form-control <c:if test="${pedido.getValidation().hasParam('observacao')}">is-invalid</c:if>" id="observacao" name="observacao" placeholder="Sobre o orçamento">${pedido.getObservacao()}</textarea>
 
@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                <fieldset class="col-md-8 mb-3 border">
+                <fieldset class="col-md-10 mb-3 border">
                     <legend style="width: 223px;">Endereço de instalação</legend>
                     <div class="form-row">
                         <div class="col-md-4 mb-3">
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset class="col-md-8 mb-3 border">
+                <fieldset class="col-md-10 mb-3 border">
                     <legend style="width: 48px;">Itens</legend>
                     <div class="table-modelos-add etapa3 table-error form-control">
                         <table class="table table-striped js-row-material">
@@ -185,3 +185,23 @@
 <script type="text/x-handlebars-template" id="row-cidade">
     <option value="{{id}}">{{nome}}</option>
 </script>
+
+<div class="modal" tabindex="-1" role="dialog" id="modal-alterar-status-item">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Cancelamento de item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Deseja cancelar o item <b></b> ?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Confirmar</button>
+        </div>
+        </div>
+    </div>
+</div>

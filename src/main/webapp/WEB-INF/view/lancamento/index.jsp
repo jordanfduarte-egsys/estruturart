@@ -41,8 +41,14 @@
                             </td>
                              <td>R$ ${iterator1.getPrecoString()}</td>
                              <td class=" actions align-rigth" style="">
-                                    <a href="${source}lancamento/editar/id/${iterator1.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger" data-toggle="tooltip" title="" data-original-title="Inativar"><i class="fa fa-fw fa-trash"></i></a>
+                                <a href="${source}lancamento/editar/id/${iterator1.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+
+                                <c:if test="${iterator1.isExcluir()}"></c:if>
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger" data-toggle="tooltip" title="" data-original-title="Cancelar lançamento"><i class="fa fa-fw fa-trash"></i></a>
+                                </c:if>
+                                <c:if test="${!iterator1.isExcluir()}">
+                                    <i class="fa fa-fw fa-trash opaco"></i>
+                                </c:if>
                              </td>
                          </tr>
                      </c:forEach>

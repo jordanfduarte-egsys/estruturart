@@ -21,7 +21,7 @@
                  <th scope="col">#</th>
                  <th scope="col">Nome</th>
                  <th scope="col">Imagem</th>
-                 <th scope="col">Dimensгo</th>
+                 <th scope="col">Dimensão</th>
                  <th scope="col">Preço</th>
                  <th scope="col">Produção</th>
                  <th scope="col">Status</th>
@@ -40,7 +40,7 @@
                              <td>${iterator.getQtdDiasProducao()} dia(s)</td>
                              <td>${iterator.getStatusModelo().getNome()}</td>
                              <td class=" actions align-rigth">
-                                <a href="${source}modelo/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                <a href="${source}modelo/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Editar"><i class="fa fa-fw fa-edit"></i></a>
                                 <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger js-alterar-status" data-id="${iterator.getId()}" data-status="${iterator.getStatusModelo().getId()}" data-toggle="tooltip" title="Alterar status"><i class="fas fa-minus-circle"></i>&nbsp;</a>
                              </td>
                          </tr>

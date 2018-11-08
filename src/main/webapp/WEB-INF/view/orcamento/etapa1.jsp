@@ -10,7 +10,7 @@
             <form action="${source}orcamento/etapa1" method="POST" autocomplete="off" id="etapa1">
                 <input name="usuario_id" value="${orcamento.getUsuario().getId()}" id="usuario_id" type="hidden"/>
                 <div class="form-row">
-                    <fieldset class="col-md-8 mb-3 border">
+                    <fieldset class="col-md-12 mb-3 border">
                         <legend style="width: 214px;">Informações do cliente</legend>
                         <div class="form-row">
                             <div class="col-md-3 mb-3">
@@ -21,7 +21,7 @@
                                 </div>
                             </div>
                             <div class="col-md-1 mb-3">
-                                <label for="cpf_cnpj">&nbsp;</label>
+                                <label for="cpf_cnpj">&nbsp;</label><br/>
                                 <button type="button" class="btn btn-primary btn-icon js-find-cpf-cnpj">
                                     <i class="fa fa-user"></i>
                                 </button>
@@ -77,7 +77,7 @@
                     </fieldset>
                 </div>
                 <div class="form-row">
-                    <fieldset class="col-md-8 mb-3 border">
+                    <fieldset class="col-md-12 mb-3 border">
                         <legend style="width: 245px;">Informações de instalação</legend>
                         <div class="form-row">
                             <div class="col-md-4 mb-3">

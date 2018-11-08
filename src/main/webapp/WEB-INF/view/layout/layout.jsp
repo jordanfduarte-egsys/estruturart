@@ -52,7 +52,7 @@
                         <li class="<c:if test="${route.getController().equals('modelo')}">active</c:if>"><a href="${source}modelo"><i class="fab fa-windows"></i> Modelos</a></li>
                         <li class="<c:if test="${route.getController().equals('orcamento')}">active</c:if>"><a href="${source}orcamento"><i class="fas fa-cart-plus"></i> Orçamento</a></li>
                         <li class="<c:if test="${route.getController().equals('pedido')}">active</c:if>"><a href="${source}pedido"><i class="fab fa-slack-hash"></i> Pedidos</a></li>
-                        <li class="<c:if test="${route.getController().equals('lancamento')}">active</c:if>"><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
+                        <li class="<c:if test="${route.getController().equals('lancamento') && !route.getActionName().equals('fluxo-caixa')}">active</c:if>"><a href="${source}lancamento"><i class="fa fa-fw fa-hand-holding-usd"></i> Lançamento</a></li>
                         <li class="<c:if test="${route.getController().equals('lancamento') && route.getActionName().equals('fluxo-caixa')}">active</c:if>"><a href="${source}lancamento/fluxo-caixa"><i class="fa fa-fw fa-calendar-alt"></i> Fluxo de caixa</a></li>
                         <li class="<c:if test="${route.getController().equals('parametro')}">active</c:if>"><a href="${source}parametro"><i class="fa fa-fw fa-cogs"></i> Configuração</a></li>
                         <li><a href="${source}auth/logout"><i class="fa fa-fw fa-sign-out-alt"></i> Sair</a></li>

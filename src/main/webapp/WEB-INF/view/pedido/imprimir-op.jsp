@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="${source}css/bootadmin.min.css">
         <link rel="stylesheet" href="${source}css/common.css">
         <link rel="stylesheet" href="${source}css/module/pedido/imprimir-op.css">
+        <link rel="icon" type="image/png" href="${source}files/favicon.png" />
         <title>Ordem de Produção #${pedido.getIdString()}</title>
     </head>
     <body class="bg-light" onload="window.print(); return false;">
