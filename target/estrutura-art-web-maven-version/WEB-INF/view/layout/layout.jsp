@@ -19,7 +19,7 @@
         <link rel="icon" type="image/png" href="${source}files/favicon.png" />
         <title>${nomeEmpresa} | ${title}</title>
     </head>
-    <body class="bg-light <c:if test="${route.getController().equals('auth')}">home</c:if>"></body>
+    <body class="bg-light <c:if test="${route.getController().equals('auth') && route.getActionName().equals('index')}">home</c:if>"></body>
         <input id="urlBase" type="hidden" value="${source}"/>
 
         <c:if test="${isAuth == true}">

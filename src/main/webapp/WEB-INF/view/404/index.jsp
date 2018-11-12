@@ -64,9 +64,9 @@
   <div>
     <div class="dialog">
       <h1>Oops.</h1>
-      <p>Essa p·gina n„o existe ou foi retirada do ar.</p>
+      <p>Essa p√°gina n√£o existe ou foi retirada do ar.</p>
     </div>
-    <img src="/estrutura-art-web-maven-version/image?path=/files/spilled-milk.png" class="image">
+    <img src="/estrutura-art-web-maven-version/files/spilled-milk.png" class="image">
   </div>
 </body>
 <footer><a href="/estruturart/" target="_blank">Home</a></footer>

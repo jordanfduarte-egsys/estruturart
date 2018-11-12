@@ -95,11 +95,6 @@ public class Usuario extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
 
-
-
-
-
-
         ResultSet rs = ps.executeQuery();
 
         List<TbUsuario> usuarios = new ArrayList<TbUsuario>();
@@ -134,6 +129,34 @@ public class Usuario extends AbstractPersistency
 
         conn.close();
         return new Paginator(usuarios, this.findTotalRows(sql), offset, page);
+    }
+
+    public TbUsuario getUsuarioByEmail(String email) throws Exception
+    {
+        Connection conn = ConnectionManager.getConnection();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM USUARIO WHERE lower(email) = lower(trim(?))");
+
+        ps.setString(1, email);
+
+        ResultSet rs = ps.executeQuery();
+        TbUsuario usuario = new TbUsuario();
+        if (rs.next()) {
+            usuario.setId(rs.getInt("id"));
+            usuario.setTipoPessoa(rs.getString("tipo_pessoa"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setCpfCnpj(rs.getString("cpf_cnpj"));
+            usuario.setRgIncricaoEstadual(rs.getString("rg_inscricao_estadual"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setTelefone(rs.getString("telefone"));
+            usuario.setCodigo(rs.getString("codigo"));
+            usuario.setSenha(rs.getString("senha"));
+            usuario.setDataInclusao(rs.getDate("data_inclusao"));
+            usuario.setPerfilId(rs.getInt("perfil_id"));
+            usuario.setStatusUsuarioId(rs.getInt("status_usuario_id"));
+        }
+
+        conn.close();
+        return usuario;
     }
 
     public TbUsuario getUsuarioById(int fkUsuario) throws Exception
@@ -207,12 +230,10 @@ public class Usuario extends AbstractPersistency
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
 
-
         ResultSet rs = ps.getGeneratedKeys();
         usuario.setId(rs.next() ? rs.getInt(1) : 0);
 
         if (usuario.getId() != 0) {
-
 
             sql = String.format("UPDATE USUARIO SET codigo = '%s' WHERE id = %d", usuario.generateCode(),
                     usuario.getId());
@@ -244,6 +265,21 @@ public class Usuario extends AbstractPersistency
         return rows;
     }
 
+    public int updateSenha(TbUsuario usuario) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format(
+            "UPDATE USUARIO SET senha = MD5('%s') WHERE id = %d",
+            usuario.getSenha(), usuario.getId()
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+
+        conn.close();
+        return rows;
+    }
+
     public int update(TbUsuario usuario) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();
@@ -261,13 +297,27 @@ public class Usuario extends AbstractPersistency
         return rows;
     }
 
+    public int updateHash(String hash, int id) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = String.format(
+            "UPDATE USUARIO SET token_recuperacao = '%s' WHERE id = %d",
+            hash, id
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        int rows = ps.executeUpdate();
+
+        conn.close();
+        return rows;
+    }
+
     public boolean findCpfCnpjExists(String cpfCnpj, int fkUsuarioEdicao) throws SQLException
     {
         Connection conn = ConnectionManager.getConnection();
 
         PreparedStatement ps = conn.prepareStatement("SELECT * FROM USUARIO WHERE cpf_cnpj = ?");
         ps.setString(1, cpfCnpj);
-
         if (fkUsuarioEdicao != 0) {
             ps = conn.prepareStatement("SELECT * FROM USUARIO WHERE cpf_cnpj = ? AND id <> ?");
 
@@ -305,6 +355,35 @@ public class Usuario extends AbstractPersistency
 
         conn.close();
         return false;
+    }
+
+    public TbUsuario findUsuarioByCodigoRecuperacao(String hash) throws SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+
+        PreparedStatement ps = conn.prepareStatement(
+            "SELECT * FROM USUARIO WHERE token_recuperacao = \"" + hash + "\" "
+        );
+System.out.println("SELECT * FROM USUARIO WHERE token_recuperacao = \"" + hash + "\" ");
+        TbUsuario usuario = new TbUsuario();
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            usuario.setId(rs.getInt("id"));
+            usuario.setTipoPessoa(rs.getString("tipo_pessoa"));
+            usuario.setNome(rs.getString("nome"));
+            usuario.setCpfCnpj(rs.getString("cpf_cnpj"));
+            usuario.setRgIncricaoEstadual(rs.getString("rg_inscricao_estadual"));
+            usuario.setEmail(rs.getString("email"));
+            usuario.setTelefone(rs.getString("telefone"));
+            usuario.setCodigo(rs.getString("codigo"));
+            usuario.setSenha(rs.getString("senha"));
+            usuario.setDataInclusao(rs.getDate("data_inclusao"));
+            usuario.setPerfilId(rs.getInt("perfil_id"));
+            usuario.setStatusUsuarioId(rs.getInt("status_usuario_id"));
+        }
+
+        conn.close();
+        return usuario;
     }
 
     public TbUsuario findUsuarioByCpjCNpj(String cpfCnpj) throws SQLException

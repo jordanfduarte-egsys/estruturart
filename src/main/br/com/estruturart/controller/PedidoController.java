@@ -320,20 +320,20 @@ public class PedidoController extends AbstractServlet
             }
             String str = output.toString();
 
-            str.replaceAll("#nome_usuario", pedido.getUsuario().getNome());
-            str.replaceAll("#id_pedido", String.valueOf(pedido.getId()));
-            str.replaceAll("#endereco", parametro.getLogradouro());
-            str.replaceAll("#cep", parametro.getCep());
-            str.replaceAll("#numero", parametro.getNumero());
-            str.replaceAll("#cidade", parametro.getCidade());
-            str.replaceAll("#uf", parametro.getUf());
+            str = str.replaceAll("#nome_usuario", pedido.getUsuario().getNome());
+            str = str.replaceAll("#id_pedido", String.valueOf(pedido.getId()));
+            str = str.replaceAll("#endereco", parametro.getLogradouro());
+            str = str.replaceAll("#cep", parametro.getCep());
+            str = str.replaceAll("#numero", parametro.getNumero());
+            str = str.replaceAll("#cidade", parametro.getCidade());
+            str = str.replaceAll("#uf", parametro.getUf());
 
             switch (status) {
                 case TbStatusPedido.PEDIDO_PENDENTE:
                 case TbStatusPedido.ORCAMENTO_PENDENTE:
                 case TbStatusPedido.PRODUCAO:
                     statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("#status_pedido", statusPedido.getNome());
+                    str = str.replaceAll("#status_pedido", statusPedido.getNome());
 
                     emailService.setHtml(str);
                     emailService.send();
@@ -355,13 +355,13 @@ public class PedidoController extends AbstractServlet
                     }
 
                     statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("#status_pedido", statusPedido.getNome());
+                    str = str.replaceAll("#status_pedido", statusPedido.getNome());
                     emailService.setHtml(str);
                     emailService.send();
                 break;
                 case TbStatusPedido.INSTALACAO:
                     statusPedido = statusPedidoModel.findById(status);
-                    str.replaceAll("#status_pedido", statusPedido.getNome());
+                    str = str.replaceAll("#status_pedido", statusPedido.getNome());
 
                     pedido.setStatusPedidoId(status);
                     emailService.setHtml(str);
@@ -415,14 +415,14 @@ public class PedidoController extends AbstractServlet
             }
             String str = output.toString();
 
-            str.replaceAll("&nome_usuario", pedido.getUsuario().getNome());
-            str.replaceAll("&id_pedido", String.valueOf(pedido.getId()));
-            str.replaceAll("&endereco", parametro.getLogradouro());
-            str.replaceAll("&cep", parametro.getCep());
-            str.replaceAll("&numero", parametro.getNumero());
-            str.replaceAll("&cidade", parametro.getCidade());
-            str.replaceAll("&uf", parametro.getUf());
-            str.replaceAll("&status_pedido", "Cancelado");
+            str = str.replaceAll("&nome_usuario", pedido.getUsuario().getNome());
+            str = str.replaceAll("&id_pedido", String.valueOf(pedido.getId()));
+            str = str.replaceAll("&endereco", parametro.getLogradouro());
+            str = str.replaceAll("&cep", parametro.getCep());
+            str = str.replaceAll("&numero", parametro.getNumero());
+            str = str.replaceAll("&cidade", parametro.getCidade());
+            str = str.replaceAll("&uf", parametro.getUf());
+            str = str.replaceAll("&status_pedido", "Cancelado");
 
             emailService.setSubject("Alteração de status do pedido #" + pedido.getIdString());
             emailService.setTo(pedido.getUsuario().getEmail());

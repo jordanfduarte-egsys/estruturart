@@ -282,7 +282,7 @@
           <div class="content">
 
             <!-- START CENTERED WHITE CONTAINER -->
-            <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
+
             <table class="main">
 
               <!-- START MAIN CONTENT AREA -->
@@ -291,8 +291,8 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Olá #nome_usuario,</p>
-                        <p>Seu pedido <b>##id_pedido</b> está em <b>#status_pedido</b></p>
+                        <p>Ol&aacute; #nome_usuario,</p>
+                        <p>Seu pedido <b>##id_pedido</b> est&aacute; em <b>#status_pedido</b></p>
                         <br/>
                         <p>Obrigado.</p>
                       </td>

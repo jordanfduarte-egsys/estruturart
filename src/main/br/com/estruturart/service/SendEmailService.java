@@ -54,9 +54,16 @@ public class SendEmailService extends Authenticator
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", port);
+        props.put("mail.smtps.starttls.enable", "true");
+        props.setProperty("javax.net.ssl.trustStore", "jssecacerts");
+        props.setProperty("javax.net.ssl.trustStorePassword", "changeit");
+
+
+
 
         // @see https://www.devmedia.com.br/enviando-email-com-javamail-utilizando-gmail/18034
         Session session = Session.getDefaultInstance(props, this);
+        session.setDebug(true);
 
         // Ativa Debug para sessão
         session.setDebug(true);
@@ -73,7 +80,7 @@ public class SendEmailService extends Authenticator
             message.setSubject(this.subject);
 
             // Send the actual HTML message, as big as you like
-            message.setContent(this.html, "text/plain");
+            message.setContent(this.html, "text/html; charset=utf-8");
 
             // Send message
             Transport.send(message);
@@ -147,6 +154,7 @@ public class SendEmailService extends Authenticator
     @Override
     protected PasswordAuthentication getPasswordAuthentication()
     {
+        System.out.println("EMAIL: " + this.usuario + "   " + this.senha);
          return new PasswordAuthentication(this.usuario, this.senha);
     }
 }

@@ -66,6 +66,7 @@ public class AbstractServlet extends HttpServlet {
         this.getRequest().setCharacterEncoding("UTF-8");
         this.getResponse().setContentType("text/html;charset=UTF-8");
 
+        System.out.println(request.getServletPath());
         String[] methodParam = request.getServletPath().split("/");
         String method = "index";
 
@@ -73,13 +74,13 @@ public class AbstractServlet extends HttpServlet {
         for (String m : methodParam) {
             System.out.println("M: " + m);
         }
-        System.out.println("+====================================");
+        System.out.println("+====================================" + methodParam.length);
 
         if (methodParam.length > 2) {
             method = methodParam[2];
 
             String uri = request.getRequestURI().toString().replace(getServletContext().getInitParameter("source"), "");
-
+            System.out.println(uri);
             RouteParam routeParam = new RouteParam();
             boolean isKey = true;
 
@@ -175,13 +176,23 @@ public class AbstractServlet extends HttpServlet {
                 this.noRender = false;
             } else {
                 if (!(this.getSession().getAttribute("usuario") instanceof TbUsuario)
-                        && !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))) {
+                    && (
+                            !(method.equals("indexAction") && this.route.getController().toString().equals("auth"))
+                            && !(method.equals("recuperarAction") && this.route.getController().toString().equals("auth"))
+                            && !(method.equals("recuperarSenhaAction") && this.route.getController().toString().equals("auth"))
+                            && !(method.equals("flashMessagesAction") && this.route.getController().toString().equals("auth"))
+                    )
+                ) {
                     this.redirect("auth");
-                } else if (this.getSession().getAttribute("usuario") instanceof TbUsuario && method.equals("indexAction")
-                        && this.route.getController().toString().equals("auth")) {
-                    this.redirect("home");
+                } else if (
+                    this.getSession().getAttribute("usuario") instanceof TbUsuario
+                    && method.equals("indexAction")
+                    && this.route.getController().toString().equals("auth")
+                    && !(method.equals("recuperarSenhaAction"))
+                    && !(method.equals("flashMessagesAction"))
+                ) {
+                        this.redirect("home");
                 } else {
-
                     this.getClass().getMethod(method).invoke(this, null);
 
                     if (!this.noRender && !getResponse().isCommitted()) {
@@ -451,7 +462,6 @@ public class AbstractServlet extends HttpServlet {
     }
 
     public boolean isRequestImage() {
-
         return this.getRequest().getContentType().matches("(.*)image(.*)");
     }
 

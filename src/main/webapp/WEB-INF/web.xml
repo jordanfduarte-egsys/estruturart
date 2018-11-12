@@ -123,6 +123,7 @@
       <url-pattern>/auth/logout</url-pattern>
       <url-pattern>/auth/flash-messages</url-pattern>
       <url-pattern>/auth/recuperar</url-pattern>
+      <url-pattern>/auth/recuperar-senha/h/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Home</servlet-name>
