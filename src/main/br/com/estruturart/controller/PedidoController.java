@@ -94,9 +94,67 @@ public class PedidoController extends AbstractServlet
         int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
         int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
 
-        List<TbStatusPedido> statusPedido = statusPedidoModel.findAll();
+        List<TbStatusPedido> statusPedido = new ArrayList<TbStatusPedido>(); //statusPedidoModel.findAll();
         List<TbLogPedido> logsPedido = modelLog.findLogPedido(id);
         TbPedido pedido = pedidoModel.findPedidoVisualizacao(id);
+
+        TbStatusPedido l;
+        switch(pedido.getStatusPedidoId()) {
+            case 1:
+                l = new TbStatusPedido();
+                l.setId(1);
+                l.setNome("Pedido Pendente");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(3);
+                l.setNome("Produção");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(4);
+                l.setNome("Pedido Pago");
+                statusPedido.add(l);
+                break;
+            case 2:
+                l = new TbStatusPedido();
+                l.setId(2);
+                l.setNome("Orçamento Pendente");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(3);
+                l.setNome("Produção");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(4);
+                l.setNome("Pedido Pago");
+                statusPedido.add(l);
+            break;
+            case 3:
+                l = new TbStatusPedido();
+                l.setId(3);
+                l.setNome("Produção");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(5);
+                l.setNome("Instalação");
+                statusPedido.add(l);
+            break;
+            case 5:
+                l = new TbStatusPedido();
+                l.setId(5);
+                l.setNome("Instalação");
+                statusPedido.add(l);
+
+                l = new TbStatusPedido();
+                l.setId(6);
+                l.setNome("Finalizado");
+                statusPedido.add(l);
+            break;
+        }
 
         getRequest().setAttribute("pedido", pedido);
         getRequest().setAttribute("statusPedido", statusPedido);
@@ -239,6 +297,7 @@ public class PedidoController extends AbstractServlet
                 (params.hasParam("status_id") && !params.getParam("status_id").equals("0")) ||
                 (params.hasParam("cep_or_destinatario") && !params.getParam("cep_or_destinatario").equals(""))
             ) {
+
                 data = df.format(pedidos.get(0).getDataPrevisaoInstalacao());
                 isFiltro = true;
             }
@@ -321,7 +380,7 @@ public class PedidoController extends AbstractServlet
             String str = output.toString();
 
             str = str.replaceAll("#nome_usuario", pedido.getUsuario().getNome());
-            str = str.replaceAll("#id_pedido", String.valueOf(pedido.getId()));
+            str = str.replaceAll("#id_pedido", pedido.getIdString());
             str = str.replaceAll("#endereco", parametro.getLogradouro());
             str = str.replaceAll("#cep", parametro.getCep());
             str = str.replaceAll("#numero", parametro.getNumero());
@@ -345,6 +404,7 @@ public class PedidoController extends AbstractServlet
                     pedido.setStatusPedidoId(status);
                     // @TODO gerar nota fiscal
                     modelPedido.update(pedido);
+                    modelPedido.updatePedidoPago(pedido.getId(), 1);
                     logPedido.insert(status, usuarioId, pedido.getId());
 
                     if (pedido.getStatusPedidoId() != TbStatusPedido.PRODUCAO) {
@@ -415,14 +475,14 @@ public class PedidoController extends AbstractServlet
             }
             String str = output.toString();
 
-            str = str.replaceAll("&nome_usuario", pedido.getUsuario().getNome());
-            str = str.replaceAll("&id_pedido", String.valueOf(pedido.getId()));
-            str = str.replaceAll("&endereco", parametro.getLogradouro());
-            str = str.replaceAll("&cep", parametro.getCep());
-            str = str.replaceAll("&numero", parametro.getNumero());
-            str = str.replaceAll("&cidade", parametro.getCidade());
-            str = str.replaceAll("&uf", parametro.getUf());
-            str = str.replaceAll("&status_pedido", "Cancelado");
+            str = str.replaceAll("#nome_usuario", pedido.getUsuario().getNome());
+            str = str.replaceAll("#id_pedido", pedido.getIdString());
+            str = str.replaceAll("#endereco", parametro.getLogradouro());
+            str = str.replaceAll("#cep", parametro.getCep());
+            str = str.replaceAll("#numero", parametro.getNumero());
+            str = str.replaceAll("#cidade", parametro.getCidade());
+            str = str.replaceAll("#uf", parametro.getUf());
+            str = str.replaceAll("#status_pedido", "Cancelado");
 
             emailService.setSubject("Alteração de status do pedido #" + pedido.getIdString());
             emailService.setTo(pedido.getUsuario().getEmail());

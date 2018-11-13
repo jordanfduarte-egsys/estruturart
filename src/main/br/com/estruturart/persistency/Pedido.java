@@ -54,6 +54,29 @@ public class Pedido extends AbstractPersistency
         return pedido.getId();
     }
 
+    public void updatePedidoPago(int pedidoId, int pago) throws SQLException
+    {
+        Connection conn = null;
+        if (isConnection()) {
+            conn = getConnection();
+        } else {
+            conn = ConnectionManager.getConnection();
+        }
+
+        String sql = String.format(
+            "UPDATE PEDIDO SET pedido_pago = '%d' WHERE id = %d",
+            pago, pedidoId
+        );
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.execute();
+
+
+        if (!isConnection()) {
+            conn.close();
+        }
+    }
+
     public void updatePrecoTotal(int pedidoId, float valor) throws SQLException
     {
         Connection conn = null;
@@ -113,6 +136,7 @@ public class Pedido extends AbstractPersistency
         if (params.hasParam("id") && !params.getParam("id").equals("")) {
             args += " AND p.id = '" + params.getParam("id") + "' ";
             isFiltro = true;
+            filtroData = true;
         }
 
         if (params.hasParam("nome") && !params.getParam("nome").equals("")) {
@@ -239,7 +263,7 @@ public class Pedido extends AbstractPersistency
         Connection conn = ConnectionManager.getConnection();
 
         String sql = String.format(
-            "SELECT p.*, c.nome as nome_cliente, c.cpf_cnpj, c.tipo_pessoa, e.cep, e.logradouro, e.bairro, e.complemento, e.numero, sp.nome as nome_status_pedido, "
+            "SELECT p.*, c.nome as nome_cliente, c.cpf_cnpj, c.email, c.tipo_pessoa, e.cep, e.logradouro, e.bairro, e.complemento, e.numero, sp.nome as nome_status_pedido, "
             + " cid.nome as nome_cidade, est.nome as nome_estado, est.uf, est.id as estado_id, e.id as endereco_id, e.cidade_id FROM pedido p "
             + " INNER JOIN status_pedido sp ON p.status_pedido_id = sp.id"
             + " INNER JOIN usuario c ON p.usuario_id = c.id"
@@ -302,6 +326,7 @@ public class Pedido extends AbstractPersistency
 
             usuario.setId(rs.getInt("usuario_id"));
             usuario.setNome(rs.getString("nome_cliente"));
+            usuario.setEmail(rs.getString("email"));
             usuario.setTipoPessoa(rs.getString("tipo_pessoa"));
             usuario.setCpfCnpj(rs.getString("cpf_cnpj"));
 

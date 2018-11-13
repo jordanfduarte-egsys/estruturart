@@ -364,7 +364,7 @@ public class Usuario extends AbstractPersistency
         PreparedStatement ps = conn.prepareStatement(
             "SELECT * FROM USUARIO WHERE token_recuperacao = \"" + hash + "\" "
         );
-System.out.println("SELECT * FROM USUARIO WHERE token_recuperacao = \"" + hash + "\" ");
+        System.out.println("SELECT * FROM USUARIO WHERE token_recuperacao = \"" + hash + "\" ");
         TbUsuario usuario = new TbUsuario();
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {

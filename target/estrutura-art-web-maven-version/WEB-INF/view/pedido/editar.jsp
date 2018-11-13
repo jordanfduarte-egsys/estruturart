@@ -55,7 +55,7 @@
                                 <div class="input-group-prepend" data-toggle="tooltip" title="" data-original-title="Verifique a data de previsão de entrega!">
                                     <span class="input-group-text text-primary"><i class="fas fa-truck"></i></span>
                                 </div>
-                                <input type="text" data-toggle="datepicker" class="form-control <c:if test="${pedido.getValidation().hasParam('prev_entrega')}">is-invalid</c:if>" id="prev_entrega" name="prev_entrega" placeholder="dd/mm/yyyy" value="${pedido.getDataPrevisaoInstalacaoString()}">
+                                <input type="text" data-toggle="datepicker" <c:if test="${pedido.getStatusPedidoId() == 7 || pedido.getStatusPedidoId() == 6}">disabled</c:if> class="form-control <c:if test="${pedido.getValidation().hasParam('prev_entrega')}">is-invalid</c:if>" id="prev_entrega" name="prev_entrega" placeholder="dd/mm/yyyy" value="${pedido.getDataPrevisaoInstalacaoString()}">
                                 <div class="invalid-feedback">
                                     ${pedido.getValidation().getParamOr('prev_entrega', '')}
                                 </div>
@@ -161,8 +161,10 @@
                                                 ${iterator.getModelo().getDescricao()}
                                             </div>
                                             <div class="pull-right text-right" data-item="${iterator.getId()}">
-                                                <c:if test="${iterator.getStatusItemId() == 1}">
-                                                    <a href="javascript:void(0);" data-toggle="tooltip" title="Cancelar item" class="js-remove-item fa-lg"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
+                                                    <c:if test="${iterator.getStatusItemId() == 1}">
+                                                        <a href="javascript:void(0);" data-toggle="tooltip" title="Cancelar item" class="js-remove-item fa-lg"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                    </c:if>
                                                 </c:if>
                                             </div>
                                         </td>
@@ -175,7 +177,9 @@
                 </fieldset>
                 <div class="card-footer bg-white">
                     <button type="button" class="btn btn-outline-secondary js-back-order" data-href="/pedido/visualizar/id/${pedido.getId()}">Voltar</button>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Salvar</button>
+                    <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> Salvar</button>
+                    </c:if>
                 </div>
             </form>
         </div>

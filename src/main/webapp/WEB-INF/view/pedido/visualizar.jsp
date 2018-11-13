@@ -11,10 +11,9 @@
                     <h3>Status: ${pedido.getStatusPedido().getNome()}</h3>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                    <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
                         <label for="status_pedido_id">Status</label>
                         <select data-id="${pedido.getId()}" data-status="${pedido.getStatusPedidoId()}" name="status_pedido_id" data-original-status="${pedido.getStatusPedidoId()}" id="status_pedido_id" data-id="${pedido.getId()}" class="form-control <c:if test="${pedido.getValidation().hasParam('status_pedido_id')}">is-invalid</c:if>">
-                            <option value="0">Selecione!</option>
                             <c:forEach items="${statusPedido}" var="iterator">
                                 <option value="${iterator.getId()}" <c:if test="${pedido.getStatusPedidoId() == iterator.getId()}">selected</c:if>>${iterator.getNome()}</option>
                             </c:forEach>
@@ -27,7 +26,7 @@
                 </div>
                 <div class="col-md-2 mb-3 text-right">
                     <label for="id">&nbsp;</label><br/>
-                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                    <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
                         <button type="button" class="btn btn-outline-secondary js-cancelar-pedido" data-id="${pedido.getId()}">Cancelar Pedido</button>
                     </c:if>
                 </div>
@@ -211,7 +210,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                    <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
                         {{#if status_item_id == 1}}
                             <fieldset class="col-md-12 mb-3 border form-control">
                                 <legend>Novo</legend>

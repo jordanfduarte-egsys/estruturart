@@ -48,8 +48,6 @@ public class Lancamento extends AbstractPersistency
 
         PreparedStatement ps = conn.prepareStatement(sql.replace("{columns}", columns).replace("{limit}", limit));
 
-
-
         ResultSet rs = ps.executeQuery();
 
         List<TbLancamento> lancamentos = new ArrayList<TbLancamento>();
@@ -267,5 +265,29 @@ public class Lancamento extends AbstractPersistency
         }
 
         return lan;
+    }
+
+    public void delete(Integer id) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM lancamento WHERE id = ?");
+        ps.setInt(1, id);
+        ps.executeUpdate();
+    }
+
+    public boolean isLancamentoExtra(int id, int idItem) throws java.sql.SQLException
+    {
+        Connection conn = ConnectionManager.getConnection();
+        String sql = "SELECT id FROM lancamento WHERE pedido_itens_id = " + idItem + " ORDER BY id ASC LIMIT 1";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        boolean isOk = false;
+        if (rs.next()) {
+            if (id != rs.getInt("id")) {
+                isOk = true;
+            }
+        }
+
+        return isOk;
     }
 }

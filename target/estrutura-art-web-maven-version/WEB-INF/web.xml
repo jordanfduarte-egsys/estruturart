@@ -227,6 +227,7 @@
     <url-pattern>/lancamento/editar/id/*</url-pattern>
     <url-pattern>/lancamento/fluxo-caixa</url-pattern>
     <url-pattern>/lancamento/fluxo-caixa-impressao</url-pattern>
+    <url-pattern>/lancamento/cancelar</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Parametro</servlet-name>

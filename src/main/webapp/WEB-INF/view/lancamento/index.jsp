@@ -43,11 +43,12 @@
                              <td class=" actions align-rigth" style="">
                                 <a href="${source}lancamento/editar/id/${iterator1.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
 
-                                <c:if test="${iterator1.isExcluir()}"></c:if>
-                                    <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger" data-toggle="tooltip" title="" data-original-title="Cancelar lançamento"><i class="fa fa-fw fa-trash"></i></a>
+                                <c:if test="${iterator1.isExcluir()}">
+                                    <a href="javascript:void(0);" class="btn btn-icon btn-pill btn-danger js-excluir" data-id="${iterator1.getId()}" data-toggle="tooltip" title="" data-original-title="Cancelar lançamento"><i class="fa fa-fw fa-trash"></i></a>
                                 </c:if>
                                 <c:if test="${!iterator1.isExcluir()}">
-                                    <i class="fa fa-fw fa-trash opaco"></i>
+                                    <a class="btn btn-icon btn-pill opaco"><i class="fa fa-fw fa-trash"></i></a>
+
                                 </c:if>
                              </td>
                          </tr>
@@ -63,3 +64,23 @@
          <jsp:include page="/WEB-INF/view/partial/paginator.jsp"/>
      </div>
  </div>
+
+ <div class="modal" tabindex="-1" role="dialog" id="modal-cancelar-lancamento">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Cancelar lançamento</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p>Deseja cancelar o lançamento <b></b> ?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary">Confirmar</button>
+        </div>
+        </div>
+    </div>
+</div>

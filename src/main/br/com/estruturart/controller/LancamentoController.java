@@ -2,7 +2,9 @@ package br.com.estruturart.controller;
 
 import javax.servlet.annotation.WebServlet;
 import javax.ws.rs.HttpMethod;
-
+import br.com.estruturart.persistency.Pedido;
+import br.com.estruturart.persistency.PedidoItem;
+import br.com.estruturart.utility.JsonModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Calendar;
@@ -18,11 +20,12 @@ import br.com.estruturart.utility.Paginator;
 import br.com.estruturart.utility.Util;
 import java.text.SimpleDateFormat;
 import br.com.estruturart.utility.ParamRequestManager;
+import br.com.estruturart.model.TbPedidoItem;
 
 /**
  * Servlet implementation class Auth
  */
-@WebServlet(name = "lancamento", urlPatterns = { "/lancamento", "/lancamento/cadastro", "/lancamento/index/page/*", "/lancamento/editar/id/*" })
+@WebServlet(name = "lancamento", urlPatterns = { "/lancamento", "/lancamento/cadastro", "/lancamento/index/page/*", "/lancamento/editar/id/*", "/lancamento/cancelar" })
 public class LancamentoController extends AbstractServlet
 {
     private static final long serialVersionUID = -4214231788151587849L;
@@ -159,5 +162,38 @@ public class LancamentoController extends AbstractServlet
         getRequest().setAttribute("source", getServletContext().getInitParameter("source"));
         getRequest().getRequestDispatcher("/WEB-INF/view/lancamento/fluxo-caixa-impressao.jsp")
             .forward(this.getRequest(), this.getResponse());
+    }
+
+    public void cancelarAction() throws Exception
+    {
+        Integer id = Integer.parseInt(getParameterOrValue("id", "0"));
+        JsonModel jsonModel = new JsonModel();
+        Lancamento lancamentoModel = new Lancamento();
+        TbLancamento lancamento = lancamentoModel.getLancamentoById(id);
+        Pedido pedidoModel = new Pedido();
+
+        jsonModel.setStatus(false);
+        if (lancamento.getId() > 0) {
+            if (lancamento.getPedidoItensId() == 0) {
+                lancamentoModel.delete(id);
+                jsonModel.setStatus(true);
+                jsonModel.setMessage("Lançamento cencelado com sucesso.");
+            } else if (lancamento.getPedidoItensId() > 0 && lancamentoModel.isLancamentoExtra(lancamento.getId(), lancamento.getPedidoItensId())) {
+                lancamentoModel.delete(id);
+                PedidoItem pedidoItemModel = new PedidoItem();
+                TbPedidoItem item = pedidoItemModel.findPedidoByItem(lancamento.getPedidoItensId());
+
+                pedidoModel.updatePrecoTotal(item.getPedidoId(), item.getPedido().getValorTotal() -  lancamento.getPreco());
+                jsonModel.setStatus(true);
+                jsonModel.setMessage("Lançamento cencelado com sucesso.");
+            } else {
+                jsonModel.setMessage("Não é possivel cancelar o lançamento.");
+                jsonModel.setStatus(false);
+            }
+        } else {
+            jsonModel.setMessage("Nenhum lançamento encontrado!");
+        };
+
+        setRequestXhtmlHttpRequest(jsonModel);
     }
 }

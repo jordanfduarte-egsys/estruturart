@@ -304,10 +304,12 @@ public class TbPedido extends AbstractModel
         cal.set(Calendar.MILLISECOND, 0);
         Date dateWithoutTime = cal.getTime();
 
-        if (getDataPrevisaoInstalacao().compareTo(dateWithoutTime) < 0) {
-            color = "#dc3545";
-        } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
-            color = "#ffc107";
+        if (getStatusPedidoId() != 7 && getStatusPedidoId() != 6) {
+            if (getDataPrevisaoInstalacao().compareTo(dateWithoutTime) < 0) {
+                color = "#dc3545";
+            } else if (df.format(getDataPrevisaoInstalacao().getTime()).equals(df.format(new Date().getTime()))) {
+                color = "#ffc107";
+            }
         }
 
         if (getStatusPedidoId() == 7) {
