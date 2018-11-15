@@ -16,7 +16,7 @@ public class PedidoItemFoto extends AbstractPersistency
     {
         Connection conn = ConnectionManager.getConnection();
         String sql = String.format(
-            "SELECT f.* FROM pedido_itens_fotos f WHERE f.pedido_itens_id = %d ORDER BY data_inclusao", itemId
+            "SELECT f.* FROM pedido_itens_fotos f WHERE f.pedido_itens_id = %d ORDER BY data_inclusao DESC", itemId
         );
 
         PreparedStatement ps = conn.prepareStatement(sql);

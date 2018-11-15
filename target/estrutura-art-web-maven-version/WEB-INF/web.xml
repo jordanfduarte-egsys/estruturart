@@ -25,6 +25,10 @@
       <param-value>C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\estrutura-art-web-maven-version\files</param-value>
   </context-param>
   <context-param>
+      <param-name>folderUploadCopy</param-name>
+      <param-value>C:\DEV\projects\estrutura-art-web-maven-version\src\main\webapp\files</param-value>
+  </context-param>
+  <context-param>
       <param-name>widthModelo</param-name>
       <param-value>300</param-value>
   </context-param>

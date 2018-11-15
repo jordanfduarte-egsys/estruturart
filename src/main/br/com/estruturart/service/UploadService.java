@@ -2,9 +2,12 @@ package br.com.estruturart.service;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +63,7 @@ public class UploadService
         return fileItem != null && !fileItem.isFormField() && !fileItem.getString().equals("");
     }
 
-    public String process(String folder, int width, int height, String nomeAntigo) throws IOException, NoSuchAlgorithmException
+    public String process(String folder, int width, int height, String nomeAntigo, String folderCopy) throws IOException, NoSuchAlgorithmException
     {
         String fileName = "";
         if (ServletFileUpload.isMultipartContent(this.request)) {
@@ -125,7 +128,7 @@ public class UploadService
                         "Nome do arquivo informado inválido. Tente enviar um arquivo com nome correto!"
                     );
                 }
-                fileName = savePosRedimencionamento(fileName, format, folder, nomeAntigo, fileContent);
+                fileName = savePosRedimencionamento(fileName, format, folder, nomeAntigo, fileContent, folderCopy);
                 // MessageDigest algorithm = MessageDigest.getInstance("MD5");
                 // String messageDigest = convertStringToMd5(fileName + new Date().getTime());
                 // fileName = messageDigest + "." + format;
@@ -270,7 +273,7 @@ public class UploadService
         this.folder = folder;
     }
 
-    public String savePosRedimencionamento(String fileName, String format, String folder, String nomeAntigo, InputStream fileContent) throws IOException, java.security.NoSuchAlgorithmException, Exception1001
+    public String savePosRedimencionamento(String fileName, String format, String folder, String nomeAntigo, InputStream fileContent, String folderCopy) throws IOException, java.security.NoSuchAlgorithmException, Exception1001
     {
         MessageDigest algorithm = MessageDigest.getInstance("MD5");
         String messageDigest = convertStringToMd5(fileName + new Date().getTime());
@@ -278,15 +281,19 @@ public class UploadService
 
 
         String folderTo = folder +  getFolder();
+        String folderToCopy = folderCopy +  getFolder();
         File uploadDir = new File(folderTo);
         if (!uploadDir.exists() || !uploadDir.isDirectory()) {
             uploadDir.mkdirs();
 
         }
 
+        File uploadDir2 = new File(folderToCopy);
+        if (!uploadDir2.exists() || !uploadDir2.isDirectory()) {
+            uploadDir2.mkdirs();
+        }
 
         FileOutputStream fout = new FileOutputStream(folderTo + fileName);
-
         byte[] buffer = new byte[fileContent.available()];
         fileContent.read(buffer);
 
@@ -295,10 +302,32 @@ public class UploadService
         fout.close();
         fileContent.close();
 
+        //copiando para a pasta do projeto
         File file2 = new File(folderTo + fileName);
         file2.setReadable(true, false);
         file2.setExecutable(true, false);
         file2.setWritable(true, false);
+        FileInputStream fis2 = new FileInputStream(file2);
+        BufferedInputStream bis2 = new BufferedInputStream(fis2);
+
+        File file3 = new File(folderToCopy + fileName);
+        file3.setReadable(true, false);
+        file3.setExecutable(true, false);
+        file3.setWritable(true, false);
+        FileOutputStream fis3 = new FileOutputStream(file3);
+        BufferedOutputStream bis3 = new BufferedOutputStream(fis3);
+
+        int count = 0;
+
+        byte[] bytes = new byte[1024];
+
+        while((count = bis2.read(bytes)) > 0) {
+            bis3.write(bytes, 0, count);
+        }
+
+        bis2.close();
+        bis3.close();
+        //FIM copiando para a pasta do projeto
 
         if (!uploadDir.exists()) {
             fileName = "";

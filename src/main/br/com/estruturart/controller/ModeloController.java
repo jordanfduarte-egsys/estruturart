@@ -150,18 +150,18 @@ public class ModeloController extends AbstractServlet
 
                         String imagem = modelo.getImagem();
                         String sourceFilder = getServletContext().getInitParameter("folderUpload");
-
+                        String sourceFilderCopy = getServletContext().getInitParameter("folderUploadCopy");
 
                         boolean isContinue = true;
                         if (modelo.getId() == 0) {
-                            imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
+                            imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null, sourceFilderCopy);
 
                             if (imagem.equals("")) {
                                 modelo.getValidation().add(new RouteParam("imagem", uploadService.getMessageErro()));
                                 isContinue = false;
                             }
                         } else if (modelo.getId() != 0 && uploadService.isUploadImagem()) {
-                            imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, modelo.getImagem());
+                            imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, modelo.getImagem(), sourceFilderCopy);
 
                             if (imagem.equals("")) {
                                 modelo.getValidation().add(new RouteParam("imagem", uploadService.getMessageErro()));

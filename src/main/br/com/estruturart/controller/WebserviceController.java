@@ -348,6 +348,7 @@ public class WebserviceController extends AbstractServlet {
 
 
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
+            String folderCopy = getServletContext().getInitParameter("folderUploadCopy");
             int widthModelo = Integer.parseInt(getServletContext().getInitParameter("widthModelo"));
             int heigthModelo = Integer.parseInt(getServletContext().getInitParameter("heigthModelo"));
             String extensoes = getServletContext().getInitParameter("extensoesImagem");
@@ -385,7 +386,8 @@ public class WebserviceController extends AbstractServlet {
                 extension,
                 sourceFilder,
                 null,
-                fileContent
+                fileContent,
+                folderCopy
             );
             inpuStream.close();
             fileContent.close();

@@ -210,7 +210,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <c:if test="${pedido.getStatusPedidoId() != 7}">
+                    <c:if test="${pedido.getStatusPedidoId() != 7 && pedido.getStatusPedidoId() != 6}">
                         {{#if status_item_id == 1}}
                             <fieldset class="col-md-12 mb-3 border form-control">
                                 <legend>Novo</legend>

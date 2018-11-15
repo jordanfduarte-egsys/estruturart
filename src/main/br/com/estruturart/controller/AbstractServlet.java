@@ -283,7 +283,7 @@ public class AbstractServlet extends HttpServlet {
 
         switch(this.route.getController()) {
             case "auth":
-                this.getRequest().setAttribute("title", "Início");
+                this.getRequest().setAttribute("title", "Entrar");
             break;
             case "usuario":
                 this.getRequest().setAttribute("title", "Usuários");
@@ -308,6 +308,9 @@ public class AbstractServlet extends HttpServlet {
             break;
             case "parametro":
                 this.getRequest().setAttribute("title", "Configuração");
+            break;
+            case "home":
+                this.getRequest().setAttribute("title", "Home");
             break;
             default :
                 this.getRequest().setAttribute("title", "");

@@ -616,7 +616,8 @@ public class PedidoController extends AbstractServlet
             uploadService.setFolder(separator + "item" + separator + item.getId() + separator);
 
             String sourceFilder = getServletContext().getInitParameter("folderUpload");
-            String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null);
+            String sourceFilderCopy = getServletContext().getInitParameter("folderUploadCopy");
+            String imagem = uploadService.process(sourceFilder, widthModelo, heigthModelo, null, sourceFilderCopy);
             itemFoto.setCaminhoArquivo(imagem);
 
 
