@@ -38,7 +38,7 @@
                              <td>R$ ${iterator.getPrecoBR()}</td>
                              <td>${iterator.getStatusMaterial().getDescricao()}</td>
                              <td class=" actions align-rigth" style="">
-                                    <a href="${source}material/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                    <a href="${source}material/editar/id/${iterator.getId()}" class="btn btn-icon btn-pill btn-primary" data-toggle="tooltip" title="" data-original-title="Editar"><i class="fa fa-fw fa-edit"></i></a>
                                     <a href="javascript:void(0);" data-id="${iterator.getId()}" data-status="${iterator.getStatusMaterial().getId()}" class="btn btn-icon btn-pill btn-danger js-alterar-status" data-toggle="tooltip" title="Alterar status"><i class="fas fa-minus-circle">&nbsp;</i></a>
                              </td>
                          </tr>

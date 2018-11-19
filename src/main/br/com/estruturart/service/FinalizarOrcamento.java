@@ -54,6 +54,12 @@ public class FinalizarOrcamento
     public void salvarCliente() throws java.sql.SQLException
     {
         if (orcamento.getUsuario().getId() == 0) {
+            String cnpj = orcamento.getUsuario().getCpfCnpj();
+            System.out.println("A: " + cnpj);
+            cnpj = cnpj.replace(".","").replace("-","").replace("/","");
+            System.out.println("A: " + cnpj);
+
+            orcamento.getUsuario().setCpfCnpj(cnpj);
             orcamento.getUsuario().setId(usuario.insert(orcamento.getUsuario()));
         }
     }

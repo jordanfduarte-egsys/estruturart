@@ -187,7 +187,7 @@ var crud = {
             var $tr = $(this).closest('.tr-one');
             var alturaNova = +$tr.data('altura-nova');
             var larguraNova = +$tr.data('largura-nova');
-            var precoPintura = $tr.data('preco-pintura');
+            var precoPintura = +$tr.data('preco-pintura');
             var alturaAntiga = +$tr.data('altura');
             var larguraAntiga = +$tr.data('largura');
             var quantidade = +$tr.find('.td-qtd-item input[type="number"]').val();
@@ -309,7 +309,7 @@ var crud = {
             var $tr = $(this).closest('.tr-one');
             var alturaNova = +$tr.data('altura-nova');
             var larguraNova = +$tr.data('largura-nova');
-            var precoPintura = $tr.data('preco-pintura');
+            var precoPintura = +$tr.data('preco-pintura');
             var alturaAntiga = +$tr.data('altura');
             var larguraAntiga = +$tr.data('largura');
             var precoPadrao = +$tr.data('preco-inicial');

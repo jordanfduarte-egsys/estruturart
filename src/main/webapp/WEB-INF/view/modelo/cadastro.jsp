@@ -14,14 +14,14 @@
         <div class="card-body">
             <form action="${source}modelo/<c:if test="${modelo.getId() != 0}">editar/id/${modelo.getId()}</c:if><c:if test="${modelo.getId() == 0}">cadastro</c:if>" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <label for="nome">Nome *</label>
                         <input type="text" class="form-control <c:if test="${modelo.getValidation().hasParam('nome')}">is-invalid</c:if>" id="nome" name="nome" placeholder="Janela de correr" value="${modelo.getNome()}">
                         <div class="invalid-feedback">
                             ${modelo.getValidation().getParamOr('nome', '')}
                         </div>
                     </div>
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-5 mb-3">
                         <label for="status_modelo_id">Status</label>
                         <select name="status_modelo_id" id="status_modelo_id" class="form-control <c:if test="${modelo.getValidation().hasParam('status_modelo_id')}">is-invalid</c:if>">
                             <option value="0">Selecione!</option>
@@ -36,7 +36,7 @@
                     </div>
                  </div>
                  <div class="form-row">
-                    <div class="col-md-8 mb-3">
+                    <div class="col-md-10 mb-3">
                         <label for="descricao">Descrição *</label>
                         <textarea class="form-control <c:if test="${modelo.getValidation().hasParam('descricao')}">is-invalid</c:if>" id="descricao" name="descricao" placeholder="Sobre esse modelo">${modelo.getDescricao()}</textarea>
                         <div class="invalid-feedback">
@@ -46,7 +46,7 @@
                 </div>
 
                <div class="form-row">
-                   <fieldset class="col-md-8 mb-3 border">
+                   <fieldset class="col-md-10 mb-3 border">
                         <legend style="width: 91px;">Materiais</legend>
                         <input type="text" class="form-control" id="busca" name="busca" placeholder="Busque um material para montar o modelo e tecle ENTER">
                         <input id="filtrado" type="hidden"/>
@@ -65,7 +65,7 @@
                                         <tr>
                                             <td>${iterator.getDescricao()}</td>
                                             <td>${iterator.getFornecedor().getNome()}</td>
-                                            <td>${iterator.getQuantidade()}</td>
+                                            <td>${iterator.getQuantidade()} ${iterator.getUnidadeMedida().getNome()}</td>
                                             <td class="js-preco" data-preco="<c:if test="${iterator.getMateriaPrima() == 1}">${iterator.getPreco()}</c:if>">
                                                 <c:if test="${iterator.getMateriaPrima() == 1}">
                                                     R$ ${iterator.getPrecoBR()}
@@ -90,7 +90,7 @@
                </div>
 
                <div class="form-row">
-                    <div class="col-md-1 mb-3">
+                    <div class="col-md-2 mb-3">
                         <label for="largura_padrao">Largura *</label>
                         <input type="text" data-format="float" class="form-control <c:if test="${modelo.getValidation().hasParam('largura_padrao')}">is-invalid</c:if>" id="largura_padrao" name="largura_padrao" placeholder="99,00" value="${modelo.getLarguraPadraoString()}">
                         <div class="invalid-feedback">
@@ -100,7 +100,7 @@
                     <a data-toggle="tooltip" data-html="true" class="p-2 sobre-medida" title="" data-original-title="Informe as medidas de largura e altura em (mm)">
                          <i class="fas fa-info"></i>
                      </a>
-                    <div class="col-md-1 mb-3">
+                    <div class="col-md-2 mb-3">
                         <label for="altura_padrao">Altura *</label>
                         <input type="text" data-format="float" class="form-control <c:if test="${modelo.getValidation().hasParam('altura_padrao')}">is-invalid</c:if>" id="altura_padrao" name="altura_padrao" placeholder="99,00" value="${modelo.getAlturaPadraoString()}">
                         <div class="invalid-feedback">
@@ -166,7 +166,7 @@
                         </div>
                    </fieldset>
 
-                   <div class="col-md-4 mb-3 text-right js-resumo resumo">
+                   <div class="col-md-6 mb-3 text-right js-resumo resumo">
                        <h4 class="text-left">Resumo</h4>
                        <ul>
                             <li>
@@ -179,6 +179,12 @@
                                 <div class="js-preco-materiais">
                                     <span>Preço materiais </span>
                                     <span>R$ <b>${modelo.getPrecoTotalMateriaisString()}</b></span>
+                                </div><br>
+                            </li>
+                            <li>
+                                <div class="js-preco-materiais-sem-desconto">
+                                    <span>Preço materiais sem desconto </span>
+                                    <span>R$ <b>${modelo.getPrecoTotalQuantidadeStringString()}</b></span>
                                 </div><br>
                             </li>
                             <li>
@@ -210,7 +216,7 @@
  <tr>
     <td>{{descricao}}</td>
     <td>{{fornecedor.nome}}</td>
-    <td>{{quantidade}}</td>
+    <td>{{quantidade}} {{unidadeMedida.nome}}</td>
     <td class="js-preco" data-preco="{{preco}}">
         {{#if preco > 0}}
             R$ {{precoBr}}

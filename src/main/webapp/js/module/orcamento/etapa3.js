@@ -26,7 +26,7 @@ var crud = {
             } else if ($desconto.val() == "") {
                 $desconto.closest('.input-group').find('[data-toggle="tooltip"]').tooltip('show');
             } else if ($maoObra.val() == "") {
-                $maoObra.closest('.input-group').find('[data-toggle="tooltip"]').tooltip('show');
+                //  $maoObra.closest('.input-group').find('[data-toggle="tooltip"]').tooltip('show');
             }
         },
 

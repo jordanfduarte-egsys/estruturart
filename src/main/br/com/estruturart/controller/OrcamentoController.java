@@ -250,6 +250,7 @@ public class OrcamentoController extends AbstractServlet {
                             .add("Pedido criado com sucesso!");
                     }
 
+                    getSession().setAttribute("orcamento", "");
                     redirect("pedido/visualizar/id/" + finalizarService.getId());
                 } catch (java.sql.SQLException e) {
                     conn.rollback();

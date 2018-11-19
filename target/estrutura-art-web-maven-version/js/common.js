@@ -84,7 +84,41 @@ function bindMask() {
     $('[data-format="cep"]').off().mask('00000-000', {clearOnEmpty: true});
     $('[data-format="float"]').off().mask('0000000,00', {reverse: true,  clearOnEmpty: true});
     $('[data-format="float2"]').off().mask('0000000,000', {reverse: true,  clearOnEmpty: true});
-    $('[data-format="telefone"]').off().mask('(000) 00000-0000');
+    //$('[data-format="telefone"]').off().mask('(00) 00000-0000');
+    jQuery('[data-format="telefone"]').each(function() {
+      if ($(this).val().replace(/\D/g, '').length > 10) {
+        jQuery('[data-format="telefone"]')
+        .mask("(99) 99999-9999")
+        .focusout(function (event) {
+            var target, phone, element;
+            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+            phone = target.value.replace(/\D/g, '');
+            element = $(target);
+            element.unmask();
+            if(phone.length > 10) {
+                element.mask("(99) 99999-9999");
+            } else {
+                element.mask("(99) 9999-99999");
+            }
+        });
+      } else {
+        jQuery('[data-format="telefone"]')
+        .mask("(99) 9999-99999")
+        .focusout(function (event) {
+            var target, phone, element;
+            target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+            phone = target.value.replace(/\D/g, '');
+            element = $(target);
+            element.unmask();
+            if(phone.length > 10) {
+                element.mask("(99) 99999-9999");
+            } else {
+                element.mask("(99) 9999-99999");
+            }
+        });
+      }
+    });
+
     $('[data-toggle="datepicker"]').mask('00/00/0000');
     $('[data-toggle="datepicker"]').datepicker({
         format: 'dd/mm/yyyy',
@@ -126,14 +160,14 @@ function bindMask() {
         } catch (e) {}
 
         var tamanho = $(this).val().length;
-        if (tamanho < 11) {
+        if (tamanho <= 11) {
             $(this).mask("999.999.999-99");
 
             $('#etapa1 [for=nome_completo]')
                 .html('Nome completo *')
                 .next()
                 .attr('placeholder', 'Nome completo');
-        } else if(tamanho >= 11) {
+        } else if(tamanho > 11) {
             $(this).mask("99.999.999/9999-99");
 
             $('#etapa1 [for=nome_completo]')

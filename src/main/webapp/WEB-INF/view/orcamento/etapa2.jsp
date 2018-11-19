@@ -98,7 +98,7 @@
             <div class="col1">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">Largura</span>
+                        <span class="input-group-text" id="inputGroupPrepend3">Largura (mm)</span>
                     </div>
                     <input data-largura="{{larguraPadrao}}" class="js-largura form-control col-md-6" data-format="float2" type="text" value="{{larguraPadrao toFloatBr}}">
                 </div>
@@ -106,7 +106,7 @@
             <div class="col2">
                 <div class="input-group">
                     <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroupPrepend3">Altura</span>
+                        <span class="input-group-text" id="inputGroupPrepend3">Altura (mm)</span>
                     </div>
                     <input data-altura="{{alturaPadrao}}" class="js-altura form-control col-md-6" data-format="float2" type="text" value="{{alturaPadrao toFloatBr}}">
                 </div>

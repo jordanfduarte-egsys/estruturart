@@ -59,7 +59,7 @@ public class UsuarioController extends AbstractServlet
 
             if (this.getMethod().equals(HttpMethod.POST)) {
                 usuario.setNome(this.getRequest().getParameter("nome"));
-                usuario.setCpfCnpj(this.getRequest().getParameter("cpf_cnpj"));
+                usuario.setCpfCnpj(this.getRequest().getParameter("cpf_cnpj").replace(".","").replace("-","").replace("/",""));
                 usuario.setEmail(this.getRequest().getParameter("email"));
                 usuario.setRgIncricaoEstadual(this.getRequest().getParameter("rg_inscricao_estadual"));
                 usuario.setTelefone(this.getRequest().getParameter("telefone"));

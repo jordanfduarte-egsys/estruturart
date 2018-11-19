@@ -80,6 +80,7 @@ var crud = {
             var $porcentagemAcrescimo = $('#porcentagem_acrescimo');
             var $total = $('.js-calc-total');
             var $totalMateriais = $('.js-preco-materiais');
+            var $totalMateriaisSemDesconto = $('.js-preco-materiais-sem-desconto');
             var $table = $('.js-row-material tbody');
             var $pintura = $('#preco_pintura');
             var $comDesconto = $('.js-calc-desc-max');
@@ -99,6 +100,7 @@ var crud = {
             $totalMateriais.find('b').html(numberToReal(precoMateriais));
             $comDesconto.find("b").html(numberToReal(totalDescontoSpan + precoPintura));
             $qtdMateriais.find("b").html($table.find("td.js-preco").length);
+            $totalMateriaisSemDesconto.find("b").html(numberToReal(totalSpan));
         },
 
         onFileSelecionado: function(e) {

@@ -220,13 +220,13 @@ public class Usuario extends AbstractPersistency
         );
         if (usuario.getPerfilId() == 1) {
             sql = String.format(
-                "INSERT INTO USUARIO (tipo_pessoa, nome, cpf_cnpj, rg_inscricao_estadual, email, telefone, senha, perfil_id, status_usuario_id)"
+                "INSERT INTO USUARIO (tipo_pessoa, nome, cpf_cnpj, rg_inscricao_estadual, email, telefone, perfil_id, status_usuario_id)"
                 + " VALUES ('%s', '%s', '%s', '%s', '%s', '%s', %d, %d)",
                 usuario.getTipoPessoa(), usuario.getNome(), usuario.getCpfCnpj(), usuario.getRgIncricaoEstadual(),
                 usuario.getEmail(), usuario.getTelefone(), usuario.getPerfilId(), 2
             );
         }
-
+        System.out.println(sql);
         PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.execute();
 

@@ -349,6 +349,23 @@ public class TbModelo extends AbstractModel
         return total;
     }
 
+    public String getPrecoTotalQuantidadeStringString()
+    {
+        if (this.precoTotalQtdStr == null) {
+            float total = 0;
+            for (TbMaterial material : materiais) {
+                if (material.getMateriaPrima() == 1) {
+                    total += material.getPreco();
+                }
+            }
+
+            total = ((total * this.porcentagemAcrescimo) / 100) + total;
+            this.precoTotalQtdStr = String.valueOf(total * this.quantidadeCompra);
+        }
+
+        return formatMoney(Float.valueOf(this.precoTotalQtdStr));
+    }
+
     public String getPrecoTotalQuantidadeString()
     {
         if (this.precoTotalQtdStr == null) {

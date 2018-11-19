@@ -242,8 +242,8 @@ public class Modelo extends AbstractPersistency
             material.setFornecedorId(rs.getInt("fornecedor_id"));
             material.setPreco(rs.getFloat("preco"));
             material.setQuantidade(rs.getInt("quantidade"));
-            material.setDescricaoFiltro(String.format("%s - Fornecedor %s - Quantidade - %s", rs.getString("descricao"),
-                    rs.getString("nome_fornecedor"), rs.getString("quantidade")));
+            material.setDescricaoFiltro(String.format("%s - Fornecedor %s - Quantidade - %s %s", rs.getString("descricao"),
+                    rs.getString("nome_fornecedor"), rs.getString("quantidade"), rs.getString("nome_unidade_medida")));
 
             TbStatusMaterial statusMaterial = new TbStatusMaterial();
             statusMaterial.setId(rs.getInt("status_material_id"));

@@ -213,7 +213,7 @@ public class Pedido extends AbstractPersistency
         if (order == "data") {
             sql += " ORDER BY data_previsao_instalacao ASC, id ASC";
         }
-System.out.println("SQL: " + sql);
+
         PreparedStatement ps = conn.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         List<TbPedido> pedidos = new ArrayList<TbPedido>();

@@ -55,17 +55,17 @@ var crud = {
                 request.done(function(response) {
                     if (response.status) {
                         if (response.object.id > 0) {
-                            $cpfCnpj.val(response.object.cpfCnpj);
+                            //$cpfCnpj.val(response.object.cpfCnpj);
                             $nomeCompleto.val(response.object.nome).prop('readonly', true);
                             $rgInscricaoEstadual.val(response.object.rgIncricaoEstadual).prop('readonly', true);
                             $email.val(response.object.email).prop('readonly', true);
                             $telefone.val(response.object.telefone).prop('readonly', true);
                             $usuarioId.val(response.object.id);
                         } else {
-                            $nomeCompleto.val().prop('readonly', false);
-                            $rgInscricaoEstadual.val().prop('readonly', false);
-                            $email.val().prop('readonly', false);
-                            $telefone.val().prop('readonly', false);
+                            $nomeCompleto.prop('readonly', false);
+                            $rgInscricaoEstadual.prop('readonly', false);
+                            $email.prop('readonly', false);
+                            $telefone.prop('readonly', false);
                             $usuarioId.val('');
                         }
                     }

@@ -40,9 +40,10 @@ public class Lancamento extends AbstractPersistency
         String sql = String.format(
             "SELECT {columns} FROM LANCAMENTO l" +
             " LEFT JOIN pedido_itens i ON l.pedido_itens_id = i.id" +
+            " LEFT JOIN pedido p ON i.pedido_id = p.id" +
             " LEFT JOIN material m ON i.modelo_id = m.id" +
             " LEFT JOIN material m2 ON l.material_id = m2.id" +
-            " WHERE 1 %s " + " order by l.data_inclusao DESC {limit}",
+            " WHERE 1 %s " + " AND p.status_pedido_id != 7 order by l.data_inclusao DESC {limit}",
             sqlNome
         );
 

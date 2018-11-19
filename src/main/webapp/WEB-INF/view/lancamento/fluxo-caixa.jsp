@@ -36,7 +36,7 @@
                     <li class="list-group-item mr-2">Total de vendas de pedidos: R$ ${totais.getLucroEmpresaString()}</li>
                 </ul>
                 <ul class="list-group pull-left">
-                    <li class="list-group-item mr-2">Lucro no periodo: R$ ${totais.getDiferencaString()}</li>
+                    <li class="list-group-item mr-2">Lucro no período: R$ ${totais.getDiferencaString()}</li>
                 </ul>
             </div>
         </div>
